@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/interfaces/i_kas_router.dart';
+import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
 
 class KasRouter implements IKasRouter {
   @override

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:kas_app/core/widgets/button_widget.dart';
+
 import 'package:kas_app/core/widgets/textformfield_widget.dart';
 
 class FormLoginWidget extends StatelessWidget {
   final Size size;
+  final Widget buttonLogin;
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
   const FormLoginWidget({
     Key? key,
     required this.size,
+    required this.buttonLogin,
+    required this.usernameController,
+    required this.passwordController,
   }) : super(key: key);
 
   @override
@@ -17,14 +23,11 @@ class FormLoginWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextFormFieldWidget(hintText: "Username"),
-          TextFormFieldWidget(hintText: "Password"),
-          ButtonWidget(
-            width: size.width * 0.77,
-            height: size.height * 0.08,
-            paddingVertical: size.height * 0.08,
-            click: () {},
-          ),
+          TextFormFieldWidget(
+              hintText: "Username", controller: usernameController),
+          TextFormFieldWidget(
+              hintText: "Password", controller: passwordController),
+          buttonLogin
         ],
       ),
     );

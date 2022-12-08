@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   final String hintText;
+  final TextEditingController controller;
   const TextFormFieldWidget({
     Key? key,
     required this.hintText,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -13,6 +15,7 @@ class TextFormFieldWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(size.height * 0.01),
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),

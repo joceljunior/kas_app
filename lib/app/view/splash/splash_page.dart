@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/core/constants/assets.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/interfaces/i_kas_router.dart';
+import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
 import 'package:kas_app/core/widgets/background_base_widget.dart';
 
 class SplashPage extends StatefulWidget {

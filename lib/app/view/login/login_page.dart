@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:kas_app/app/view/login/widgets/form_login_widget.dart';
-import 'package:kas_app/core/widgets/background_base_widget.dart';
-import 'package:kas_app/core/widgets/textformfield_widget.dart';
 
 import '../../../core/constants/assets.dart';
+import '../../../core/widgets/background_base_widget.dart';
+import '../../../core/widgets/button_widget.dart';
+import 'widgets/form_login_widget.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,17 @@ class LoginPage extends StatelessWidget {
                 height: size.height * 0.3,
               ),
               Center(
-                child: FormLoginWidget(size: size),
+                child: FormLoginWidget(
+                  passwordController: passwordController,
+                  usernameController: usernameController,
+                  size: size,
+                  buttonLogin: ButtonWidget(
+                    width: size.width * 0.77,
+                    height: size.height * 0.08,
+                    paddingVertical: size.height * 0.08,
+                    click: () {},
+                  ),
+                ),
               ),
             ],
           ),
