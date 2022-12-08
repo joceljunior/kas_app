@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:kas_app/core/constants/assets.dart';
 import 'package:kas_app/core/constants/routes.dart';
 import 'package:kas_app/core/interfaces/i_kas_router.dart';
+import 'package:kas_app/core/widgets/background_base_widget.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -44,18 +45,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 236, 159, 186),
-            Colors.white,
-          ],
-        ),
-      ),
+    return BackgoundBaseWidget(
       child: Center(
         child: AnimatedOpacity(
           duration: Duration(seconds: 2),
@@ -66,6 +56,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ),
       ),
+      size: size.height,
     );
   }
 }
