@@ -26,7 +26,10 @@ class FormLoginWidget extends StatelessWidget {
           TextFormFieldWidget(
               hintText: "Username", controller: usernameController),
           TextFormFieldWidget(
-              hintText: "Password", controller: passwordController),
+              hintText: "Password",
+              controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: true),
           buttonLogin
         ],
       ),
