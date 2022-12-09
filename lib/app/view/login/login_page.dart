@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/models/user.dart';
-import 'package:kas_app/app/view/login/store/login_state.dart';
 import 'package:kas_app/app/view/login/store/login_store.dart';
 import 'package:kas_app/core/constants/routes.dart';
 import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
@@ -23,10 +22,11 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      key: store.scaffoldKey,
       body: Observer(
         builder: (_) {
           return ModalProgressHUD(
-            inAsyncCall: store.state is LoginStateLoading,
+            inAsyncCall: store.loading,
             child: SingleChildScrollView(
               child: BackgoundBaseWidget(
                 child: Column(
@@ -52,11 +52,19 @@ class LoginPage extends StatelessWidget {
                             );
 
                             await store.login(user: user);
-                            if (store.state is LoginStateSuccess) {
+                            if (store.session != null) {
                               router.navigation(
                                 context: context,
                                 screen: homePage,
                                 args: store.session,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(seconds: 1),
+                                  content: Text(store.messageError),
+                                  backgroundColor: Colors.red,
+                                ),
                               );
                             }
                           },

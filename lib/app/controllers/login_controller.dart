@@ -5,6 +5,7 @@ import 'package:kas_app/app/models/interfaces/i_login_repository.dart';
 import 'package:kas_app/app/models/user.dart';
 import 'package:kas_app/core/database/entity/session.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';
+import 'package:kas_app/core/errors/kas_error.dart';
 
 class LoginController implements ILoginController {
   final ILoginRepository repository = GetIt.instance<ILoginRepository>();
@@ -22,6 +23,8 @@ class LoginController implements ILoginController {
       );
       await db.create(session);
       return session;
+    } on LoginError catch (e) {
+      throw LoginError(message: e.message);
     } catch (e) {
       throw Exception();
     }

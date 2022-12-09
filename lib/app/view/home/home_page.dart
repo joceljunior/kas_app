@@ -24,13 +24,10 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             AppBarWidget(height: size.height * 0.35),
-            Padding(
-              padding: const EdgeInsets.all(70.0),
-              child: Container(
-                color: Colors.black,
-                height: size.height * 0.20,
-                width: size.width * 0.20,
-              ),
+            Container(
+              color: Colors.black,
+              height: size.height * 0.20,
+              width: size.width * 0.20,
             )
           ],
         ),

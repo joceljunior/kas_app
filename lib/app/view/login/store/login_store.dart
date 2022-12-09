@@ -1,8 +1,10 @@
+// ignore_for_file: unused_catch_clause
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_login_controller.dart';
-import 'package:kas_app/app/view/login/store/login_state.dart';
 import 'package:kas_app/core/database/entity/session.dart';
+import 'package:kas_app/core/errors/kas_error.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../models/user.dart';
@@ -19,20 +21,28 @@ abstract class _LoginStore with Store {
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @observable
-  LoginState state = LoginStateInitial();
+  bool loading = false;
   @observable
-  Session session = Session();
+  Session? session;
+  @observable
+  String messageError = '';
 
   @action
   Future<void> login({required User user}) async {
     try {
-      state = LoginStateLoading();
+      loading = true;
       var result = await controller.login(user: user);
       session = result;
-      state = LoginStateSuccess();
+      loading = false;
+    } on LoginError catch (e) {
+      loading = false;
+      session == null;
+      messageError = e.message;
     } catch (e) {
-      state = LoginStateError();
+      session == null;
     }
   }
 }
