@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 248, 205, 220),
+      backgroundColor: Color.fromARGB(255, 248, 228, 241),
       body: SingleChildScrollView(
         child: Container(
           child: Column(

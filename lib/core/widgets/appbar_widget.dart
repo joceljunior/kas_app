@@ -13,7 +13,7 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.only(bottom: size.height * 0.10),
+      padding: EdgeInsets.only(bottom: size.height * 0.12),
       child: Stack(
         children: [
           Container(

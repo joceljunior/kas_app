@@ -13,7 +13,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       title: 'Kas Ballet',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color.fromARGB(255, 236, 159, 186),
       ),
       home: SplashPage(),
       routes: {

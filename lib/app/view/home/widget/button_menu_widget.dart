@@ -8,14 +8,14 @@ class ButtonMenuWidget extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromARGB(255, 170, 165, 165)),
+        border: Border.all(color: Colors.blue[200]!),
         color: Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
       ),
-      height: 100,
-      width: 110,
+      height: 130,
+      width: 140,
     );
   }
 }
