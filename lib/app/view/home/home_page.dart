@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:kas_app/app/view/home/widget/button_menu_widget.dart';
 
-import 'package:kas_app/core/database/interface/i_database.dart';
-import 'package:kas_app/core/database/entity/session.dart';
-import 'package:kas_app/core/widgets/appbar_widget.dart';
-import 'package:kas_app/core/widgets/background_base_widget.dart';
+import '../../../core/database/entity/session.dart';
+import '../../../core/widgets/appbar_widget.dart';
+import 'widget/button_menu_widget.dart';
 
 class HomePage extends StatelessWidget {
   final Session session;
@@ -23,8 +20,7 @@ class HomePage extends StatelessWidget {
         child: Container(
           child: Column(
             children: [
-              AppBarWidget(
-                  height: size.height * 0.25, userName: session.nameUSer!),
+              AppBarWidget(userName: session.nameUSer!),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
