@@ -26,56 +26,8 @@ class AppBarWidget extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.blue[400]!,
-              Color.fromARGB(255, 206, 214, 228),
-            ],
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(size.height * 0.01),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(
-                      Icons.notification_important_outlined,
-                      size: size.height * 0.05,
-                    ),
-                    Icon(
-                      Icons.settings,
-                      size: size.height * 0.05,
-                    ),
-                  ],
-                ),
-              ),
-              Image.asset(
-                logoSplash,
-                height: size.height * 0.2,
-              ),
-              Text(
-                userName,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.2,
-                    vertical: size.height * 0.002),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('30 Turmas'),
-                    Text('206 Alunos'),
-                  ],
-                ),
-              ),
+              Theme.of(context).primaryColor,
+              Colors.white,
             ],
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ButtonMenuWidget extends StatelessWidget {
-  const ButtonMenuWidget({super.key});
+  final IconData icon;
+  final String title;
+  const ButtonMenuWidget({super.key, required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,25 @@ class ButtonMenuWidget extends StatelessWidget {
       ),
       height: 130,
       width: 140,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Icon(
+              icon,
+              size: 50,
+            ),
+          ),
+          Text(
+            title.toUpperCase(),
+            style: TextStyle(
+              color: Colors.blue[400]!,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

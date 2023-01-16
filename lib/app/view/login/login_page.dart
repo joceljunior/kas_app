@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -59,6 +61,8 @@ class LoginPage extends StatelessWidget {
                                 args: store.session,
                               );
                             } else {
+                              store.usernameController.clear();
+                              store.passwordController.clear();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   duration: Duration(seconds: 1),
