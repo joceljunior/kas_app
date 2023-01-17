@@ -26,12 +26,12 @@ class ButtonMenuWidget extends StatelessWidget {
             child: Icon(
               icon,
               size: 50,
+              color: Colors.blue[400]!,
             ),
           ),
           Text(
             title.toUpperCase(),
             style: TextStyle(
-              color: Colors.blue[400]!,
               fontWeight: FontWeight.bold,
             ),
           ),

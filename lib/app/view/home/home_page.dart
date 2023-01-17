@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kas_app/core/constants/assets.dart';
 
 import '../../../core/database/entity/session.dart';
-import '../../../core/widgets/appbar_widget.dart';
 import '../../../core/widgets/background_base_widget.dart';
 import 'widget/button_menu_widget.dart';
 
