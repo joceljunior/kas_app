@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kas_app/app/view/home/home_page.dart';
-import 'package:kas_app/app/view/login/login_page.dart';
-import 'package:kas_app/app/view/splash/splash_page.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/database/entity/session.dart';
+
+import '../../core/routes/kas_router.dart';
+import 'splash/splash_page.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -11,20 +10,13 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Kas Ballet',
       theme: ThemeData(
         primaryColor: Color.fromARGB(255, 236, 159, 186),
       ),
-      home: SplashPage(),
-      routes: {
-        loginPage: (_) => LoginPage(),
-        homePage: (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Session;
-          return HomePage(
-            session: args,
-          );
-        },
-      },
+      initialRoute: initialRoute,
+      onGenerateRoute: KasRouter().generateRoute,
     );
   }
 }

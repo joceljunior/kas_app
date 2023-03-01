@@ -5,13 +5,14 @@ class ButtonWidget extends StatelessWidget {
   final double height;
   final double paddingVertical;
   final Function click;
-
+  final String textButton;
   const ButtonWidget({
     Key? key,
     required this.width,
     required this.height,
     required this.paddingVertical,
     required this.click,
+    required this.textButton,
   }) : super(key: key);
 
   @override
@@ -35,7 +36,7 @@ class ButtonWidget extends StatelessWidget {
           },
           child: Center(
               child: Text(
-            'LOGIN',
+            textButton,
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 2),
           )),

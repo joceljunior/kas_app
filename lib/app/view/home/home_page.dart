@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kas_app/core/constants/assets.dart';
+import 'package:kas_app/core/constants/routes.dart';
 
-import '../../../core/database/entity/session.dart';
+import '../../../core/database/boxes/session.dart';
+import '../../../core/widgets/appbar_widget.dart';
 import '../../../core/widgets/background_base_widget.dart';
 import 'widget/button_menu_widget.dart';
 
@@ -22,55 +23,7 @@ class HomePage extends StatelessWidget {
           size: size.height,
           child: Column(
             children: [
-              // AppBarWidget(userName: session.nameUSer!),
-              Padding(
-                padding: EdgeInsets.all(size.height * 0.03),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            Icons.notification_important_outlined,
-                            size: size.height * 0.05,
-                          ),
-                          Icon(
-                            Icons.settings,
-                            size: size.height * 0.05,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Image.asset(
-                      logoSplash,
-                      height: size.height * 0.2,
-                    ),
-                    Text(
-                      session.nameUSer!,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.2,
-                          vertical: size.height * 0.002),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('30 Turmas'),
-                          Text('206 Alunos'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              AppBarWidget(userName: session.nameUSer!),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Wrap(
@@ -79,12 +32,22 @@ class HomePage extends StatelessWidget {
                   spacing: 30,
                   runSpacing: 30,
                   children: [
-                    ButtonMenuWidget(icon: Icons.list, title: 'Chamadas'),
-                    ButtonMenuWidget(icon: Icons.group, title: 'Turmas'),
                     ButtonMenuWidget(
-                        icon: Icons.school_outlined, title: 'Alunos'),
+                        icon: Icons.list, title: 'Chamadas', ontap: () {}),
                     ButtonMenuWidget(
-                        icon: Icons.dashboard, title: 'Relatórios'),
+                        icon: Icons.group,
+                        title: 'Turmas',
+                        ontap: () {
+                          Navigator.of(context).pushNamed(crewListPage);
+                        }),
+                    ButtonMenuWidget(
+                        icon: Icons.school_outlined,
+                        title: 'Alunos',
+                        ontap: () {}),
+                    ButtonMenuWidget(
+                        icon: Icons.dashboard,
+                        title: 'Relatórios',
+                        ontap: () {}),
                   ],
                 ),
               ),

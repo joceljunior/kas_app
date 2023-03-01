@@ -1,22 +1,54 @@
-import 'package:flutter/material.dart';
-import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
+// ignore_for_file: unused_local_variable
 
-class KasRouter implements IKasRouter {
-  @override
-  void navigation(
-      {required BuildContext context, required String screen, Object? args}) {
-    switch (screen) {
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kas_app/app/view/crew/crew_create_page.dart';
+import 'package:kas_app/app/view/crew/crew_list_page.dart';
+import 'package:kas_app/app/view/home/home_page.dart';
+import 'package:kas_app/app/view/login/login_page.dart';
+import 'package:kas_app/app/view/splash/splash_page.dart';
+import 'package:kas_app/core/database/interface/i_database.dart';
+
+import '../constants/routes.dart';
+
+class KasRouter {
+  final IDatabase db = GetIt.I<IDatabase>();
+  Route<dynamic> generateRoute(RouteSettings settings) {
+    var args = settings.arguments;
+
+    switch (settings.name) {
+      case initialRoute:
+        var session = db.getStorage("session");
+        return MaterialPageRoute(
+          builder: (_) =>
+              session == null ? SplashPage() : HomePage(session: session),
+        );
+
       case loginPage:
-        Navigator.pushNamedAndRemoveUntil(
-            context, loginPage, ((route) => false));
-        break;
+        return MaterialPageRoute(
+          builder: (_) => LoginPage(),
+        );
+
       case homePage:
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            homePage, ((route) => false),
-            arguments: args);
-        break;
+        var session = db.getStorage("session");
+        return MaterialPageRoute(
+          builder: (_) => HomePage(
+            session: session,
+          ),
+        );
+      case crewListPage:
+        return MaterialPageRoute(
+          builder: (_) => CrewListPage(),
+        );
+      case crewCreatePage:
+        return MaterialPageRoute(
+          builder: (_) => CrewCreatePage(),
+        );
       default:
+        // pagina de erro
+        return MaterialPageRoute(
+          builder: (context) => SplashPage(),
+        );
     }
   }
 }

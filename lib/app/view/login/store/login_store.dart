@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_login_controller.dart';
-import 'package:kas_app/core/database/entity/session.dart';
+import 'package:kas_app/core/database/boxes/session.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 import 'package:mobx/mobx.dart';
 

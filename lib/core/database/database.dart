@@ -1,34 +1,51 @@
-import 'dart:convert';
+import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 
-import 'package:kas_app/core/database/entity/session.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../errors/kas_error.dart';
+import 'boxes/storage.dart';
 import 'interface/i_database.dart';
 
 class Database implements IDatabase {
+  final HiveInterface hive = GetIt.I<HiveInterface>();
   @override
-  Future<bool> create(Session session) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('session', json.encode(session));
-    return true;
+  Future<bool> saveStorage(Storage obj) async {
+    try {
+      var boxName = obj.boxName();
+      var box = hive.box(boxName);
+      if (box.isOpen) {
+        if (box.isNotEmpty) {
+          await deleteStorage(boxName);
+        }
+        box.put(obj.id(), obj);
+        return true;
+      } else {
+        throw BoxClosedFailure(message: 'Ocorreu um erro ao salvar usuario');
+      }
+    } on Exception {
+      rethrow;
+    }
   }
 
   @override
-  Future<bool> delete() {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> deleteStorage(String boxName) async {
+    var box = hive.box(boxName);
+    if (box.isNotEmpty) {
+      for (var key in box.keys) {
+        await box.delete(key);
+      }
+    }
   }
 
   @override
-  Future<Session> read() async {
-    final prefs = await SharedPreferences.getInstance();
-    return json.decode(
-        prefs.getString('session') == null ? '' : prefs.getString('session')!);
-  }
+  T? getStorage<T>(String boxName) {
+    if (!hive.isBoxOpen(boxName)) {
+      throw BoxClosedFailure(message: boxName);
+    }
+    var box = hive.box(boxName);
+    if (box.values.toList().isEmpty) {
+      return null;
+    }
 
-  @override
-  Future<bool> update() {
-    // TODO: implement update
-    throw UnimplementedError();
+    return box.values.first;
   }
 }

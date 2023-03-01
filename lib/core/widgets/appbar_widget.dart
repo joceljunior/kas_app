@@ -13,24 +13,34 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.only(bottom: size.height * 0.10),
-      child: Container(
-        height: size.height * 0.40,
-        width: size.width,
-        decoration: BoxDecoration(
-          // borderRadius: BorderRadius.only(
-          //   bottomLeft: Radius.circular(30),
-          //   bottomRight: Radius.circular(30),
-          // ),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).primaryColor,
-              Colors.white,
-            ],
+      padding: EdgeInsets.all(size.height * 0.03),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            logoSplash,
+            height: size.height * 0.2,
           ),
-        ),
+          Text(
+            userName.toUpperCase(),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.2, vertical: size.height * 0.04),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('30 Turmas'),
+                Text('206 Alunos'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

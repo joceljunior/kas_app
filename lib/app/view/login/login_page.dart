@@ -1,12 +1,8 @@
-// ignore_for_file: use_build_context_synchronously, must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/models/user.dart';
 import 'package:kas_app/app/view/login/store/login_store.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../core/constants/assets.dart';
@@ -18,7 +14,6 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final LoginStore store = LoginStore();
-  IKasRouter router = GetIt.I<IKasRouter>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +39,7 @@ class LoginPage extends StatelessWidget {
                         usernameController: store.usernameController,
                         size: size,
                         buttonLogin: ButtonWidget(
+                          textButton: "Login",
                           width: size.width * 0.77,
                           height: size.height * 0.08,
                           paddingVertical: size.height * 0.08,
@@ -55,11 +51,8 @@ class LoginPage extends StatelessWidget {
 
                             await store.login(user: user);
                             if (store.session != null) {
-                              router.navigation(
-                                context: context,
-                                screen: homePage,
-                                args: store.session,
-                              );
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  homePage, ((route) => false));
                             } else {
                               store.usernameController.clear();
                               store.passwordController.clear();

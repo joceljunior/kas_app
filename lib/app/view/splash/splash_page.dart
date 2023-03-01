@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:kas_app/core/constants/assets.dart';
-import 'package:kas_app/core/constants/routes.dart';
-import 'package:kas_app/core/routes/interfaces/i_kas_router.dart';
-import 'package:kas_app/core/widgets/background_base_widget.dart';
+
+import '../../../core/constants/assets.dart';
+import '../../../core/constants/routes.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -11,8 +9,6 @@ class SplashPage extends StatefulWidget {
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
-
-IKasRouter router = GetIt.I<IKasRouter>();
 
 class _SplashPageState extends State<SplashPage> {
   @override
@@ -37,7 +33,8 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(
       Duration(seconds: 3),
       (() {
-        router.navigation(context: context, screen: loginPage);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(loginPage, (route) => false);
       }),
     );
   }
@@ -45,7 +42,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return BackgoundBaseWidget(
+    return Container(
+      color: Color.fromARGB(255, 246, 185, 207),
       child: Center(
         child: AnimatedOpacity(
           duration: Duration(seconds: 2),
@@ -56,7 +54,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ),
       ),
-      size: size.height,
+      height: size.height,
     );
   }
 }

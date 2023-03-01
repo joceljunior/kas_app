@@ -6,3 +6,16 @@ class LoginError extends KasError {
     required this.message,
   });
 }
+
+class CrewError extends KasError {
+  final String message;
+  CrewError({
+    required this.message,
+  });
+}
+
+class BoxClosedFailure extends KasError {
+  final String message;
+
+  BoxClosedFailure({required this.message});
+}

@@ -1,8 +1,7 @@
-import '../entity/session.dart';
+import '../boxes/storage.dart';
 
 abstract class IDatabase {
-  Future<bool> create(Session session);
-  Future<Session> read();
-  Future<bool> update();
-  Future<bool> delete();
+  T? getStorage<T>(String boxName);
+  Future<void> deleteStorage(String boxName);
+  Future<bool> saveStorage(Storage obj);
 }
