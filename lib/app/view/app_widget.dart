@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kas_app/core/constants/routes.dart';
 
 import '../../core/routes/kas_router.dart';
-import 'splash/splash_page.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});

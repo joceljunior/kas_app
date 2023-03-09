@@ -40,8 +40,17 @@ class CrewRepository implements ICrewRepository {
   }
 
   @override
-  Future<bool> updateCrew({required Crew crewEdit}) {
-    // TODO: implement updateCrew
-    throw UnimplementedError();
+  Future<bool> updateCrew({required Crew crewEdit}) async {
+    try {
+      var json = crewEdit.toJson();
+      await httpService.put(crewPuttUrl, data: json);
+
+      return true;
+    } on DioError catch (e) {
+      var message = e.response!.data['message'];
+      throw CrewError(message: message);
+    } catch (e) {
+      throw Exception();
+    }
   }
 }

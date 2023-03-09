@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:kas_app/app/models/crew.dart';
+import 'package:kas_app/core/constants/routes.dart';
+import '../../../models/crew.dart';
 
 class CrewItemWidget extends StatelessWidget {
   final Crew crew;
+  final Function onTapEdit;
   const CrewItemWidget({
     super.key,
     required this.crew,
+    required this.onTapEdit,
   });
 
   @override
@@ -26,7 +27,8 @@ class CrewItemWidget extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(crew.key),
-          trailing: Icon(Icons.delete),
+          trailing: GestureDetector(child: Icon(Icons.edit)),
+          onTap: () => onTapEdit(),
         ),
       ),
     );

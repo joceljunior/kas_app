@@ -6,7 +6,8 @@ import 'package:kas_app/core/widgets/textformfield_widget.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CrewCreatePage extends StatefulWidget {
-  const CrewCreatePage({super.key});
+  final Crew? crewEdit;
+  const CrewCreatePage({super.key, required this.crewEdit});
 
   @override
   State<CrewCreatePage> createState() => _CrewCreatePageState();
@@ -14,6 +15,17 @@ class CrewCreatePage extends StatefulWidget {
 
 class _CrewCreatePageState extends State<CrewCreatePage> {
   final CrewCreateStore store = CrewCreateStore();
+
+  @override
+  void initState() {
+    if (widget.crewEdit != null) {
+      store.nameCrewController.text = widget.crewEdit!.name;
+      store.idCrewController.text = widget.crewEdit!.key;
+      store.isEdit = true;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -58,10 +70,13 @@ class _CrewCreatePageState extends State<CrewCreatePage> {
                   paddingVertical: 0,
                   click: () async {
                     var crew = Crew(
+                        id: widget.crewEdit != null
+                            ? widget.crewEdit!.id
+                            : null,
                         name: store.nameCrewController.text,
                         key: store.idCrewController.text);
 
-                    await store.createCrew(crew: crew);
+                    await store.createCrew(isEdit: store.isEdit, crew: crew);
 
                     if (store.success) {
                       Navigator.of(context).pop();

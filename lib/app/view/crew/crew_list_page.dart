@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/view/crew/store/crew_list_store.dart';
 import 'package:kas_app/app/view/crew/widgets/crew_item_widget.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import 'package:mobx/mobx.dart';
 
 class CrewListPage extends StatefulWidget {
   const CrewListPage({super.key});
@@ -73,7 +72,16 @@ class _CrewListPageState extends State<CrewListPage> {
               itemCount: store.crews.length,
               itemBuilder: (context, index) {
                 var crew = store.crews[index];
-                return CrewItemWidget(crew: crew);
+                return CrewItemWidget(
+                  crew: crew,
+                  onTapEdit: () async {
+                    await Navigator.of(context)
+                        .pushNamed(crewCreatePage, arguments: crew)
+                        .then((value) {
+                      store.getCrews();
+                    });
+                  },
+                );
               },
             ),
           );

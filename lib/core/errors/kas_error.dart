@@ -14,6 +14,13 @@ class CrewError extends KasError {
   });
 }
 
+class StudentError extends KasError {
+  final String message;
+  StudentError({
+    required this.message,
+  });
+}
+
 class BoxClosedFailure extends KasError {
   final String message;
 

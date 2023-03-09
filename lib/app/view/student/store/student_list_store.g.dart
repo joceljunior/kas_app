@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'crew_create_store.dart';
+part of 'student_list_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'crew_create_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$CrewCreateStore on _CrewCreateStore, Store {
+mixin _$StudentListStore on _StudentListStore, Store {
   late final _$loadingAtom =
-      Atom(name: '_CrewCreateStore.loading', context: context);
+      Atom(name: '_StudentListStore.loading', context: context);
 
   @override
   bool get loading {
@@ -25,24 +25,24 @@ mixin _$CrewCreateStore on _CrewCreateStore, Store {
     });
   }
 
-  late final _$successAtom =
-      Atom(name: '_CrewCreateStore.success', context: context);
+  late final _$studentsAtom =
+      Atom(name: '_StudentListStore.students', context: context);
 
   @override
-  bool get success {
-    _$successAtom.reportRead();
-    return super.success;
+  List<Student> get students {
+    _$studentsAtom.reportRead();
+    return super.students;
   }
 
   @override
-  set success(bool value) {
-    _$successAtom.reportWrite(value, super.success, () {
-      super.success = value;
+  set students(List<Student> value) {
+    _$studentsAtom.reportWrite(value, super.students, () {
+      super.students = value;
     });
   }
 
   late final _$messageErrorAtom =
-      Atom(name: '_CrewCreateStore.messageError', context: context);
+      Atom(name: '_StudentListStore.messageError', context: context);
 
   @override
   String? get messageError {
@@ -57,20 +57,27 @@ mixin _$CrewCreateStore on _CrewCreateStore, Store {
     });
   }
 
-  late final _$createCrewAsyncAction =
-      AsyncAction('_CrewCreateStore.createCrew', context: context);
+  late final _$getStudentsAsyncAction =
+      AsyncAction('_StudentListStore.getStudents', context: context);
 
   @override
-  Future<void> createCrew({required bool isEdit, required Crew crew}) {
-    return _$createCrewAsyncAction
-        .run(() => super.createCrew(isEdit: isEdit, crew: crew));
+  Future<void> getStudents() {
+    return _$getStudentsAsyncAction.run(() => super.getStudents());
+  }
+
+  late final _$deleteStudentAsyncAction =
+      AsyncAction('_StudentListStore.deleteStudent', context: context);
+
+  @override
+  Future<void> deleteStudent({required int id}) {
+    return _$deleteStudentAsyncAction.run(() => super.deleteStudent(id: id));
   }
 
   @override
   String toString() {
     return '''
 loading: ${loading},
-success: ${success},
+students: ${students},
 messageError: ${messageError}
     ''';
   }

@@ -43,7 +43,9 @@ class HomePage extends StatelessWidget {
                     ButtonMenuWidget(
                         icon: Icons.school_outlined,
                         title: 'Alunos',
-                        ontap: () {}),
+                        ontap: () {
+                          Navigator.of(context).pushNamed(studentListPage);
+                        }),
                     ButtonMenuWidget(
                         icon: Icons.dashboard,
                         title: 'Relatórios',

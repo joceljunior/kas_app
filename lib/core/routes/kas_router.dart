@@ -2,11 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kas_app/app/models/crew.dart';
+import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/app/view/crew/crew_create_page.dart';
 import 'package:kas_app/app/view/crew/crew_list_page.dart';
 import 'package:kas_app/app/view/home/home_page.dart';
 import 'package:kas_app/app/view/login/login_page.dart';
 import 'package:kas_app/app/view/splash/splash_page.dart';
+import 'package:kas_app/app/view/student/student_create_page.dart';
+import 'package:kas_app/app/view/student/student_list_page.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';
 
 import '../constants/routes.dart';
@@ -41,8 +45,22 @@ class KasRouter {
           builder: (_) => CrewListPage(),
         );
       case crewCreatePage:
+        var crew = args == null ? null : args as Crew;
         return MaterialPageRoute(
-          builder: (_) => CrewCreatePage(),
+          builder: (_) => CrewCreatePage(
+            crewEdit: crew,
+          ),
+        );
+      case studentListPage:
+        return MaterialPageRoute(
+          builder: (_) => StudentListPage(),
+        );
+      case studentCreatePage:
+        var student = args == null ? null : args as Student;
+        return MaterialPageRoute(
+          builder: (_) => StudentCreatePage(
+            studentEdit: student,
+          ),
         );
       default:
         // pagina de erro

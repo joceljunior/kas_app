@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kas_app/app/controllers/interfaces/I_crew_controller.dart';
+import 'package:kas_app/app/controllers/interfaces/i_crew_controller.dart';
 import 'package:kas_app/app/models/crew.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 import 'package:mobx/mobx.dart';
@@ -27,6 +26,7 @@ abstract class _CrewListStore with Store {
   Future<void> getCrews() async {
     try {
       loading = true;
+      await Future.delayed(Duration(seconds: 1));
       var result = await controller.getCrews();
       crews = result;
       loading = false;

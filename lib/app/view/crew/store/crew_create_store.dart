@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kas_app/app/controllers/interfaces/I_crew_controller.dart';
+import 'package:kas_app/app/controllers/interfaces/i_crew_controller.dart';
 import 'package:kas_app/app/models/crew.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 import 'package:mobx/mobx.dart';
@@ -16,6 +16,7 @@ abstract class _CrewCreateStore with Store {
 
   final TextEditingController nameCrewController = TextEditingController();
   final TextEditingController idCrewController = TextEditingController();
+  bool isEdit = false;
 
   @observable
   bool loading = false;
@@ -27,10 +28,10 @@ abstract class _CrewCreateStore with Store {
   String? messageError;
 
   @action
-  Future<void> createCrew({required Crew crew}) async {
+  Future<void> createCrew({required bool isEdit, required Crew crew}) async {
     try {
       loading = true;
-      var result = await controller.postCrew(crew: crew);
+      var result = await controller.postOrPutCrew(isEdit: isEdit, crew: crew);
       success = result;
       loading = false;
     } on CrewError catch (e) {

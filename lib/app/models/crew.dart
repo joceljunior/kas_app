@@ -24,9 +24,9 @@ class Crew {
 
   factory Crew.fromMap(Map<String, dynamic> map) {
     return Crew(
-      id: map['id']?.toInt(),
-      name: map['name'] ?? '',
-      key: map['key'] ?? '',
+      id: map['id'],
+      name: map['name'],
+      key: map['key'],
     );
   }
 
