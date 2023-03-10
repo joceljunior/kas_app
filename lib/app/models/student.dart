@@ -17,6 +17,8 @@ class Student {
   final bool useOfImage;
   final bool active;
   final DateTime dateCreate;
+  bool isRegister = false;
+  String? justification;
   Student({
     this.id,
     required this.name,

@@ -3,9 +3,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/view/crew/store/crew_list_store.dart';
 import 'package:kas_app/app/view/crew/widgets/crew_item_widget.dart';
 import 'package:kas_app/core/constants/routes.dart';
+import 'package:kas_app/core/utils/params_enum.dart';
 
 class CrewListPage extends StatefulWidget {
-  const CrewListPage({super.key});
+  final ParamsEnum typePage;
+  const CrewListPage({super.key, required this.typePage});
 
   @override
   State<CrewListPage> createState() => _CrewListPageState();
@@ -32,20 +34,23 @@ class _CrewListPageState extends State<CrewListPage> {
           child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              backgroundColor: Colors.blue[200],
-              onPressed: () async {
-                await Navigator.of(context)
-                    .pushNamed(crewCreatePage)
-                    .then((value) {
-                  store.getCrews();
-                });
-              },
-              child: Icon(
-                Icons.add,
-                color: Colors.black,
+          Visibility(
+            visible: widget.typePage == ParamsEnum.crew,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton(
+                backgroundColor: Colors.blue[200],
+                onPressed: () async {
+                  await Navigator.of(context)
+                      .pushNamed(crewCreatePage)
+                      .then((value) {
+                    store.getCrews();
+                  });
+                },
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
               ),
             ),
           )
@@ -74,12 +79,24 @@ class _CrewListPageState extends State<CrewListPage> {
                 var crew = store.crews[index];
                 return CrewItemWidget(
                   crew: crew,
-                  onTapEdit: () async {
-                    await Navigator.of(context)
-                        .pushNamed(crewCreatePage, arguments: crew)
-                        .then((value) {
-                      store.getCrews();
-                    });
+                  onTapItem: () async {
+                    if (widget.typePage == ParamsEnum.crew) {
+                      await Navigator.of(context)
+                          .pushNamed(crewCreatePage, arguments: crew)
+                          .then((value) {
+                        store.getCrews();
+                      });
+                    }
+                    if (widget.typePage == ParamsEnum.register) {
+                      await Navigator.of(context)
+                          .pushNamed(
+                        registerCreatePage,
+                        arguments: crew.id,
+                      )
+                          .then((value) {
+                        store.getCrews();
+                      });
+                    }
                   },
                 );
               },

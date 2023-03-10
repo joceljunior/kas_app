@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kas_app/core/constants/routes.dart';
+import 'package:kas_app/core/utils/params_enum.dart';
 
 import '../../../core/database/boxes/session.dart';
 import '../../../core/widgets/appbar_widget.dart';
@@ -33,18 +34,29 @@ class HomePage extends StatelessWidget {
                   runSpacing: 30,
                   children: [
                     ButtonMenuWidget(
-                        icon: Icons.list, title: 'Chamadas', ontap: () {}),
+                        icon: Icons.list,
+                        title: 'Chamadas',
+                        ontap: () {
+                          Navigator.of(context).pushNamed(
+                            crewListPage,
+                            arguments: ParamsEnum.register,
+                          );
+                        }),
                     ButtonMenuWidget(
                         icon: Icons.group,
                         title: 'Turmas',
                         ontap: () {
-                          Navigator.of(context).pushNamed(crewListPage);
+                          Navigator.of(context).pushNamed(
+                            crewListPage,
+                            arguments: ParamsEnum.crew,
+                          );
                         }),
                     ButtonMenuWidget(
                         icon: Icons.school_outlined,
                         title: 'Alunos',
                         ontap: () {
-                          Navigator.of(context).pushNamed(studentListPage);
+                          Navigator.of(context).pushNamed(studentListPage,
+                              arguments: ParamsEnum.student);
                         }),
                     ButtonMenuWidget(
                         icon: Icons.dashboard,

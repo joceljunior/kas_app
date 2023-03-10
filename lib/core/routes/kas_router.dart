@@ -8,10 +8,12 @@ import 'package:kas_app/app/view/crew/crew_create_page.dart';
 import 'package:kas_app/app/view/crew/crew_list_page.dart';
 import 'package:kas_app/app/view/home/home_page.dart';
 import 'package:kas_app/app/view/login/login_page.dart';
+import 'package:kas_app/app/view/register/register_create_page.dart';
 import 'package:kas_app/app/view/splash/splash_page.dart';
 import 'package:kas_app/app/view/student/student_create_page.dart';
 import 'package:kas_app/app/view/student/student_list_page.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';
+import 'package:kas_app/core/utils/params_enum.dart';
 
 import '../constants/routes.dart';
 
@@ -40,10 +42,23 @@ class KasRouter {
             session: session,
           ),
         );
+
       case crewListPage:
+        var data = args as ParamsEnum;
         return MaterialPageRoute(
-          builder: (_) => CrewListPage(),
+          builder: (_) => CrewListPage(
+            typePage: data,
+          ),
         );
+
+      case registerCreatePage:
+        var data = args as int;
+        return MaterialPageRoute(
+          builder: (_) => RegisterCreatePage(
+            idCrew: data,
+          ),
+        );
+
       case crewCreatePage:
         var crew = args == null ? null : args as Crew;
         return MaterialPageRoute(
@@ -51,10 +66,12 @@ class KasRouter {
             crewEdit: crew,
           ),
         );
+
       case studentListPage:
         return MaterialPageRoute(
           builder: (_) => StudentListPage(),
         );
+
       case studentCreatePage:
         var student = args == null ? null : args as Student;
         return MaterialPageRoute(

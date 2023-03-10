@@ -12,7 +12,7 @@ class StudentRpository implements IStudentRepository {
   Future<bool> deleteStudent({required int id}) async {
     try {
       var url = studentDeleteUrl + id.toString();
-      var result = await httpService.delete(url);
+      await httpService.delete(url);
       return true;
     } on DioError catch (e) {
       var message = e.response!.data['message'];
@@ -62,6 +62,21 @@ class StudentRpository implements IStudentRepository {
     } on DioError catch (e) {
       var message = e.response!.data['message'];
       throw CrewError(message: message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<List<Student>> getStudentsByCrew({required int idCrew}) async {
+    try {
+      var url = studentsByCrewGetUrl + idCrew.toString();
+      var result = await httpService.get(url);
+      var obj = (result.data as List).map((e) => Student.fromJson(e)).toList();
+      return obj;
+    } on DioError catch (e) {
+      var message = e.response!.data['message'];
+      throw StudentError(message: message);
     } catch (e) {
       throw Exception();
     }

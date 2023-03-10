@@ -53,4 +53,19 @@ class StudentController implements IStudentController {
       throw Exception();
     }
   }
+
+  @override
+  Future<List<Student>> getStudentsByCrew({required int idCrew}) async {
+    try {
+      var result = await repository.getStudentsByCrew(idCrew: idCrew);
+      if (result.isEmpty) {
+        throw StudentError(message: "Esta turma não tem alunos cadastrados");
+      }
+      return result;
+    } on StudentError catch (e) {
+      throw StudentError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

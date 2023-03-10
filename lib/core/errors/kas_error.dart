@@ -14,6 +14,13 @@ class CrewError extends KasError {
   });
 }
 
+class RegisterError extends KasError {
+  final String message;
+  RegisterError({
+    required this.message,
+  });
+}
+
 class StudentError extends KasError {
   final String message;
   StudentError({

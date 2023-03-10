@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
+  final int? maxLines;
   final String hintText;
   final TextEditingController controller;
   final TextInputType? keyboardType;
@@ -11,6 +12,7 @@ class TextFormFieldWidget extends StatelessWidget {
     required this.controller,
     this.keyboardType,
     this.obscureText,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,7 @@ class TextFormFieldWidget extends StatelessWidget {
       padding: EdgeInsets.all(size.height * 0.006),
       child: TextFormField(
         controller: controller,
+        maxLines: maxLines,
         obscureText: obscureText != null ? obscureText! : false,
         keyboardType: keyboardType,
         decoration: InputDecoration(
