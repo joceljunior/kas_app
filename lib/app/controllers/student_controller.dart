@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_student_controller.dart';
-import 'package:kas_app/app/models/interfaces/i_student_repository.dart';
+import 'package:kas_app/app/repositories/interfaces/i_student_repository.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 

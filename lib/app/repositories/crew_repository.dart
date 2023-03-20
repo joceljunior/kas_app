@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/models/crew.dart';
-import 'package:kas_app/app/models/interfaces/i_crew_repository.dart';
+import 'package:kas_app/app/repositories/interfaces/i_crew_repository.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 
-import '../../../core/constants/urls.dart';
+import '../../core/constants/urls.dart';
 
 class CrewRepository implements ICrewRepository {
   final Dio httpService = GetIt.instance<Dio>();

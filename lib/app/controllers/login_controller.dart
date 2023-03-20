@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import 'package:kas_app/app/controllers/interfaces/i_login_controller.dart';
-import 'package:kas_app/app/models/interfaces/i_login_repository.dart';
+import 'package:kas_app/app/repositories/interfaces/i_login_repository.dart';
 import 'package:kas_app/app/models/user.dart';
 import 'package:kas_app/core/database/boxes/session.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';

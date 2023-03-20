@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kas_app/app/models/interfaces/i_student_repository.dart';
+import 'package:kas_app/app/repositories/interfaces/i_student_repository.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/core/constants/urls.dart';
 
-import '../../../core/errors/kas_error.dart';
+import '../../core/errors/kas_error.dart';
 
 class StudentRpository implements IStudentRepository {
   final Dio httpService = GetIt.instance<Dio>();

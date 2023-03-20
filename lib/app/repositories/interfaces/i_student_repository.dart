@@ -1,4 +1,4 @@
-import '../student.dart';
+import '../../models/student.dart';
 
 abstract class IStudentRepository {
   Future<List<Student>> getStudents();

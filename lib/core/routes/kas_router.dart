@@ -9,6 +9,7 @@ import 'package:kas_app/app/view/crew/crew_list_page.dart';
 import 'package:kas_app/app/view/home/home_page.dart';
 import 'package:kas_app/app/view/login/login_page.dart';
 import 'package:kas_app/app/view/register/register_create_page.dart';
+import 'package:kas_app/app/view/register/register_list_page.dart';
 import 'package:kas_app/app/view/splash/splash_page.dart';
 import 'package:kas_app/app/view/student/student_create_page.dart';
 import 'package:kas_app/app/view/student/student_list_page.dart';
@@ -48,6 +49,14 @@ class KasRouter {
         return MaterialPageRoute(
           builder: (_) => CrewListPage(
             typePage: data,
+          ),
+        );
+
+      case registerListPage:
+        var data = args as int;
+        return MaterialPageRoute(
+          builder: (_) => RegisterListPage(
+            idCrew: data,
           ),
         );
 

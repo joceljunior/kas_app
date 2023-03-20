@@ -90,7 +90,7 @@ class _CrewListPageState extends State<CrewListPage> {
                     if (widget.typePage == ParamsEnum.register) {
                       await Navigator.of(context)
                           .pushNamed(
-                        registerCreatePage,
+                        registerListPage,
                         arguments: crew.id,
                       )
                           .then((value) {

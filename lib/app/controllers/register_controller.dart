@@ -1,16 +1,31 @@
+import "package:collection/collection.dart";
 import 'package:get_it/get_it.dart';
+
 import 'package:kas_app/app/controllers/interfaces/i_register_controller.dart';
-import 'package:kas_app/app/models/interfaces/i_register_repository.dart';
 import 'package:kas_app/app/models/register.dart';
+import 'package:kas_app/app/models/register_crew.dart';
 import 'package:kas_app/app/models/student.dart';
+import 'package:kas_app/app/repositories/interfaces/i_register_repository.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
 
 class RegisterController implements IRegisterController {
   final IRegisterRepository repository = GetIt.I<IRegisterRepository>();
   @override
-  Future<List<Register>> getRegisterByCrew({required int idCrew}) {
-    // TODO: implement getRegisterByCrew
-    throw UnimplementedError();
+  Future<List<RegisterCrew>> getRegisterByCrew({required int idCrew}) async {
+    try {
+      List<RegisterCrew> registers = [];
+      var result = await repository.getRegisterByCrew(idCrew: idCrew);
+      var group = groupBy(result, (Register reg) => reg.dateCreate);
+      var list = group.forEach((key, value) {
+        var i = RegisterCrew(date: key, registers: value);
+        registers.add(i);
+      });
+      return registers;
+    } on StudentError catch (e) {
+      throw RegisterError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
@@ -36,5 +51,17 @@ class RegisterController implements IRegisterController {
     } catch (e) {
       throw Exception();
     }
+  }
+
+  @override
+  Future<bool> deleteCrew({required int idRegister}) {
+    // TODO: implement deleteCrew
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> updateCrew({required Register registerEdit}) {
+    // TODO: implement updateCrew
+    throw UnimplementedError();
   }
 }
