@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kas_app/app/controllers/interfaces/i_register_controller.dart';
-import 'package:kas_app/app/controllers/interfaces/i_student_controller.dart';
-import 'package:kas_app/app/models/register_crew.dart';
-import 'package:kas_app/app/models/student.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/errors/kas_error.dart';
-import '../../../models/register.dart';
+import '../../../controllers/interfaces/i_register_controller.dart';
+import '../../../models/register_crew.dart';
 
 part 'register_list_store.g.dart';
 
@@ -17,7 +13,6 @@ class RegisterListStore = _RegisterListStore with _$RegisterListStore;
 // The store-class
 abstract class _RegisterListStore with Store {
   final IRegisterController controller = GetIt.I<IRegisterController>();
-  DateTime? dateReference;
 
   @observable
   bool loading = false;
@@ -36,7 +31,7 @@ abstract class _RegisterListStore with Store {
       var result = await controller.getRegisterByCrew(idCrew: idCrew);
       registers = result;
       loading = false;
-    } on StudentError catch (e) {
+    } on RegisterError catch (e) {
       loading = false;
       messageError = e.message;
     } catch (e) {

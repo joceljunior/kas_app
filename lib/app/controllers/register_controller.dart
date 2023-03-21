@@ -15,13 +15,21 @@ class RegisterController implements IRegisterController {
     try {
       List<RegisterCrew> registers = [];
       var result = await repository.getRegisterByCrew(idCrew: idCrew);
+
+      if (result.isEmpty) {
+        throw RegisterError(message: "Não consta registro para esta turma!");
+      }
       var group = groupBy(result, (Register reg) => reg.dateCreate);
       var list = group.forEach((key, value) {
-        var i = RegisterCrew(date: key, registers: value);
+        var i = RegisterCrew(
+          date: key,
+          registers: value,
+          idCrew: value.first.crewId,
+        );
         registers.add(i);
       });
       return registers;
-    } on StudentError catch (e) {
+    } on RegisterError catch (e) {
       throw RegisterError(message: e.message);
     } catch (e) {
       throw Exception();

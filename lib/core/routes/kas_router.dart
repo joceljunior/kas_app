@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/models/crew.dart';
+import 'package:kas_app/app/models/register_crew.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/app/view/crew/crew_create_page.dart';
 import 'package:kas_app/app/view/crew/crew_list_page.dart';
@@ -61,10 +62,10 @@ class KasRouter {
         );
 
       case registerCreatePage:
-        var data = args as int;
+        var register = args as RegisterCrew;
         return MaterialPageRoute(
           builder: (_) => RegisterCreatePage(
-            idCrew: data,
+            registerCrew: register,
           ),
         );
 

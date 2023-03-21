@@ -25,6 +25,22 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
     });
   }
 
+  late final _$isEditAtom =
+      Atom(name: '_RegisterCreateStore.isEdit', context: context);
+
+  @override
+  bool get isEdit {
+    _$isEditAtom.reportRead();
+    return super.isEdit;
+  }
+
+  @override
+  set isEdit(bool value) {
+    _$isEditAtom.reportWrite(value, super.isEdit, () {
+      super.isEdit = value;
+    });
+  }
+
   late final _$studentsAtom =
       Atom(name: '_RegisterCreateStore.students', context: context);
 
@@ -66,6 +82,15 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
         .run(() => super.getStudents(idCrew: idCrew));
   }
 
+  late final _$getStudentsToEditAsyncAction =
+      AsyncAction('_RegisterCreateStore.getStudentsToEdit', context: context);
+
+  @override
+  Future<void> getStudentsToEdit({required RegisterCrew register}) {
+    return _$getStudentsToEditAsyncAction
+        .run(() => super.getStudentsToEdit(register: register));
+  }
+
   late final _$postRegisterAsyncAction =
       AsyncAction('_RegisterCreateStore.postRegister', context: context);
 
@@ -78,6 +103,7 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
   String toString() {
     return '''
 loading: ${loading},
+isEdit: ${isEdit},
 students: ${students},
 messageError: ${messageError}
     ''';

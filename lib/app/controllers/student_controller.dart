@@ -68,4 +68,23 @@ class StudentController implements IStudentController {
       throw Exception();
     }
   }
+
+  @override
+  Future<List<Student>> getStudentsByRegister(
+      {required DateTime dateRegister, required int idCrew}) async {
+    try {
+      String date =
+          "${dateRegister.year}-${dateRegister.month}-${dateRegister.day}";
+      var result = await repository.getStudentsByRegister(
+          dateRegister: date, idCrew: idCrew);
+      if (result.isEmpty) {
+        throw StudentError(message: "Esta turma não tem alunos cadastrados");
+      }
+      return result;
+    } on StudentError catch (e) {
+      throw StudentError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

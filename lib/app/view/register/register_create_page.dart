@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/app/models/register_crew.dart';
 import 'package:kas_app/app/view/register/store/register_create_store.dart';
 import 'package:kas_app/app/view/register/widgets/student_register_item_widget.dart';
 import 'package:kas_app/core/widgets/button_widget.dart';
@@ -7,10 +8,10 @@ import 'package:kas_app/core/widgets/button_widget.dart';
 import '../../../core/widgets/textformfield_widget.dart';
 
 class RegisterCreatePage extends StatefulWidget {
-  final int idCrew;
+  final RegisterCrew registerCrew;
   const RegisterCreatePage({
     super.key,
-    required this.idCrew,
+    required this.registerCrew,
   });
 
   @override
@@ -22,7 +23,9 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
 
   @override
   void initState() {
-    store.getStudents(idCrew: widget.idCrew);
+    widget.registerCrew.registers.isNotEmpty
+        ? store.getStudentsToEdit(register: widget.registerCrew)
+        : store.getStudents(idCrew: widget.registerCrew.idCrew);
 
     super.initState();
   }

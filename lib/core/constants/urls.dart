@@ -3,6 +3,7 @@ const String loginPostUrl = '${baseUrl}login';
 const String crewGetUrl = '${baseUrl}getCrews';
 const String studentGetUrl = '${baseUrl}getStudents';
 const String studentsByCrewGetUrl = '${baseUrl}getStudentsByCrew/';
+const String studentsByRegisterGetUrl = '${baseUrl}getStudentsByRegister/';
 const String studentDeleteUrl = '${baseUrl}deleteStudent/';
 const String crewPostUrl = '${baseUrl}createCrew';
 const String studentPostUrl = '${baseUrl}createStudent';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/app/models/register_crew.dart';
+import 'package:kas_app/core/constants/routes.dart';
 
 import 'store/register_list_store.dart';
 import 'widgets/register_crew_item_widget.dart';
@@ -43,11 +45,15 @@ class _RegisterListPageState extends State<RegisterListPage> {
             child: FloatingActionButton(
               backgroundColor: Colors.blue[200],
               onPressed: () async {
-                // await Navigator.of(context)
-                //     .pushNamed(studentCreatePage)
-                //     .then((value) {
-                //   store.getStudents();
-                // });
+                await Navigator.of(context)
+                    .pushNamed(registerCreatePage,
+                        arguments: RegisterCrew(
+                            idCrew: widget.idCrew,
+                            date: DateTime(0000, 00, 00),
+                            registers: []))
+                    .then((value) {
+                  store.getRegister(idCrew: widget.idCrew);
+                });
               },
               child: Icon(
                 Icons.add,
@@ -76,6 +82,13 @@ class _RegisterListPageState extends State<RegisterListPage> {
                 var register = store.registers[index];
                 return RegisterCrewItemWidget(
                   register: register,
+                  ontapEdit: () async {
+                    await Navigator.of(context)
+                        .pushNamed(registerCreatePage, arguments: register)
+                        .then((value) {
+                      store.getRegister(idCrew: widget.idCrew);
+                    });
+                  },
                 );
               },
             ),

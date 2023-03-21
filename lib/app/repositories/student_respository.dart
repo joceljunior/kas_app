@@ -81,4 +81,20 @@ class StudentRpository implements IStudentRepository {
       throw Exception();
     }
   }
+
+  @override
+  Future<List<Student>> getStudentsByRegister(
+      {required String dateRegister, required int idCrew}) async {
+    try {
+      var url = "$studentsByRegisterGetUrl$dateRegister/$idCrew";
+      var result = await httpService.get(url);
+      var obj = (result.data as List).map((e) => Student.fromJson(e)).toList();
+      return obj;
+    } on DioError catch (e) {
+      var message = e.response!.data['message'];
+      throw StudentError(message: message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

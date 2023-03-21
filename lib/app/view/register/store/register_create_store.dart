@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_register_controller.dart';
 import 'package:kas_app/app/controllers/interfaces/i_student_controller.dart';
+import 'package:kas_app/app/models/register_crew.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:mobx/mobx.dart';
 
@@ -14,7 +15,7 @@ class RegisterCreateStore = _RegisterCreateStore with _$RegisterCreateStore;
 
 // The store-class
 abstract class _RegisterCreateStore with Store {
-  final IStudentController controller = GetIt.I<IStudentController>();
+  final IStudentController controllerStudent = GetIt.I<IStudentController>();
   final IRegisterController controllerRegister = GetIt.I<IRegisterController>();
 
   final TextEditingController justificationController = TextEditingController();
@@ -23,6 +24,9 @@ abstract class _RegisterCreateStore with Store {
 
   @observable
   bool loading = false;
+
+  @observable
+  bool isEdit = false;
 
   @observable
   List<Student> students = [];
@@ -35,7 +39,32 @@ abstract class _RegisterCreateStore with Store {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));
-      var result = await controller.getStudentsByCrew(idCrew: idCrew);
+      var result = await controllerStudent.getStudentsByCrew(idCrew: idCrew);
+      students = result;
+      loading = false;
+    } on StudentError catch (e) {
+      loading = false;
+      messageError = e.message;
+    } catch (e) {
+      loading = false;
+      messageError = "Ocorreu um erro desconhecido";
+    }
+  }
+
+  @action
+  Future<void> getStudentsToEdit({required RegisterCrew register}) async {
+    try {
+      loading = true;
+      isEdit = true;
+      await Future.delayed(Duration(seconds: 1));
+      var result = await controllerStudent.getStudentsByRegister(
+          idCrew: register.registers.first.crewId, dateRegister: register.date);
+      for (var students in result) {
+        var item =
+            register.registers.where((y) => y.studentId == students.id).first;
+        students.isRegister = item.participation;
+        students.justification = item.justification;
+      }
       students = result;
       loading = false;
     } on StudentError catch (e) {
