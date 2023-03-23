@@ -24,11 +24,15 @@ class FormLoginWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextFormFieldWidget(
-              hintText: "Username", controller: usernameController),
+            hintText: "Username",
+            controller: usernameController,
+            maxLines: 1,
+          ),
           TextFormFieldWidget(
               hintText: "Password",
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
+              maxLines: 1,
               obscureText: true),
           buttonLogin
         ],
