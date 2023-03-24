@@ -25,22 +25,6 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
     });
   }
 
-  late final _$isEditAtom =
-      Atom(name: '_RegisterCreateStore.isEdit', context: context);
-
-  @override
-  bool get isEdit {
-    _$isEditAtom.reportRead();
-    return super.isEdit;
-  }
-
-  @override
-  set isEdit(bool value) {
-    _$isEditAtom.reportWrite(value, super.isEdit, () {
-      super.isEdit = value;
-    });
-  }
-
   late final _$studentsAtom =
       Atom(name: '_RegisterCreateStore.students', context: context);
 
@@ -95,15 +79,15 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
       AsyncAction('_RegisterCreateStore.postRegister', context: context);
 
   @override
-  Future<void> postRegister() {
-    return _$postRegisterAsyncAction.run(() => super.postRegister());
+  Future<void> postRegister({required int crewId}) {
+    return _$postRegisterAsyncAction
+        .run(() => super.postRegister(crewId: crewId));
   }
 
   @override
   String toString() {
     return '''
 loading: ${loading},
-isEdit: ${isEdit},
 students: ${students},
 messageError: ${messageError}
     ''';

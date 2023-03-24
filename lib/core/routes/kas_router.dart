@@ -54,10 +54,10 @@ class KasRouter {
         );
 
       case registerListPage:
-        var data = args as int;
+        var crew = args as Crew;
         return MaterialPageRoute(
           builder: (_) => RegisterListPage(
-            idCrew: data,
+            crew: crew,
           ),
         );
 

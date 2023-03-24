@@ -26,10 +26,15 @@ class RegisterRepository implements IRegisterRepository {
   }
 
   @override
-  Future<bool> postRegister({required List<Register> registers}) async {
+  Future<bool> postRegister(
+      {required List<Register> registers, required bool isEdit}) async {
     try {
+      var url = isEdit ? registerPutUrl : registerPostUrl;
       var json = registers.map((i) => i.toJson()).toList().toString();
-      await httpService.post(registerPostUrl, data: json);
+
+      isEdit
+          ? await httpService.put(url, data: json)
+          : await httpService.post(url, data: json);
 
       return true;
     } on DioError catch (e) {
@@ -38,17 +43,5 @@ class RegisterRepository implements IRegisterRepository {
     } catch (e) {
       throw Exception();
     }
-  }
-
-  @override
-  Future<bool> deleteCrew({required int idRegister}) {
-    // TODO: implement deleteCrew
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<bool> updateCrew({required Register registerEdit}) {
-    // TODO: implement updateCrew
-    throw UnimplementedError();
   }
 }

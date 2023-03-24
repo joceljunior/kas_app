@@ -3,12 +3,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/models/register_crew.dart';
 import 'package:kas_app/core/constants/routes.dart';
 
+import '../../models/crew.dart';
 import 'store/register_list_store.dart';
 import 'widgets/register_crew_item_widget.dart';
 
 class RegisterListPage extends StatefulWidget {
-  final int idCrew;
-  const RegisterListPage({super.key, required this.idCrew});
+  final Crew crew;
+  const RegisterListPage({super.key, required this.crew});
 
   @override
   State<RegisterListPage> createState() => _RegisterListPageState();
@@ -18,7 +19,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
   final RegisterListStore store = RegisterListStore();
   @override
   void initState() {
-    store.getRegister(idCrew: widget.idCrew);
+    store.getRegister(idCrew: widget.crew.id!);
 
     super.initState();
   }
@@ -28,9 +29,22 @@ class _RegisterListPageState extends State<RegisterListPage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Chamadas",
-          style: TextStyle(color: Colors.black),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Chamadas",
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              widget.crew.name,
+              style: TextStyle(fontSize: 12, color: Colors.black45),
+            ),
+            Text(
+              widget.crew.key,
+              style: TextStyle(fontSize: 12, color: Colors.black45),
+            ),
+          ],
         ),
         backgroundColor: Color.fromARGB(255, 246, 185, 207),
         elevation: 5,
@@ -48,11 +62,11 @@ class _RegisterListPageState extends State<RegisterListPage> {
                 await Navigator.of(context)
                     .pushNamed(registerCreatePage,
                         arguments: RegisterCrew(
-                            idCrew: widget.idCrew,
+                            idCrew: widget.crew.id!,
                             date: DateTime(0000, 00, 00),
                             registers: []))
                     .then((value) {
-                  store.getRegister(idCrew: widget.idCrew);
+                  store.getRegister(idCrew: widget.crew.id!);
                 });
               },
               child: Icon(
@@ -86,7 +100,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
                     await Navigator.of(context)
                         .pushNamed(registerCreatePage, arguments: register)
                         .then((value) {
-                      store.getRegister(idCrew: widget.idCrew);
+                      store.getRegister(idCrew: widget.crew.id!);
                     });
                   },
                 );

@@ -19,6 +19,7 @@ abstract class _RegisterCreateStore with Store {
   final IRegisterController controllerRegister = GetIt.I<IRegisterController>();
 
   final TextEditingController justificationController = TextEditingController();
+  bool isEdit = false;
   bool register = false;
   DateTime? dateReference;
 
@@ -26,8 +27,6 @@ abstract class _RegisterCreateStore with Store {
   bool loading = false;
 
   @observable
-  bool isEdit = false;
-
   @observable
   List<Student> students = [];
 
@@ -56,6 +55,7 @@ abstract class _RegisterCreateStore with Store {
     try {
       loading = true;
       isEdit = true;
+      dateReference = register.date;
       await Future.delayed(Duration(seconds: 1));
       var result = await controllerStudent.getStudentsByRegister(
           idCrew: register.registers.first.crewId, dateRegister: register.date);
@@ -77,12 +77,16 @@ abstract class _RegisterCreateStore with Store {
   }
 
   @action
-  Future<void> postRegister() async {
+  Future<void> postRegister({required int crewId}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));
       var result = await controllerRegister.postRegister(
-          studentsRegister: students, dateCreate: dateReference!);
+        studentsRegister: students,
+        dateCreate: dateReference!,
+        isEdit: isEdit,
+        crewId: crewId,
+      );
 
       loading = false;
     } on StudentError catch (e) {

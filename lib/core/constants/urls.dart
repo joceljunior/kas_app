@@ -8,6 +8,7 @@ const String studentDeleteUrl = '${baseUrl}deleteStudent/';
 const String crewPostUrl = '${baseUrl}createCrew';
 const String studentPostUrl = '${baseUrl}createStudent';
 const String registerPostUrl = '${baseUrl}createRegister';
+const String registerPutUrl = '${baseUrl}updateRegister';
 const String registerGetUrl = '${baseUrl}getRegister';
 const String studentPuttUrl = '${baseUrl}updateStudent';
 const String crewPuttUrl = '${baseUrl}updateCrew';

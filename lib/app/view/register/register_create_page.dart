@@ -145,12 +145,15 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                       store.dateReference = await showDatePicker(
                         helpText: "SELECIONE A DATA DA CHAMADA",
                         context: context,
-                        initialDate: DateTime.now(),
+                        initialDate: store.isEdit
+                            ? store.dateReference!
+                            : DateTime.now(),
                         firstDate: DateTime(2000, 01, 01),
                         lastDate: DateTime(3000, 31, 12),
                       );
                       if (store.dateReference != null) {
-                        await store.postRegister();
+                        await store.postRegister(
+                            crewId: widget.registerCrew.idCrew);
                         Navigator.of(context).pop();
                       }
                     },

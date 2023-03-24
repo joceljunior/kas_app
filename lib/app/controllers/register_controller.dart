@@ -40,36 +40,27 @@ class RegisterController implements IRegisterController {
   Future<bool> postRegister({
     required List<Student> studentsRegister,
     required DateTime dateCreate,
+    required bool isEdit,
+    required int crewId,
   }) async {
     try {
       List<Register> registers = [];
       studentsRegister.forEach((e) {
         var register = Register(
-            crewId: e.crew.id!,
+            crewId: crewId,
             studentId: e.id!,
             participation: e.isRegister,
             justification: e.justification,
             dateCreate: dateCreate);
         registers.add(register);
       });
-      var result = await repository.postRegister(registers: registers);
+      var result =
+          await repository.postRegister(registers: registers, isEdit: isEdit);
       return result;
     } on RegisterError catch (e) {
       throw RegisterError(message: e.message);
     } catch (e) {
       throw Exception();
     }
-  }
-
-  @override
-  Future<bool> deleteCrew({required int idRegister}) {
-    // TODO: implement deleteCrew
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<bool> updateCrew({required Register registerEdit}) {
-    // TODO: implement updateCrew
-    throw UnimplementedError();
   }
 }

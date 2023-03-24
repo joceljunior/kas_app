@@ -91,7 +91,7 @@ class _CrewListPageState extends State<CrewListPage> {
                       await Navigator.of(context)
                           .pushNamed(
                         registerListPage,
-                        arguments: crew.id,
+                        arguments: crew,
                       )
                           .then((value) {
                         store.getCrews();
