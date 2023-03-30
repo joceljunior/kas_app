@@ -1,4 +1,4 @@
-package com.example.kas_app
+package com.jocel.kas_app
 
 import io.flutter.embedding.android.FlutterActivity
 
