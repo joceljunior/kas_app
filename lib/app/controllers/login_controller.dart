@@ -29,4 +29,15 @@ class LoginController implements ILoginController {
       throw Exception();
     }
   }
+
+  @override
+  Future logout() async {
+    try {
+      await db.deleteStorage("session");
+    } on LoginError catch (e) {
+      throw LoginError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

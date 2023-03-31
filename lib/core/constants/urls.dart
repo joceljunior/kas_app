@@ -1,4 +1,4 @@
-const String baseUrl = 'http://192.168.3.30:3000/';
+const String baseUrl = 'https://kasapi-production.up.railway.app/';
 const String loginPostUrl = '${baseUrl}login';
 const String crewGetUrl = '${baseUrl}getCrews';
 const String studentGetUrl = '${baseUrl}getStudents';

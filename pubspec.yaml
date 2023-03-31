@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -112,7 +112,7 @@ flutter_native_splash:
 
   # Platform specific images can be specified with the following parameters, which will override
   # the respective parameter.  You may specify all, selected, or none of these parameters:
-  color_android: "#F6B9CF"
+  color_android: "#FFFFFF"
   #color_dark_android: "#042a49"
   #color_ios: "#42a5f5"
   #color_dark_ios: "#042a49"
@@ -174,12 +174,12 @@ flutter_native_splash:
   #  - 'ios/Runner/Info-Release.plist'
 
 flutter_icons:
-  image_path: "assets/logo_splash.png"
+  image_path: "assets/icon.png"
   ios: true
   remove_alfha_ios: true
   android: "launcher_icon"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/logo_splash.png"
+  adaptive_icon_foreground: "assets/icon.png"
 
 
 flutter:

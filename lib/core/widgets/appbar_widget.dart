@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kas_app/app/controllers/interfaces/i_login_controller.dart';
 
 import '../constants/assets.dart';
+import '../constants/routes.dart';
 
 class AppBarWidget extends StatelessWidget {
   final String userName;
-  const AppBarWidget({
+  AppBarWidget({
     Key? key,
     required this.userName,
   }) : super(key: key);
+
+  final ILoginController loginOntroller = GetIt.I<ILoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +23,56 @@ class AppBarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            logoSplash,
-            height: size.height * 0.2,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                logoSplash,
+                height: size.height * 0.2,
+              ),
+              FloatingActionButton.small(
+                backgroundColor: Colors.blue[400],
+                onPressed: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          content:
+                              Text('Tem certeza que deseja efetuar logout?'),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await loginOntroller.logout();
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            loginPage, ((route) => false));
+                                  },
+                                  child: Text("Confirma"),
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Cancelar"),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: Icon(
+                  Icons.logout,
+                ),
+              )
+            ],
           ),
           Text(
             userName.toUpperCase(),
