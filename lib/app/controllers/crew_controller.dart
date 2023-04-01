@@ -11,6 +11,10 @@ class CrewController implements ICrewController {
   Future<List<Crew>> getCrews() async {
     try {
       var result = await repository.getCrews();
+
+      if (result.isEmpty) {
+        throw CrewError(message: "Nenhuma turma cadastrada!");
+      }
       return result;
     } on CrewError catch (e) {
       throw CrewError(message: e.message);
@@ -28,6 +32,7 @@ class CrewController implements ICrewController {
       } else {
         result = await repository.postCrew(crew: crew);
       }
+
       return result;
     } on CrewError catch (e) {
       throw CrewError(message: e.message);

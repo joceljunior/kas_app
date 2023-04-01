@@ -22,6 +22,9 @@ class StudentController implements IStudentController {
   Future<List<Student>> getStudents() async {
     try {
       var result = await repository.getStudents();
+      if (result.isEmpty) {
+        throw StudentError(message: "Nenhum aluno cadastrado!");
+      }
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);
