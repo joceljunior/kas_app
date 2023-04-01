@@ -40,4 +40,16 @@ class CrewController implements ICrewController {
       throw Exception();
     }
   }
+
+  @override
+  Future<int> getTotalCrew() async {
+    try {
+      var result = await repository.getTotalCrew();
+      return result;
+    } on CrewError catch (e) {
+      throw CrewError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

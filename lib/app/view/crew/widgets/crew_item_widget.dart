@@ -3,11 +3,15 @@ import '../../../models/crew.dart';
 
 class CrewItemWidget extends StatelessWidget {
   final Crew crew;
+  final bool showTrailing;
+  final Function onTapEditItem;
   final Function onTapItem;
   const CrewItemWidget({
     super.key,
     required this.crew,
+    required this.onTapEditItem,
     required this.onTapItem,
+    required this.showTrailing,
   });
 
   @override
@@ -28,6 +32,11 @@ class CrewItemWidget extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(crew.key),
+            trailing: showTrailing
+                ? GestureDetector(
+                    onTap: () => onTapEditItem(),
+                    child: Icon(Icons.mode_edit_outline_rounded))
+                : null,
           ),
         ),
       ),

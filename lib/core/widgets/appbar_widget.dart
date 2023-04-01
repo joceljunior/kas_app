@@ -7,9 +7,13 @@ import '../constants/routes.dart';
 
 class AppBarWidget extends StatelessWidget {
   final String userName;
+  final String crewTotal;
+  final String studentTotal;
   AppBarWidget({
     Key? key,
     required this.userName,
+    required this.crewTotal,
+    required this.studentTotal,
   }) : super(key: key);
 
   final ILoginController loginOntroller = GetIt.I<ILoginController>();
@@ -87,8 +91,8 @@ class AppBarWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('30 Turmas'),
-                Text('206 Alunos'),
+                Text('$crewTotal Turmas'),
+                Text('$studentTotal Alunos'),
               ],
             ),
           ),

@@ -53,4 +53,18 @@ class CrewRepository implements ICrewRepository {
       throw Exception();
     }
   }
+
+  @override
+  Future<int> getTotalCrew() async {
+    try {
+      var result = await httpService.get(crewTotalGetUrl);
+      var total = result.data;
+      return total;
+    } on DioError catch (e) {
+      var message = e.response!.data['message'];
+      throw CrewError(message: message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

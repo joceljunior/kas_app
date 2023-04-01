@@ -81,11 +81,8 @@ class _CrewListPageState extends State<CrewListPage> {
                   crew: crew,
                   onTapItem: () async {
                     if (widget.typePage == ParamsEnum.crew) {
-                      await Navigator.of(context)
-                          .pushNamed(crewCreatePage, arguments: crew)
-                          .then((value) {
-                        store.getCrews();
-                      });
+                      Navigator.of(context)
+                          .pushNamed(crewStudentsListPage, arguments: crew);
                     }
                     if (widget.typePage == ParamsEnum.register) {
                       await Navigator.of(context)
@@ -93,6 +90,16 @@ class _CrewListPageState extends State<CrewListPage> {
                         registerListPage,
                         arguments: crew,
                       )
+                          .then((value) {
+                        store.getCrews();
+                      });
+                    }
+                  },
+                  showTrailing: widget.typePage == ParamsEnum.crew,
+                  onTapEditItem: () async {
+                    if (widget.typePage == ParamsEnum.crew) {
+                      await Navigator.of(context)
+                          .pushNamed(crewCreatePage, arguments: crew)
                           .then((value) {
                         store.getCrews();
                       });

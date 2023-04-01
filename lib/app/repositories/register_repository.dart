@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/repositories/interfaces/i_register_repository.dart';

@@ -90,4 +90,16 @@ class StudentController implements IStudentController {
       throw Exception();
     }
   }
+
+  @override
+  Future<int> getTotalStudent() async {
+    try {
+      var result = await repository.getTotalStudent();
+      return result;
+    } on StudentError catch (e) {
+      throw StudentError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

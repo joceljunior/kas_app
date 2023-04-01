@@ -81,7 +81,7 @@ abstract class _RegisterCreateStore with Store {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));
-      var result = await controllerRegister.postRegister(
+      await controllerRegister.postRegister(
         studentsRegister: students,
         dateCreate: dateReference!,
         isEdit: isEdit,

@@ -97,4 +97,18 @@ class StudentRpository implements IStudentRepository {
       throw Exception();
     }
   }
+
+  @override
+  Future<int> getTotalStudent() async {
+    try {
+      var result = await httpService.get(studentTotalGetUrl);
+      var total = result.data;
+      return total;
+    } on DioError catch (e) {
+      var message = e.response!.data['message'];
+      throw CrewError(message: message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
 }

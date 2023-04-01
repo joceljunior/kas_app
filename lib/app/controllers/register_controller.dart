@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls, depend_on_referenced_packages
+
 import "package:collection/collection.dart";
 import 'package:get_it/get_it.dart';
 
@@ -20,7 +22,7 @@ class RegisterController implements IRegisterController {
         throw RegisterError(message: "Não consta registro para esta turma!");
       }
       var group = groupBy(result, (Register reg) => reg.dateCreate);
-      var list = group.forEach((key, value) {
+      group.forEach((key, value) {
         var i = RegisterCrew(
           date: key,
           registers: value,
