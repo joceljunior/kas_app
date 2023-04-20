@@ -12,7 +12,6 @@ import 'package:kas_app/app/view/home/home_page.dart';
 import 'package:kas_app/app/view/login/login_page.dart';
 import 'package:kas_app/app/view/register/register_create_page.dart';
 import 'package:kas_app/app/view/register/register_list_page.dart';
-import 'package:kas_app/app/view/splash/splash_page.dart';
 import 'package:kas_app/app/view/student/student_create_page.dart';
 import 'package:kas_app/app/view/student/student_list_page.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';
@@ -30,12 +29,7 @@ class KasRouter {
         var session = db.getStorage("session");
         return MaterialPageRoute(
           builder: (_) =>
-              session == null ? SplashPage() : HomePage(session: session),
-        );
-
-      case loginPage:
-        return MaterialPageRoute(
-          builder: (_) => LoginPage(),
+              session == null ? LoginPage() : HomePage(session: session),
         );
 
       case homePage:
@@ -100,7 +94,7 @@ class KasRouter {
       default:
         // pagina de erro
         return MaterialPageRoute(
-          builder: (context) => SplashPage(),
+          builder: (context) => LoginPage(),
         );
     }
   }
