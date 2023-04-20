@@ -46,6 +46,8 @@ flutter_native_splash:
 flutter_icons:
   image_path: "assets/icon.png"
   ios: true
+  web: 
+    generate: true
   remove_alfha_ios: true
   android: "launcher_icon"
   adaptive_icon_background: "#FFFFFF"
