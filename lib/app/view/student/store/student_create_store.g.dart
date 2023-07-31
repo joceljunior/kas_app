@@ -102,9 +102,9 @@ mixin _$StudentCreateStore on _StudentCreateStore, Store {
       AsyncAction('_StudentCreateStore.getCrews', context: context);
 
   @override
-  Future<void> getCrews({Student? studentEdit}) {
+  Future<void> getCrews({Student? studentEdit, int? crewId}) {
     return _$getCrewsAsyncAction
-        .run(() => super.getCrews(studentEdit: studentEdit));
+        .run(() => super.getCrews(studentEdit: studentEdit, crewId: crewId));
   }
 
   @override

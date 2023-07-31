@@ -8,9 +8,11 @@ import '../../../core/widgets/textformfield_widget.dart';
 
 class StudentCreatePage extends StatefulWidget {
   final Student? studentEdit;
+  final int? crewId;
   const StudentCreatePage({
     super.key,
     this.studentEdit,
+    this.crewId,
   });
 
   @override
@@ -22,7 +24,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
 
   @override
   void initState() {
-    store.getCrews(studentEdit: widget.studentEdit);
+    store.getCrews(studentEdit: widget.studentEdit, crewId: widget.crewId);
 
     if (widget.studentEdit != null) {
       store.isEdit = true;
@@ -48,203 +50,220 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 246, 185, 207),
-        elevation: 5,
-        leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
-        ),
-        title: Text(
-          "Cadastro de Turma",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Observer(builder: (_) {
-        if (store.loading) {
-          return Center(child: CircularProgressIndicator());
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.crewId != null) {
+          return false;
         } else {
-          return SingleChildScrollView(
-            child: Container(
-              color: Colors.white10,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      TextFormFieldWidget(
-                          hintText: "Nome",
-                          controller: store.nameStudentController),
-                      TextFormFieldWidget(
-                          hintText: "Mãe", controller: store.motherController),
-                      TextFormFieldWidget(
-                          hintText: "Pai", controller: store.fatherController),
-                      TextFormFieldWidget(
-                          hintText: "Endereço",
-                          controller: store.addressController),
-                      TextFormFieldWidget(
-                          hintText: "Telefone",
-                          controller: store.telephoneController),
-                      TextFormFieldWidget(
-                          hintText: "Escola",
-                          controller: store.schoolNameController),
-                      TextFormFieldWidget(
-                          hintText: "Ano Escolar",
-                          controller: store.schoolGradeController),
-                      TextFormFieldWidget(
-                          hintText: "Possui alguma Alergia?",
-                          controller: store.allergyController),
-                      Padding(
-                        padding: EdgeInsets.all(size.height * 0.008),
-                        child: SizedBox(
-                          width: size.width,
-                          child: DropdownButton<Crew>(
-                            hint: Text("Selecione uma Turma"),
-                            value: store.crewInitial,
-                            items: store.itensDropDown,
-                            onChanged: (newValue) {
-                              if (newValue != null) {
-                                setState(() {
-                                  store.crewInitial = newValue;
-                                });
-                              }
-                            },
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 246, 185, 207),
+          elevation: 5,
+          automaticallyImplyLeading: false,
+          leading: widget.crewId == null
+              ? GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Icon(Icons.arrow_back_ios_new_rounded,
+                      color: Colors.black),
+                )
+              : null,
+          title: Text(
+            "Cadastro Aluno",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        body: Observer(builder: (_) {
+          if (store.loading) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return SingleChildScrollView(
+              child: Container(
+                color: Colors.white10,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        TextFormFieldWidget(
+                            hintText: "Nome",
+                            controller: store.nameStudentController),
+                        TextFormFieldWidget(
+                            hintText: "Mãe",
+                            controller: store.motherController),
+                        TextFormFieldWidget(
+                            hintText: "Pai",
+                            controller: store.fatherController),
+                        TextFormFieldWidget(
+                            hintText: "Endereço",
+                            controller: store.addressController),
+                        TextFormFieldWidget(
+                            hintText: "Telefone",
+                            controller: store.telephoneController),
+                        TextFormFieldWidget(
+                            hintText: "Escola",
+                            controller: store.schoolNameController),
+                        TextFormFieldWidget(
+                            hintText: "Ano Escolar",
+                            controller: store.schoolGradeController),
+                        TextFormFieldWidget(
+                            hintText: "Possui alguma Alergia?",
+                            controller: store.allergyController),
+                        Padding(
+                          padding: EdgeInsets.all(size.height * 0.008),
+                          child: SizedBox(
+                            width: size.width,
+                            child: DropdownButton<Crew>(
+                              hint: Text("Selecione uma Turma"),
+                              value: store.crewInitial,
+                              items: store.itensDropDown,
+                              onChanged: widget.crewId != null
+                                  ? null
+                                  : (newValue) {
+                                      if (newValue != null) {
+                                        setState(() {
+                                          store.crewInitial = newValue;
+                                        });
+                                      }
+                                    },
+                            ),
                           ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: store.useOfImageController,
-                              onChanged: (value) {
-                                setState(() {
-                                  store.useOfImageController = value!;
-                                });
-                              }),
-                          Text("Autorizo o uso de imagem")
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: store.activeController,
-                              onChanged: (value) {
-                                setState(() {
-                                  store.activeController = value!;
-                                });
-                              }),
-                          Text("Ativo")
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: store.useOfImageController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    store.useOfImageController = value!;
+                                  });
+                                }),
+                            Text("Autorizo o uso de imagem")
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: store.activeController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    store.activeController = value!;
+                                  });
+                                }),
+                            Text("Ativo")
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                                color: Colors.blue,
+                                icon: Icon(Icons.calendar_month),
+                                onPressed: () async {
+                                  var selectDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1990, 1, 1),
+                                    lastDate: DateTime(2090, 1, 1),
+                                  );
+                                  if (selectDate != null) {
+                                    setState(() {
+                                      store.bithdayController = selectDate;
+                                    });
+                                  }
+                                }),
+                            Text("Aniversário"),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Text(
+                                "${store.bithdayController.day}/${store.bithdayController.month}/${store.bithdayController.year}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
                               color: Colors.blue,
                               icon: Icon(Icons.calendar_month),
                               onPressed: () async {
                                 var selectDate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(1990, 1, 1),
+                                  firstDate: DateTime(2000, 1, 1),
                                   lastDate: DateTime(2090, 1, 1),
                                 );
                                 if (selectDate != null) {
                                   setState(() {
-                                    store.bithdayController = selectDate;
+                                    store.dateCreateController = selectDate;
                                   });
                                 }
-                              }),
-                          Text("Aniversário"),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-                            child: Text(
-                              "${store.bithdayController.day}/${store.bithdayController.month}/${store.bithdayController.year}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                              },
+                            ),
+                            Text("Data Criação"),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Text(
+                                "${store.dateCreateController.day}/${store.dateCreateController.month}/${store.dateCreateController.year}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            color: Colors.blue,
-                            icon: Icon(Icons.calendar_month),
-                            onPressed: () async {
-                              var selectDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000, 1, 1),
-                                lastDate: DateTime(2090, 1, 1),
-                              );
-                              if (selectDate != null) {
-                                setState(() {
-                                  store.dateCreateController = selectDate;
-                                });
-                              }
-                            },
-                          ),
-                          Text("Data Criação"),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-                            child: Text(
-                              "${store.dateCreateController.day}/${store.dateCreateController.month}/${store.dateCreateController.year}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(size.height * 0.01),
-                    child: ButtonWidget(
-                      textButton: "Salvar",
-                      width: size.width,
-                      height: size.height * 0.08,
-                      paddingVertical: 0,
-                      click: () async {
-                        var student = Student(
-                            id: store.isEdit ? widget.studentEdit!.id : null,
-                            active: store.activeController,
-                            address: store.addressController.text,
-                            allergy: store.allergyController.text,
-                            birthday: store.bithdayController,
-                            crew: store.crewInitial!,
-                            dateCreate: store.dateCreateController,
-                            father: store.fatherController.text,
-                            mother: store.motherController.text,
-                            name: store.nameStudentController.text,
-                            schoolName: store.schoolNameController.text,
-                            telephone: store.telephoneController.text,
-                            useOfImage: store.useOfImageController,
-                            schoolGrade: store.schoolGradeController.text);
-
-                        await store.createStudent(
-                          isEdit: store.isEdit,
-                          student: student,
-                        );
-
-                        if (store.success) {
-                          Navigator.of(context).pop();
-                        }
-                      },
+                          ],
+                        )
+                      ],
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.all(size.height * 0.01),
+                      child: ButtonWidget(
+                        textButton: "Salvar",
+                        width: size.width,
+                        height: size.height * 0.08,
+                        paddingVertical: 0,
+                        click: () async {
+                          var student = Student(
+                              id: store.isEdit ? widget.studentEdit!.id : null,
+                              active: store.activeController,
+                              address: store.addressController.text,
+                              allergy: store.allergyController.text,
+                              birthday: store.bithdayController,
+                              crew: store.crewInitial!,
+                              dateCreate: store.dateCreateController,
+                              father: store.fatherController.text,
+                              mother: store.motherController.text,
+                              name: store.nameStudentController.text,
+                              schoolName: store.schoolNameController.text,
+                              telephone: store.telephoneController.text,
+                              useOfImage: store.useOfImageController,
+                              schoolGrade: store.schoolGradeController.text);
+
+                          await store.createStudent(
+                            isEdit: store.isEdit,
+                            student: student,
+                          );
+
+                          if (store.success) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }
-      }),
+            );
+          }
+        }),
+      ),
     );
   }
 }

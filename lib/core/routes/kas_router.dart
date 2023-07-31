@@ -93,8 +93,15 @@ class KasRouter {
         );
       default:
         // pagina de erro
+        String url = settings.name == null ? "" : settings.name!;
+        var student = args == null ? null : args as Student;
+        var list = url.split('/');
+        var crewId = list.length > 2 ? int.parse(list[2]) : null;
         return MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (_) => StudentCreatePage(
+            studentEdit: student,
+            crewId: crewId,
+          ),
         );
     }
   }

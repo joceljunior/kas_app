@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/core/constants/routes.dart';
 
 import '../../models/crew.dart';
 import 'store/crew_students_list_store.dart';

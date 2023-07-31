@@ -71,7 +71,7 @@ abstract class _StudentCreateStore with Store {
   }
 
   @action
-  Future<void> getCrews({Student? studentEdit}) async {
+  Future<void> getCrews({Student? studentEdit, int? crewId}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));
@@ -86,6 +86,9 @@ abstract class _StudentCreateStore with Store {
       if (studentEdit != null) {
         crewInitial =
             crews.firstWhere((element) => element.id == studentEdit.crew.id);
+      }
+      if (crewId != null) {
+        crewInitial = crews.firstWhere((element) => element.id == crewId);
       }
       loading = false;
     } on CrewError catch (e) {
