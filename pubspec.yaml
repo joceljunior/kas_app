@@ -35,23 +35,19 @@ dev_dependencies:
   hive_generator: ^1.1.0
 
 flutter_native_splash:
-  color: "#F6B9CF"
-  background_image: "assets/logo.png"
-  android: true
-  ios: true
+  color: "#FFFFFF" #backgound color
+  image: assets/splash_web.png
   web: true
-  color_android: "#FFFFFF" 
 
-
-flutter_icons:
-  image_path: "assets/icon.png"
-  ios: true
-  web: 
-    generate: true
-  remove_alfha_ios: true
-  android: "launcher_icon"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon.png"
+# flutter_icons:
+#   image_path: "assets/icon.png"
+#   ios: true
+#   web: 
+#     generate: true
+#   remove_alfha_ios: true
+#   android: "launcher_icon"
+#   adaptive_icon_background: "#FFFFFF"
+#   adaptive_icon_foreground: "assets/icon.png"
 
 
 flutter:
