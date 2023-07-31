@@ -61,7 +61,7 @@ class CrewItemWidget extends StatelessWidget {
 
   void abrirWhatsApp(String message) async {
     var whatsappUrl =
-        "https://web.whatsapp.com/send?text=${Uri.encodeComponent(message)}";
+        "https://whatsapp.com/send?text=${Uri.encodeComponent(message)}";
 
     if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
       await launchUrl(Uri.parse(whatsappUrl));
