@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kas_app/core/constants/routes.dart';
 
 import '../../core/routes/kas_router.dart';
 
@@ -14,7 +13,7 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color.fromARGB(255, 236, 159, 186),
       ),
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
       onGenerateRoute: KasRouter().generateRoute,
     );
   }
