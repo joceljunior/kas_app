@@ -11,18 +11,6 @@ class BackgoundBaseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: size,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 236, 159, 186),
-              Colors.white,
-            ],
-          ),
-        ),
-        child: child);
+    return Container(color: Color(0xFFF5F4FC), height: size, child: child);
   }
 }

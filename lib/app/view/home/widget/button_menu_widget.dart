@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 
 class ButtonMenuWidget extends StatelessWidget {
-  final IconData icon;
+  final String image;
   final String title;
   final Function ontap;
   const ButtonMenuWidget(
       {super.key,
-      required this.icon,
+      required this.image,
       required this.title,
       required this.ontap});
 
@@ -19,30 +19,25 @@ class ButtonMenuWidget extends StatelessWidget {
       onTap: () => ontap(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue[200]!),
           color: Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        height: 130,
-        width: 140,
+        height: size.height * 0.25,
+        width: size.width * 0.4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Icon(
-                icon,
-                size: 50,
-                color: Colors.blue[400]!,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Opacity(opacity: 0.6, child: Image.asset(image)),
             ),
             Text(
               title.toUpperCase(),
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 93, 124, 150)),
             ),
           ],
         ),

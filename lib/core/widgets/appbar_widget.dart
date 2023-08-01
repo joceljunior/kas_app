@@ -7,13 +7,9 @@ import '../constants/routes.dart';
 
 class AppBarWidget extends StatelessWidget {
   final String userName;
-  final String crewTotal;
-  final String studentTotal;
   AppBarWidget({
     Key? key,
     required this.userName,
-    required this.crewTotal,
-    required this.studentTotal,
   }) : super(key: key);
 
   final ILoginController loginOntroller = GetIt.I<ILoginController>();
@@ -22,81 +18,106 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.all(size.height * 0.03),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                logoSplash,
-                height: size.height * 0.2,
-              ),
-              FloatingActionButton.small(
-                backgroundColor: Colors.blue[400],
-                onPressed: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (_) {
-                        return AlertDialog(
-                          content:
-                              Text('Tem certeza que deseja efetuar logout?'),
-                          actions: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    await loginOntroller.logout();
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(
-                                            loginPage, ((route) => false));
-                                  },
-                                  child: Text("Confirma"),
-                                ),
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.red)),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text("Cancelar"),
-                                ),
-                              ],
-                            )
-                          ],
-                        );
-                      });
-                },
-                child: Icon(
-                  Icons.logout,
-                ),
-              )
+      padding: EdgeInsets.all(size.height * 0.003),
+      child: Container(
+        padding: EdgeInsets.all(size.height * 0.02),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                  'assets/dancing_ballet.png'), // Substitua pela localização da sua imagem
+              fit: BoxFit.cover,
+              opacity: 0.1),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30.0),
+            bottomRight: Radius.circular(30.0),
+          ),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFF0B3C8),
+              Colors.pink[50]!,
             ],
           ),
-          Text(
-            userName.toUpperCase(),
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.2, vertical: size.height * 0.04),
-            child: Row(
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('$crewTotal Turmas'),
-                Text('$studentTotal Alunos'),
+                Image.asset(
+                  logoSplash,
+                  height: size.height * 0.2,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            content:
+                                Text('Tem certeza que deseja efetuar logout?'),
+                            actions: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await loginOntroller.logout();
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              loginPage, ((route) => false));
+                                    },
+                                    child: Text("Confirma"),
+                                  ),
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.red)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Cancelar"),
+                                  ),
+                                ],
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  child: Icon(
+                    color: Color.fromARGB(255, 227, 130, 130),
+                    Icons.logout_rounded,
+                    size: size.height * 0.04,
+                  ),
+                )
               ],
             ),
-          ),
-        ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Olá",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  userName.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
