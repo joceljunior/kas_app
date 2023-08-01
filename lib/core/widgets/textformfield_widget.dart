@@ -6,13 +6,15 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final bool? obscureText;
+  final String? Function(String value)? validator;
   const TextFormFieldWidget({
     Key? key,
+    this.maxLines,
     required this.hintText,
     required this.controller,
     this.keyboardType,
     this.obscureText,
-    this.maxLines,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class TextFormFieldWidget extends StatelessWidget {
           hintText: hintText,
           fillColor: Colors.white70,
         ),
+        validator: validator as String? Function(String?),
       ),
     );
   }

@@ -52,12 +52,15 @@ class _CrewCreatePageState extends State<CrewCreatePage> {
               Column(
                 children: [
                   TextFormFieldWidget(
-                      hintText: "Nome da Turma",
-                      controller: store.nameCrewController),
+                    hintText: "Nome da Turma",
+                    controller: store.nameCrewController,
+                    validator: (String? value) => value,
+                  ),
                   TextFormFieldWidget(
                     hintText: "Identificador",
                     controller: store.idCrewController,
                     keyboardType: TextInputType.visiblePassword,
+                    validator: (String? value) => value,
                   ),
                 ],
               ),

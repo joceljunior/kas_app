@@ -1,5 +1,6 @@
 const String initialRoute = '/';
 const String homePage = '/home';
+const String createStudentSuccess = '/createSuccess';
 const String crewListPage = '/crewListPage';
 const String crewCreatePage = '/crewCreatePage';
 const String registerCreatePage = '/registerCreatePage';

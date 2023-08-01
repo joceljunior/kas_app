@@ -27,13 +27,20 @@ class FormLoginWidget extends StatelessWidget {
             hintText: "Username",
             controller: usernameController,
             maxLines: 1,
+            validator: (String? value) {
+              return value;
+            },
           ),
           TextFormFieldWidget(
-              hintText: "Password",
-              controller: passwordController,
-              keyboardType: TextInputType.visiblePassword,
-              maxLines: 1,
-              obscureText: true),
+            hintText: "Password",
+            controller: passwordController,
+            keyboardType: TextInputType.visiblePassword,
+            maxLines: 1,
+            obscureText: true,
+            validator: (String? value) {
+              return value;
+            },
+          ),
           buttonLogin
         ],
       ),

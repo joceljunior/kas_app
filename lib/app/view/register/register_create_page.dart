@@ -92,6 +92,7 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                                       hintText: 'Adicione uma justificativa',
                                       controller: store.justificationController,
                                       maxLines: 5,
+                                      validator: (String? value) => value,
                                     ),
                                     actions: [
                                       Row(
