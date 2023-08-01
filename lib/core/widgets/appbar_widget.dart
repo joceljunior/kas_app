@@ -67,9 +67,10 @@ class AppBarWidget extends StatelessWidget {
                                   ElevatedButton(
                                     onPressed: () async {
                                       await loginOntroller.logout();
-                                      Navigator.of(context)
+                                      Navigator.of(context).pop();
+                                      await Navigator.of(context)
                                           .pushNamedAndRemoveUntil(
-                                              loginPage, ((route) => false));
+                                              initialRoute, ((route) => false));
                                     },
                                     child: Text("Confirma"),
                                   ),

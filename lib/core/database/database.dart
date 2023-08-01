@@ -14,7 +14,7 @@ class Database implements IDatabase {
       var box = hive.box(boxName);
       if (box.isOpen) {
         if (box.isNotEmpty) {
-          await deleteStorage(boxName);
+          deleteStorage(boxName);
         }
         box.put(obj.id(), obj);
         return true;
@@ -28,11 +28,15 @@ class Database implements IDatabase {
 
   @override
   Future<void> deleteStorage(String boxName) async {
-    var box = hive.box(boxName);
-    if (box.isNotEmpty) {
-      for (var key in box.keys) {
-        await box.delete(key);
+    try {
+      var box = hive.box(boxName);
+      if (box.isNotEmpty) {
+        for (var key in box.keys) {
+          await box.delete(key);
+        }
       }
+    } catch (e) {
+      rethrow;
     }
   }
 

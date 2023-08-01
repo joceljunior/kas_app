@@ -21,7 +21,7 @@ class ButtonMenuWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
-            Radius.circular(10),
+            Radius.circular(5),
           ),
         ),
         height: size.height * 0.25,

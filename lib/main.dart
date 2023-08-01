@@ -6,6 +6,7 @@ import 'package:kas_app/core/services/service_locator.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
   ServiceLocator.setup();
   Hive.registerAdapter<Session>(SessionAdapter());
