@@ -13,8 +13,8 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color.fromARGB(255, 236, 159, 186),
       ),
-      // initialRoute: initialRoute,
-      onGenerateRoute: KasRouter().generateRoute,
+      onGenerateRoute: (settings) => KasRouter().generateRoute(settings),
+      initialRoute: '/',
     );
   }
 }
