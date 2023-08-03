@@ -34,37 +34,42 @@ class LoginPage extends StatelessWidget {
                       height: size.height * 0.3,
                     ),
                     Center(
-                      child: FormLoginWidget(
-                        passwordController: store.passwordController,
-                        usernameController: store.usernameController,
-                        size: size,
-                        buttonLogin: ButtonWidget(
-                          textButton: "Login",
-                          width: size.width * 0.77,
-                          height: size.height * 0.08,
-                          paddingVertical: size.height * 0.08,
-                          click: () async {
-                            var user = User(
-                              username: store.usernameController.text,
-                              password: store.passwordController.text,
-                            );
-
-                            await store.login(user: user);
-                            if (store.session != null) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  homePage, ((route) => false));
-                            } else {
-                              store.usernameController.clear();
-                              store.passwordController.clear();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  duration: Duration(seconds: 1),
-                                  content: Text(store.messageError),
-                                  backgroundColor: Colors.red,
-                                ),
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: 800,
+                          maxHeight: 700,
+                        ),
+                        child: FormLoginWidget(
+                          passwordController: store.passwordController,
+                          usernameController: store.usernameController,
+                          size: size,
+                          buttonLogin: ButtonWidget(
+                            textButton: "Login",
+                            width: size.width,
+                            height: size.height * 0.07,
+                            click: () async {
+                              var user = User(
+                                username: store.usernameController.text,
+                                password: store.passwordController.text,
                               );
-                            }
-                          },
+
+                              await store.login(user: user);
+                              if (store.session != null) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    homePage, ((route) => false));
+                              } else {
+                                store.usernameController.clear();
+                                store.passwordController.clear();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content: Text(store.messageError),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     )

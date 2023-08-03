@@ -70,7 +70,6 @@ class _CrewCreatePageState extends State<CrewCreatePage> {
                   textButton: "Salvar",
                   width: size.width,
                   height: size.height * 0.08,
-                  paddingVertical: 0,
                   click: () async {
                     var crew = Crew(
                         id: widget.crewEdit != null

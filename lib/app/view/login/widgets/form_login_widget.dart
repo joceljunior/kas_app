@@ -17,32 +17,38 @@ class FormLoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: size.height * 0.6,
-      width: size.width * 0.8,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormFieldWidget(
-            hintText: "Username",
-            controller: usernameController,
-            maxLines: 1,
-            validator: (String? value) {
-              return value;
-            },
-          ),
-          TextFormFieldWidget(
-            hintText: "Password",
-            controller: passwordController,
-            keyboardType: TextInputType.visiblePassword,
-            maxLines: 1,
-            obscureText: true,
-            validator: (String? value) {
-              return value;
-            },
-          ),
-          buttonLogin
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SizedBox(
+        height: size.height * 0.4,
+        width: size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormFieldWidget(
+              hintText: "Username",
+              controller: usernameController,
+              maxLines: 1,
+              validator: (String? value) {
+                return value;
+              },
+            ),
+            TextFormFieldWidget(
+              hintText: "Password",
+              controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              maxLines: 1,
+              obscureText: true,
+              validator: (String? value) {
+                return value;
+              },
+            ),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
+            buttonLogin
+          ],
+        ),
       ),
     );
   }

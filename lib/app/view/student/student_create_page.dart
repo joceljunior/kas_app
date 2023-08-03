@@ -275,7 +275,6 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                           textButton: "Salvar",
                           width: size.width,
                           height: size.height * 0.08,
-                          paddingVertical: 0,
                           click: () async {
                             if (_formKey.currentState!.validate()) {
                               var student = Student(

@@ -3,44 +3,40 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   final double width;
   final double height;
-  final double paddingVertical;
   final Function click;
   final String textButton;
   const ButtonWidget({
     Key? key,
     required this.width,
     required this.height,
-    required this.paddingVertical,
     required this.click,
     required this.textButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: paddingVertical),
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blue[400]),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+    return Container(
+      constraints: BoxConstraints(maxHeight: 80),
+      width: width,
+      height: height,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blue[400]),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          onPressed: () {
-            click();
-          },
-          child: Center(
-              child: Text(
-            textButton,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 2),
-          )),
         ),
+        onPressed: () {
+          click();
+        },
+        child: Center(
+            child: Text(
+          textButton,
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 2),
+        )),
       ),
     );
   }

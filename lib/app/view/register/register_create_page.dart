@@ -141,7 +141,6 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                     textButton: "Salvar",
                     width: size.width,
                     height: size.height * 0.08,
-                    paddingVertical: 0,
                     click: () async {
                       store.dateReference = await showDatePicker(
                         helpText: "SELECIONE A DATA DA CHAMADA",
