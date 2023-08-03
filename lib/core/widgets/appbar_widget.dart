@@ -17,16 +17,21 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape &&
+            MediaQuery.of(context).size.width >= 1024;
     return Padding(
       padding: EdgeInsets.all(size.height * 0.003),
       child: Container(
         padding: EdgeInsets.all(size.height * 0.02),
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                  'assets/dancing_ballet.png'), // Substitua pela localização da sua imagem
-              fit: BoxFit.cover,
-              opacity: 0.1),
+          image: isLandscape
+              ? null
+              : DecorationImage(
+                  image: AssetImage(
+                      'assets/dancing_ballet.png'), // Substitua pela localização da sua imagem
+                  fit: BoxFit.cover,
+                  opacity: 0.1),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(30.0),
             bottomRight: Radius.circular(30.0),

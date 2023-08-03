@@ -26,6 +26,7 @@ class ButtonMenuWidget extends StatelessWidget {
         ),
         height: size.height * 0.25,
         width: size.width * 0.4,
+        constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
