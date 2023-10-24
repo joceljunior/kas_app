@@ -73,6 +73,23 @@ mixin _$StudentCreateStore on _StudentCreateStore, Store {
     });
   }
 
+  late final _$itensSponsorDropDownAtom =
+      Atom(name: '_StudentCreateStore.itensSponsorDropDown', context: context);
+
+  @override
+  List<DropdownMenuItem<String>> get itensSponsorDropDown {
+    _$itensSponsorDropDownAtom.reportRead();
+    return super.itensSponsorDropDown;
+  }
+
+  @override
+  set itensSponsorDropDown(List<DropdownMenuItem<String>> value) {
+    _$itensSponsorDropDownAtom.reportWrite(value, super.itensSponsorDropDown,
+        () {
+      super.itensSponsorDropDown = value;
+    });
+  }
+
   late final _$messageErrorAtom =
       Atom(name: '_StudentCreateStore.messageError', context: context);
 
@@ -114,6 +131,7 @@ loading: ${loading},
 success: ${success},
 crews: ${crews},
 itensDropDown: ${itensDropDown},
+itensSponsorDropDown: ${itensSponsorDropDown},
 messageError: ${messageError}
     ''';
   }

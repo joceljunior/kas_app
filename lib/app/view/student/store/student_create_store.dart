@@ -33,6 +33,7 @@ abstract class _StudentCreateStore with Store {
   DateTime dateCreateController = DateTime.now(); // 28/03/2020
   DateTime bithdayController = DateTime.now(); // 28/03/2020
   Crew? crewInitial;
+  String? typeSponsor;
 
   bool isEdit = false;
 
@@ -47,6 +48,9 @@ abstract class _StudentCreateStore with Store {
 
   @observable
   List<DropdownMenuItem<Crew>> itensDropDown = [];
+
+  @observable
+  List<DropdownMenuItem<String>> itensSponsorDropDown = [];
 
   @observable
   String? messageError;
@@ -83,6 +87,13 @@ abstract class _StudentCreateStore with Store {
           child: Text("${element.name}    -    ${element.key}"),
         ));
       });
+      itensSponsorDropDown = [
+        DropdownMenuItem(child: Text('Pai'), value: 'Pai'),
+        DropdownMenuItem(child: Text('Mãe'), value: 'Mãe'),
+        DropdownMenuItem(child: Text('Avo(ó)'), value: 'Avo(ó)'),
+        DropdownMenuItem(child: Text('Irmão(a)'), value: 'Irmão(a)'),
+        DropdownMenuItem(child: Text('Outro'), value: 'Outro'),
+      ];
       if (studentEdit != null) {
         crewInitial =
             crews.firstWhere((element) => element.id == studentEdit.crew.id);
