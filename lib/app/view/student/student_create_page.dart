@@ -245,110 +245,110 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                               ),
                             ),
 
-                            TextFormFieldWidget(
-                              hintText: "Pai",
-                              controller: store.fatherController,
-                              validator: (String? value) {
-                                return null;
-                              },
-                            ),
-                            TextFormFieldWidget(
-                              hintText: "Endereço",
-                              controller: store.addressController,
-                              validator: (String? value) {
-                                return null;
-                              },
-                            ),
-                            TextFormFieldWidget(
-                              hintText: "Telefone",
-                              controller: store.telephoneController,
-                              validator: (String? value) {
-                                if (value!.isEmpty) {
-                                  return "Telefone é obrigatório";
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormFieldWidget(
-                              hintText: "Escola",
-                              controller: store.schoolNameController,
-                              validator: (String? value) {
-                                return null;
-                              },
-                            ),
-                            TextFormFieldWidget(
-                              hintText: "Ano Escolar",
-                              controller: store.schoolGradeController,
-                              validator: (String? value) {
-                                return null;
-                              },
-                            ),
-                            TextFormFieldWidget(
-                              hintText: "Possui alguma Alergia?",
-                              controller: store.allergyController,
-                              validator: (String? value) {
-                                return null;
-                              },
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                    value: store.useOfImageController,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        store.useOfImageController = value!;
-                                      });
-                                    }),
-                                Text("Autorizo o uso de imagem")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                    value: store.activeController,
-                                    onChanged: widget.crewId != null
-                                        ? null
-                                        : (value) {
-                                            setState(() {
-                                              store.activeController = value!;
-                                            });
-                                          }),
-                                Text("Ativo")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  color: Colors.blue,
-                                  icon: Icon(Icons.calendar_month),
-                                  onPressed: () async {
-                                    var selectDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000, 1, 1),
-                                      lastDate: DateTime(2090, 1, 1),
-                                    );
-                                    if (selectDate != null) {
-                                      setState(() {
-                                        store.dateCreateController = selectDate;
-                                      });
-                                    }
-                                  },
-                                ),
-                                Text("Data Criação"),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30.0),
-                                  child: Text(
-                                    "${store.dateCreateController.day}/${store.dateCreateController.month}/${store.dateCreateController.year}",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                            // TextFormFieldWidget(
+                            //   hintText: "Pai",
+                            //   controller: store.fatherController,
+                            //   validator: (String? value) {
+                            //     return null;
+                            //   },
+                            // ),
+                            // TextFormFieldWidget(
+                            //   hintText: "Endereço",
+                            //   controller: store.addressController,
+                            //   validator: (String? value) {
+                            //     return null;
+                            //   },
+                            // ),
+                            // TextFormFieldWidget(
+                            //   hintText: "Telefone",
+                            //   controller: store.telephoneController,
+                            //   validator: (String? value) {
+                            //     if (value!.isEmpty) {
+                            //       return "Telefone é obrigatório";
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+                            // TextFormFieldWidget(
+                            //   hintText: "Escola",
+                            //   controller: store.schoolNameController,
+                            //   validator: (String? value) {
+                            //     return null;
+                            //   },
+                            // ),
+                            // TextFormFieldWidget(
+                            //   hintText: "Ano Escolar",
+                            //   controller: store.schoolGradeController,
+                            //   validator: (String? value) {
+                            //     return null;
+                            //   },
+                            // ),
+                            // TextFormFieldWidget(
+                            //   hintText: "Possui alguma Alergia?",
+                            //   controller: store.allergyController,
+                            //   validator: (String? value) {
+                            //     return null;
+                            //   },
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     Checkbox(
+                            //         value: store.useOfImageController,
+                            //         onChanged: (value) {
+                            //           setState(() {
+                            //             store.useOfImageController = value!;
+                            //           });
+                            //         }),
+                            //     Text("Autorizo o uso de imagem")
+                            //   ],
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     Checkbox(
+                            //         value: store.activeController,
+                            //         onChanged: widget.crewId != null
+                            //             ? null
+                            //             : (value) {
+                            //                 setState(() {
+                            //                   store.activeController = value!;
+                            //                 });
+                            //               }),
+                            //     Text("Ativo")
+                            //   ],
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     IconButton(
+                            //       color: Colors.blue,
+                            //       icon: Icon(Icons.calendar_month),
+                            //       onPressed: () async {
+                            //         var selectDate = await showDatePicker(
+                            //           context: context,
+                            //           initialDate: DateTime.now(),
+                            //           firstDate: DateTime(2000, 1, 1),
+                            //           lastDate: DateTime(2090, 1, 1),
+                            //         );
+                            //         if (selectDate != null) {
+                            //           setState(() {
+                            //             store.dateCreateController = selectDate;
+                            //           });
+                            //         }
+                            //       },
+                            //     ),
+                            //     Text("Data Criação"),
+                            //     Padding(
+                            //       padding: const EdgeInsets.symmetric(
+                            //           horizontal: 30.0),
+                            //       child: Text(
+                            //         "${store.dateCreateController.day}/${store.dateCreateController.month}/${store.dateCreateController.year}",
+                            //         style: TextStyle(
+                            //           fontSize: 18,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // )
                           ],
                         ),
                         Padding(
