@@ -21,13 +21,21 @@ abstract class _StudentCreateStore with Store {
   final ICrewController controllerCrew = GetIt.I<ICrewController>();
 
   final TextEditingController nameStudentController = TextEditingController();
-  final TextEditingController motherController = TextEditingController();
-  final TextEditingController fatherController = TextEditingController();
+  final TextEditingController responsibleController = TextEditingController();
+  final TextEditingController relationshipController = TextEditingController();
   final TextEditingController schoolNameController = TextEditingController();
   final TextEditingController schoolGradeController = TextEditingController();
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController addressStreetController = TextEditingController();
+  final TextEditingController addressNumberController = TextEditingController();
+  final TextEditingController addressCityController = TextEditingController();
+  final TextEditingController nationalityController = TextEditingController();
+  final TextEditingController cpfController = TextEditingController();
+  final TextEditingController addressDistrictController =
+      TextEditingController();
   final TextEditingController allergyController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   bool useOfImageController = true;
   bool activeController = true;
   DateTime dateCreateController = DateTime.now(); // 28/03/2020
@@ -47,10 +55,10 @@ abstract class _StudentCreateStore with Store {
   List<Crew> crews = [];
 
   @observable
-  List<DropdownMenuItem<Crew>> itensDropDown = [];
+  List<Widget> itensCrews = [];
 
   @observable
-  List<DropdownMenuItem<String>> itensSponsorDropDown = [];
+  List<Widget> itensSponsor = [];
 
   @observable
   String? messageError;
@@ -82,21 +90,42 @@ abstract class _StudentCreateStore with Store {
       var result = await controllerCrew.getCrews();
       crews = result;
       crews.forEach((element) {
-        itensDropDown.add(DropdownMenuItem(
-          value: element,
-          child: Text("${element.name}    -    ${element.key}"),
+        itensCrews.add(CheckboxListTile(
+          title: Text("${element.name}    -    ${element.key}"),
+          value: false,
+          onChanged: (value) {},
         ));
       });
-      itensSponsorDropDown = [
-        DropdownMenuItem(child: Text('Pai'), value: 'Pai'),
-        DropdownMenuItem(child: Text('Mãe'), value: 'Mãe'),
-        DropdownMenuItem(child: Text('Avo(ó)'), value: 'Avo(ó)'),
-        DropdownMenuItem(child: Text('Irmão(a)'), value: 'Irmão(a)'),
-        DropdownMenuItem(child: Text('Outro'), value: 'Outro'),
+      itensSponsor = [
+        RadioListTile(
+            groupValue: '',
+            onChanged: (value) {},
+            title: Text('Pai'),
+            value: false),
+        RadioListTile(
+            groupValue: '',
+            onChanged: (value) {},
+            title: Text('Mãe'),
+            value: false),
+        RadioListTile(
+            groupValue: '',
+            onChanged: (value) {},
+            title: Text('Avo(ó)'),
+            value: false),
+        RadioListTile(
+            groupValue: '',
+            onChanged: (value) {},
+            title: Text('Irmão(a)'),
+            value: false),
+        RadioListTile(
+            groupValue: '',
+            onChanged: (value) {},
+            title: Text('Outro'),
+            value: false),
       ];
       if (studentEdit != null) {
-        crewInitial =
-            crews.firstWhere((element) => element.id == studentEdit.crew.id);
+        // crewInitial =
+        //     crews.firstWhere((element) => element.id == studentEdit.crew.id);
       }
       if (crewId != null) {
         crewInitial = crews.firstWhere((element) => element.id == crewId);

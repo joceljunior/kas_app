@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Register {
-  final int? id;
-  final int crewId;
-  final int studentId;
+  final String? id;
+  final String crewId;
+  final String studentId;
   final bool participation;
   final String? justification;
   final DateTime dateCreate;
@@ -22,8 +22,8 @@ class Register {
     if (id != null) {
       result.addAll({'id': id});
     }
-    result.addAll({'crewId': crewId.toInt()});
-    result.addAll({'studentId': studentId.toInt()});
+    result.addAll({'crewId': crewId});
+    result.addAll({'studentId': studentId});
     result.addAll({'participation': participation});
     result.addAll({'justification': justification});
     result.addAll({'dateCreate': dateCreate.toString()});

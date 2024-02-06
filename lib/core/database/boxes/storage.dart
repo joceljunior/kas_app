@@ -1,5 +1,5 @@
 abstract class Storage {
-  int? id();
+  String? id();
 
   String boxName();
 }

@@ -25,7 +25,7 @@ abstract class _CrewStudentsListStore with Store {
   String? messageError;
 
   @action
-  Future<void> getStudentsByCrew({required int idCrew}) async {
+  Future<void> getStudentsByCrew({required String idCrew}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));

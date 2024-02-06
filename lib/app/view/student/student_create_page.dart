@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:kas_app/core/constants/routes.dart';
-import '../../models/crew.dart';
 import '../../models/student.dart';
 import 'store/student_create_store.dart';
 import '../../../core/widgets/button_widget.dart';
@@ -39,18 +39,37 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
           ? ""
           : widget.studentEdit!.schoolGrade!;
       store.bithdayController = widget.studentEdit!.birthday;
-      store.dateCreateController = widget.studentEdit!.dateCreate;
-      store.motherController.text = widget.studentEdit!.mother;
-      store.fatherController.text = widget.studentEdit!.father;
+      store.dateCreateController = widget.studentEdit!.dateregistry;
+      store.responsibleController.text = widget.studentEdit!.responsible;
       store.activeController = widget.studentEdit!.active;
-      store.useOfImageController = widget.studentEdit!.useOfImage;
+      store.useOfImageController = widget.studentEdit!.useImage;
       store.telephoneController.text = widget.studentEdit!.telephone;
     }
+
     super.initState();
+  }
+
+  String formatDate(String input) {
+    try {
+      final dateTime = DateFormat('dd/MM/yyyy').parse(input);
+      return DateFormat('dd/MM/yyyy').format(dateTime);
+    } catch (e) {
+      // Caso a entrada não seja uma data válida, você pode retornar a entrada original ou uma mensagem de erro.
+      return input;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    store.dateController.addListener(() {
+      final text = store.dateController.text;
+
+      if (text.length == 2 || text.length == 5) {
+        store.dateController.text = text + '/';
+        store.dateController.selection =
+            TextSelection.collapsed(offset: text.length + 1);
+      }
+    });
     var size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -100,8 +119,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(18.0),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
@@ -116,7 +134,17 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 8),
+                                    Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Color.fromARGB(255, 207, 203, 203),
+                                      ),
+                                      child: Icon(Icons.person_2_outlined,
+                                          size: size.height * 0.08),
+                                    ),
+                                    SizedBox(height: 5),
                                     TextFormFieldWidget(
                                       hintText: "Nome",
                                       controller: store.nameStudentController,
@@ -127,61 +155,37 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         return null;
                                       },
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.all(size.height * 0.008),
-                                      child: SizedBox(
-                                        width: size.width,
-                                        child: DropdownButton<Crew>(
-                                          hint: Text("Selecione uma Turma"),
-                                          value: store.crewInitial,
-                                          items: store.itensDropDown,
-                                          onChanged: widget.crewId != null
-                                              ? null
-                                              : (newValue) {
-                                                  if (newValue != null) {
-                                                    setState(() {
-                                                      store.crewInitial =
-                                                          newValue;
-                                                    });
-                                                  }
-                                                },
-                                        ),
-                                      ),
+                                    TextFormFieldWidget(
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Nome do aluno é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                      controller: store.dateController,
+                                      keyboardType: TextInputType.datetime,
+                                      hintText: 'Data de Nascimento',
                                     ),
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                            color: Colors.blue,
-                                            icon: Icon(Icons.calendar_month),
-                                            onPressed: () async {
-                                              var selectDate =
-                                                  await showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(1990, 1, 1),
-                                                lastDate: DateTime(2090, 1, 1),
-                                              );
-                                              if (selectDate != null) {
-                                                setState(() {
-                                                  store.bithdayController =
-                                                      selectDate;
-                                                });
-                                              }
-                                            }),
-                                        Text("Aniversário"),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 30.0),
-                                          child: Text(
-                                            "${store.bithdayController.day}/${store.bithdayController.month}/${store.bithdayController.year}",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                    TextFormFieldWidget(
+                                      hintText: "Escola",
+                                      controller: store.schoolNameController,
+                                      validator: (String? value) {
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Ano Escolar",
+                                      controller: store.schoolGradeController,
+                                      validator: (String? value) {
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Nacionalidade",
+                                      controller: store.nationalityController,
+                                      validator: (String? value) {
+                                        return null;
+                                      },
                                     ),
                                   ],
                                 ),
@@ -210,145 +214,184 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 5),
+                                    ExpansionTile(
+                                      title: Text('Tipo de Responsável'),
+                                      children: store.itensSponsor,
+                                    ),
                                     TextFormFieldWidget(
                                       hintText: "Nome do Responsável",
-                                      controller: store.motherController,
+                                      controller: store.responsibleController,
                                       validator: (String? value) {
                                         if (value!.isEmpty) {
-                                          return "Nome da mãe é obrigatório";
+                                          return "Nome do responsável é obrigatório";
                                         }
                                         return null;
                                       },
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.all(size.height * 0.008),
-                                      child: SizedBox(
-                                        width: size.width,
-                                        child: DropdownButton<String>(
-                                          hint: Text("Tipo de Responsável"),
-                                          value: store.typeSponsor,
-                                          items: store.itensSponsorDropDown,
-                                          onChanged: (newValue) {
-                                            if (newValue != null) {
-                                              setState(() {
-                                                store.typeSponsor = newValue;
-                                              });
-                                            }
-                                          },
-                                        ),
-                                      ),
+                                    TextFormFieldWidget(
+                                      hintText: "CPF",
+                                      controller: store.cpfController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "CPF é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Telefone",
+                                      controller: store.telephoneController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Telefone é obrigatório";
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ],
                                 ),
                               ),
                             ),
 
-                            // TextFormFieldWidget(
-                            //   hintText: "Pai",
-                            //   controller: store.fatherController,
-                            //   validator: (String? value) {
-                            //     return null;
-                            //   },
-                            // ),
-                            // TextFormFieldWidget(
-                            //   hintText: "Endereço",
-                            //   controller: store.addressController,
-                            //   validator: (String? value) {
-                            //     return null;
-                            //   },
-                            // ),
-                            // TextFormFieldWidget(
-                            //   hintText: "Telefone",
-                            //   controller: store.telephoneController,
-                            //   validator: (String? value) {
-                            //     if (value!.isEmpty) {
-                            //       return "Telefone é obrigatório";
-                            //     }
-                            //     return null;
-                            //   },
-                            // ),
-                            // TextFormFieldWidget(
-                            //   hintText: "Escola",
-                            //   controller: store.schoolNameController,
-                            //   validator: (String? value) {
-                            //     return null;
-                            //   },
-                            // ),
-                            // TextFormFieldWidget(
-                            //   hintText: "Ano Escolar",
-                            //   controller: store.schoolGradeController,
-                            //   validator: (String? value) {
-                            //     return null;
-                            //   },
-                            // ),
-                            // TextFormFieldWidget(
-                            //   hintText: "Possui alguma Alergia?",
-                            //   controller: store.allergyController,
-                            //   validator: (String? value) {
-                            //     return null;
-                            //   },
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     Checkbox(
-                            //         value: store.useOfImageController,
-                            //         onChanged: (value) {
-                            //           setState(() {
-                            //             store.useOfImageController = value!;
-                            //           });
-                            //         }),
-                            //     Text("Autorizo o uso de imagem")
-                            //   ],
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     Checkbox(
-                            //         value: store.activeController,
-                            //         onChanged: widget.crewId != null
-                            //             ? null
-                            //             : (value) {
-                            //                 setState(() {
-                            //                   store.activeController = value!;
-                            //                 });
-                            //               }),
-                            //     Text("Ativo")
-                            //   ],
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     IconButton(
-                            //       color: Colors.blue,
-                            //       icon: Icon(Icons.calendar_month),
-                            //       onPressed: () async {
-                            //         var selectDate = await showDatePicker(
-                            //           context: context,
-                            //           initialDate: DateTime.now(),
-                            //           firstDate: DateTime(2000, 1, 1),
-                            //           lastDate: DateTime(2090, 1, 1),
-                            //         );
-                            //         if (selectDate != null) {
-                            //           setState(() {
-                            //             store.dateCreateController = selectDate;
-                            //           });
-                            //         }
-                            //       },
-                            //     ),
-                            //     Text("Data Criação"),
-                            //     Padding(
-                            //       padding: const EdgeInsets.symmetric(
-                            //           horizontal: 30.0),
-                            //       child: Text(
-                            //         "${store.dateCreateController.day}/${store.dateCreateController.month}/${store.dateCreateController.year}",
-                            //         style: TextStyle(
-                            //           fontSize: 18,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // )
+                            Card(
+                              elevation: 5,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.task_alt_sharp,
+                                            color: Colors.blue),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Informações de Endereço',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    TextFormFieldWidget(
+                                      hintText: "Rua",
+                                      controller: store.addressStreetController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Rua é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Número",
+                                      controller: store.addressNumberController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Numero é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Bairro",
+                                      controller:
+                                          store.addressDistrictController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Telefone é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      hintText: "Cidade",
+                                      controller: store.addressCityController,
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Telefone é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            Card(
+                              elevation: 5,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.task_alt_sharp,
+                                            color: Colors.blue),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Informações Adicionais',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    TextFormFieldWidget(
+                                      hintText:
+                                          "Possui alguma Alergia ou Restrição Alimentar?",
+                                      controller: store.allergyController,
+                                      validator: (String? value) {
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormFieldWidget(
+                                      validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return "Data de registro é obrigatório";
+                                        }
+                                        return null;
+                                      },
+                                      controller: store.dateController,
+                                      keyboardType: TextInputType.datetime,
+                                      hintText: 'Data do Registro',
+                                    ),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                            value: store.useOfImageController,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                store.useOfImageController =
+                                                    value!;
+                                              });
+                                            }),
+                                        Text(
+                                          "AUTORIZO O USO DE IMAGEM",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    ExpansionTile(
+                                      title: Text('Turmas'),
+                                      children: store.itensCrews,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         Padding(
@@ -363,18 +406,30 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                     id: store.isEdit
                                         ? widget.studentEdit!.id
                                         : null,
+                                    relationship:
+                                        store.relationshipController.text,
                                     active: store.activeController,
                                     address: store.addressController.text,
                                     allergy: store.allergyController.text,
                                     birthday: store.bithdayController,
-                                    crew: store.crewInitial!,
-                                    dateCreate: store.dateCreateController,
-                                    father: store.fatherController.text,
-                                    mother: store.motherController.text,
+                                    addressCity:
+                                        store.addressCityController.text,
+                                    addressDistrict:
+                                        store.addressDistrictController.text,
+                                    addressNumber:
+                                        store.addressNumberController.text,
+                                    crews: [],
+                                    // crew: store.crewInitial!,
+                                    dateregistry: store.dateCreateController,
+                                    responsible:
+                                        store.responsibleController.text,
                                     name: store.nameStudentController.text,
                                     schoolName: store.schoolNameController.text,
                                     telephone: store.telephoneController.text,
-                                    useOfImage: store.useOfImageController,
+                                    useImage: store.useOfImageController,
+                                    cpf: store.cpfController.text,
+                                    nationality:
+                                        store.nationalityController.text,
                                     schoolGrade:
                                         store.schoolGradeController.text);
 

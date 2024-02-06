@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+
 class Crew {
-  final int? id;
+  final String? id;
   final String name;
   final String key;
   Crew({
@@ -22,15 +24,15 @@ class Crew {
     return result;
   }
 
-  factory Crew.fromMap(Map<String, dynamic> map) {
+  factory Crew.fromMap(ParseObject map) {
     return Crew(
-      id: map['id'],
-      name: map['name'],
-      key: map['key'],
+      id: map['objectId'],
+      name: map['Name'],
+      key: map['Key'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Crew.fromJson(Map<String, dynamic> source) => Crew.fromMap(source);
+  factory Crew.fromJson(ParseObject source) => Crew.fromMap(source);
 }

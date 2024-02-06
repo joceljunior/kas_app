@@ -5,7 +5,7 @@ part 'session.g.dart';
 @HiveType(typeId: 1)
 class Session extends Storage {
   @HiveField(0)
-  int? idUSer;
+  String? idUSer;
   @HiveField(1)
   String? nameUSer;
   @HiveField(2)
@@ -26,7 +26,7 @@ class Session extends Storage {
   }
 
   @override
-  int? id() {
+  String? id() {
     return idUSer;
   }
 }

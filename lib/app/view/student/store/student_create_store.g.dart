@@ -57,36 +57,35 @@ mixin _$StudentCreateStore on _StudentCreateStore, Store {
     });
   }
 
-  late final _$itensDropDownAtom =
-      Atom(name: '_StudentCreateStore.itensDropDown', context: context);
+  late final _$itensCrewsAtom =
+      Atom(name: '_StudentCreateStore.itensCrews', context: context);
 
   @override
-  List<DropdownMenuItem<Crew>> get itensDropDown {
-    _$itensDropDownAtom.reportRead();
-    return super.itensDropDown;
+  List<Widget> get itensCrews {
+    _$itensCrewsAtom.reportRead();
+    return super.itensCrews;
   }
 
   @override
-  set itensDropDown(List<DropdownMenuItem<Crew>> value) {
-    _$itensDropDownAtom.reportWrite(value, super.itensDropDown, () {
-      super.itensDropDown = value;
+  set itensCrews(List<Widget> value) {
+    _$itensCrewsAtom.reportWrite(value, super.itensCrews, () {
+      super.itensCrews = value;
     });
   }
 
-  late final _$itensSponsorDropDownAtom =
-      Atom(name: '_StudentCreateStore.itensSponsorDropDown', context: context);
+  late final _$itensSponsorAtom =
+      Atom(name: '_StudentCreateStore.itensSponsor', context: context);
 
   @override
-  List<DropdownMenuItem<String>> get itensSponsorDropDown {
-    _$itensSponsorDropDownAtom.reportRead();
-    return super.itensSponsorDropDown;
+  List<Widget> get itensSponsor {
+    _$itensSponsorAtom.reportRead();
+    return super.itensSponsor;
   }
 
   @override
-  set itensSponsorDropDown(List<DropdownMenuItem<String>> value) {
-    _$itensSponsorDropDownAtom.reportWrite(value, super.itensSponsorDropDown,
-        () {
-      super.itensSponsorDropDown = value;
+  set itensSponsor(List<Widget> value) {
+    _$itensSponsorAtom.reportWrite(value, super.itensSponsor, () {
+      super.itensSponsor = value;
     });
   }
 
@@ -130,8 +129,8 @@ mixin _$StudentCreateStore on _StudentCreateStore, Store {
 loading: ${loading},
 success: ${success},
 crews: ${crews},
-itensDropDown: ${itensDropDown},
-itensSponsorDropDown: ${itensSponsorDropDown},
+itensCrews: ${itensCrews},
+itensSponsor: ${itensSponsor},
 messageError: ${messageError}
     ''';
   }

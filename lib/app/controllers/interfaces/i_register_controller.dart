@@ -6,7 +6,7 @@ abstract class IRegisterController {
     required List<Student> studentsRegister,
     required DateTime dateCreate,
     required bool isEdit,
-    required int crewId,
+    required String crewId,
   });
-  Future<List<RegisterCrew>> getRegisterByCrew({required int idCrew});
+  Future<List<RegisterCrew>> getRegisterByCrew({required String idCrew});
 }

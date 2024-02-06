@@ -31,7 +31,7 @@ class StudentItemWidget extends StatelessWidget {
               student.name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text("Turma: ${student.crew.name}"),
+            subtitle: Text("Turma: ${student.crews!.first}"),
             trailing: GestureDetector(
               onTap: () {
                 onTapDelete();

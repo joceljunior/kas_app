@@ -41,7 +41,7 @@ abstract class _StudentListStore with Store {
   }
 
   @action
-  Future<void> deleteStudent({required int id}) async {
+  Future<void> deleteStudent({required String id}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));

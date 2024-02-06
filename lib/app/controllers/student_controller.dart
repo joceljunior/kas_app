@@ -7,7 +7,7 @@ import 'package:kas_app/core/errors/kas_error.dart';
 class StudentController implements IStudentController {
   final IStudentRepository repository = GetIt.I<IStudentRepository>();
   @override
-  Future<bool> deleteStudent({required int id}) async {
+  Future<bool> deleteStudent({required String id}) async {
     try {
       var result = await repository.deleteStudent(id: id);
       return result;
@@ -58,7 +58,7 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<List<Student>> getStudentsByCrew({required int idCrew}) async {
+  Future<List<Student>> getStudentsByCrew({required String idCrew}) async {
     try {
       var result = await repository.getStudentsByCrew(idCrew: idCrew);
       if (result.isEmpty) {
@@ -74,7 +74,7 @@ class StudentController implements IStudentController {
 
   @override
   Future<List<Student>> getStudentsByRegister(
-      {required DateTime dateRegister, required int idCrew}) async {
+      {required DateTime dateRegister, required String idCrew}) async {
     try {
       String date =
           "${dateRegister.year}-${dateRegister.month}-${dateRegister.day}";

@@ -61,7 +61,7 @@ mixin _$CrewStudentsListStore on _CrewStudentsListStore, Store {
       AsyncAction('_CrewStudentsListStore.getStudentsByCrew', context: context);
 
   @override
-  Future<void> getStudentsByCrew({required int idCrew}) {
+  Future<void> getStudentsByCrew({required String idCrew}) {
     return _$getStudentsByCrewAsyncAction
         .run(() => super.getStudentsByCrew(idCrew: idCrew));
   }

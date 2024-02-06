@@ -24,7 +24,7 @@ abstract class _RegisterListStore with Store {
   String? messageError;
 
   @action
-  Future<void> getRegister({required int idCrew}) async {
+  Future<void> getRegister({required String idCrew}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));

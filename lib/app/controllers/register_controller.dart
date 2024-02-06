@@ -13,7 +13,7 @@ import 'package:kas_app/core/errors/kas_error.dart';
 class RegisterController implements IRegisterController {
   final IRegisterRepository repository = GetIt.I<IRegisterRepository>();
   @override
-  Future<List<RegisterCrew>> getRegisterByCrew({required int idCrew}) async {
+  Future<List<RegisterCrew>> getRegisterByCrew({required String idCrew}) async {
     try {
       List<RegisterCrew> registers = [];
       var result = await repository.getRegisterByCrew(idCrew: idCrew);
@@ -43,7 +43,7 @@ class RegisterController implements IRegisterController {
     required List<Student> studentsRegister,
     required DateTime dateCreate,
     required bool isEdit,
-    required int crewId,
+    required String crewId,
   }) async {
     try {
       List<Register> registers = [];

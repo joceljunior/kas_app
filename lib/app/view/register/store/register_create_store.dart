@@ -34,7 +34,7 @@ abstract class _RegisterCreateStore with Store {
   String? messageError;
 
   @action
-  Future<void> getStudents({required int idCrew}) async {
+  Future<void> getStudents({required String idCrew}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));
@@ -77,7 +77,7 @@ abstract class _RegisterCreateStore with Store {
   }
 
   @action
-  Future<void> postRegister({required int crewId}) async {
+  Future<void> postRegister({required String crewId}) async {
     try {
       loading = true;
       await Future.delayed(Duration(seconds: 1));

@@ -61,7 +61,7 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
       AsyncAction('_RegisterCreateStore.getStudents', context: context);
 
   @override
-  Future<void> getStudents({required int idCrew}) {
+  Future<void> getStudents({required String idCrew}) {
     return _$getStudentsAsyncAction
         .run(() => super.getStudents(idCrew: idCrew));
   }
@@ -79,7 +79,7 @@ mixin _$RegisterCreateStore on _RegisterCreateStore, Store {
       AsyncAction('_RegisterCreateStore.postRegister', context: context);
 
   @override
-  Future<void> postRegister({required int crewId}) {
+  Future<void> postRegister({required String crewId}) {
     return _$postRegisterAsyncAction
         .run(() => super.postRegister(crewId: crewId));
   }

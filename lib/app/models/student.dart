@@ -1,87 +1,74 @@
 import 'dart:convert';
 
 import 'package:kas_app/app/models/crew.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class Student {
-  final int? id;
+  final String? id;
   final String name;
-  final Crew crew;
-  final String mother;
-  final String father;
+  List<String>? crews;
+  final String responsible;
+  final String cpf;
+  final String relationship;
+  final String nationality;
   final String schoolName;
   final String? schoolGrade;
   final String telephone;
   final String address;
+  final String addressNumber;
+  final String addressDistrict;
+  final String addressCity;
   final DateTime birthday;
   final String allergy;
-  final bool useOfImage;
+  final bool useImage;
   final bool active;
-  final DateTime dateCreate;
+  final DateTime dateregistry;
   bool isRegister = false;
   String? justification;
   Student({
     this.id,
     required this.name,
-    required this.crew,
-    required this.mother,
-    required this.father,
+    this.crews,
+    required this.responsible,
+    required this.relationship,
     required this.schoolName,
     this.schoolGrade,
     required this.telephone,
     required this.address,
+    required this.addressNumber,
+    required this.addressDistrict,
+    required this.addressCity,
     required this.birthday,
+    required this.cpf,
     required this.allergy,
-    required this.useOfImage,
+    required this.useImage,
     required this.active,
-    required this.dateCreate,
+    required this.dateregistry,
+    required this.nationality,
   });
 
-  Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    if (id != null) {
-      result.addAll({'id': id});
-    }
-    result.addAll({'name': name});
-    result.addAll({'crew': crew.toMap()});
-    result.addAll({'mother': mother});
-    result.addAll({'father': father});
-    result.addAll({'schoolName': schoolName});
-    if (schoolGrade != null) {
-      result.addAll({'schoolGrade': schoolGrade});
-    }
-    result.addAll({'telephone': telephone});
-    result.addAll({'address': address});
-    result.addAll({'birthday': birthday.toString()});
-    result.addAll({'allergy': allergy});
-    result.addAll({'useOfImage': useOfImage});
-    result.addAll({'active': active});
-    result.addAll({'dateCreate': dateCreate.toString()});
-
-    return result;
-  }
-
-  factory Student.fromMap(Map<String, dynamic> map) {
+  factory Student.fromMap(ParseObject map) {
     return Student(
       id: map['id'],
       name: map['name'] ?? '',
-      crew: Crew.fromMap(map['crew']),
-      mother: map['mother'],
-      father: map['father'],
+      relationship: map['relationship'],
+      responsible: map['responsible'],
       schoolName: map['schoolName'],
       schoolGrade: map['schoolGrade'],
       telephone: map['telephone'],
       address: map['address'],
+      addressDistrict: map['addressDistrict'],
+      addressNumber: map['addressNumber'],
+      addressCity: map['addressCity'],
       birthday: DateTime.parse(map['birthday']),
       allergy: map['allergy'],
-      useOfImage: map['useOfImage'],
+      useImage: map['useImage'],
       active: map['active'],
-      dateCreate: DateTime.parse(map['dateCreate']),
+      dateregistry: DateTime.parse(map['dateRegistry']),
+      cpf: map['cpf'],
+      nationality: map['nationality'],
     );
   }
 
-  String toJson() => jsonEncode(toMap());
-
-  factory Student.fromJson(Map<String, dynamic> source) =>
-      Student.fromMap(source);
+  factory Student.fromJson(ParseObject source) => Student.fromMap(source);
 }

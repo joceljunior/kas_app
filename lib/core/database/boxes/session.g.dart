@@ -17,7 +17,7 @@ class SessionAdapter extends TypeAdapter<Session> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Session(
-      idUSer: fields[0] as int?,
+      idUSer: fields[0] as String?,
       nameUSer: fields[1] as String?,
       roleUser: fields[2] as String?,
       passwordUser: fields[3] as String?,

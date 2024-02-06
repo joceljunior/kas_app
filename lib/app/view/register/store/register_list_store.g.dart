@@ -61,7 +61,7 @@ mixin _$RegisterListStore on _RegisterListStore, Store {
       AsyncAction('_RegisterListStore.getRegister', context: context);
 
   @override
-  Future<void> getRegister({required int idCrew}) {
+  Future<void> getRegister({required String idCrew}) {
     return _$getRegisterAsyncAction
         .run(() => super.getRegister(idCrew: idCrew));
   }

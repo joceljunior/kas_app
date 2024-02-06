@@ -69,7 +69,7 @@ mixin _$StudentListStore on _StudentListStore, Store {
       AsyncAction('_StudentListStore.deleteStudent', context: context);
 
   @override
-  Future<void> deleteStudent({required int id}) {
+  Future<void> deleteStudent({required String id}) {
     return _$deleteStudentAsyncAction.run(() => super.deleteStudent(id: id));
   }
 

@@ -9,7 +9,7 @@ import '../../core/errors/kas_error.dart';
 class RegisterRepository implements IRegisterRepository {
   final Dio httpService = GetIt.instance<Dio>();
   @override
-  Future<List<Register>> getRegisterByCrew({required int idCrew}) async {
+  Future<List<Register>> getRegisterByCrew({required String idCrew}) async {
     try {
       var url = "$registerGetUrl/$idCrew";
       var result = await httpService.get(url);
