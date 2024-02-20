@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:kas_app/app/models/register_crew.dart';
+import 'package:kas_app/app/view/register/states/register_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
 
 import '../../models/crew.dart';
@@ -60,11 +60,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
               backgroundColor: Colors.blue[200],
               onPressed: () async {
                 await Navigator.of(context)
-                    .pushNamed(registerCreatePage,
-                        arguments: RegisterCrew(
-                            idCrew: widget.crew.id!,
-                            date: DateTime(0000, 00, 00),
-                            registers: []))
+                    .pushNamed(registerCreatePage, arguments: widget.crew.id)
                     .then((value) {
                   store.getRegister(idCrew: widget.crew.id!);
                 });
@@ -77,38 +73,43 @@ class _RegisterListPageState extends State<RegisterListPage> {
           )
         ],
       ),
-      body: Observer(builder: (_) {
-        if (store.messageError != null) {
-          return Center(
-            child: Text(store.messageError!),
-          );
-        }
-        if (store.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: store.registers.length,
-              itemBuilder: (context, index) {
-                var register = store.registers[index];
-                return RegisterCrewItemWidget(
-                  register: register,
-                  ontapEdit: () async {
-                    await Navigator.of(context)
-                        .pushNamed(registerCreatePage, arguments: register)
-                        .then((value) {
-                      store.getRegister(idCrew: widget.crew.id!);
-                    });
+      body: ValueListenableBuilder(
+          valueListenable: store,
+          builder: (_, state, child) {
+            if (state is RegisterErrorState) {
+              return Center(
+                child: Text('Ocorreu uma erro'),
+              );
+            }
+            if (store.loading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (state is RegisterListSuccessState) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: state.registers.length,
+                  itemBuilder: (context, index) {
+                    var register = state.registers[index];
+                    return RegisterCrewItemWidget(
+                      register: register,
+                      ontapEdit: () async {
+                        await Navigator.of(context)
+                            .pushNamed(registerCreatePage, arguments: register)
+                            .then((value) {
+                          store.getRegister(idCrew: widget.crew.id!);
+                        });
+                      },
+                    );
                   },
-                );
-              },
-            ),
-          );
-        }
-      }),
+                ),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }

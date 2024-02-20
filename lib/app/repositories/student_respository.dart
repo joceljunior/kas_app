@@ -12,12 +12,11 @@ class StudentRpository implements IStudentRepository {
   @override
   Future<bool> deleteStudent({required String id}) async {
     try {
-      var url = studentDeleteUrl + id.toString();
-      await httpService.delete(url);
+      var backendStudent = ParseObject('Student');
+      backendStudent.set('objectId', id);
+      backendStudent.set('active', false); // Define o aluno como inativo
+      await backendStudent.update();
       return true;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw StudentError(message: message);
     } catch (e) {
       throw Exception();
     }
@@ -26,20 +25,45 @@ class StudentRpository implements IStudentRepository {
   @override
   Future<List<Student>> getStudents() async {
     try {
-      var url = studentGetUrl;
-      var result = await httpService.get(url);
-      var obj = (result.data as List).map((e) => Student.fromJson(e)).toList();
-      return obj;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw StudentError(message: message);
+      final QueryBuilder<ParseObject> parseQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..whereEqualTo('active', true);
+
+      final ParseResponse response = await parseQuery.query();
+
+      if (response.success) {
+        var students =
+            response.results!.map((e) => Student.fromJson(e)).toList();
+
+        // Buscar as turmas vinculadas para cada aluno
+        for (var student in students) {
+          final QueryBuilder<ParseObject> studentCrewsQuery =
+              QueryBuilder<ParseObject>(ParseObject('StudentCrews'))
+                ..whereEqualTo('studentId', student.id);
+
+          final ParseResponse crewResponse = await studentCrewsQuery.query();
+
+          if (crewResponse.success) {
+            List<String> crewIds = crewResponse.results!
+                .map<String>((crew) => crew['crewId'] as String)
+                .toList();
+
+            student.crews = crewIds;
+          }
+        }
+
+        return students;
+      }
+      return [];
     } catch (e) {
+      print(e.toString());
       throw Exception();
     }
   }
 
   @override
-  Future<bool> postStudent({required Student student}) async {
+  Future<bool> postStudent(
+      {required Student student, required List<String> crews}) async {
     try {
       var backendStudent = ParseObject('Student');
       backendStudent.set('name', student.name);
@@ -47,7 +71,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('schoolGrade', student.schoolGrade);
       backendStudent.set('telephone', student.telephone);
       backendStudent.set('address', student.address);
-      backendStudent.set('addressNumber', student.addressNumber);
+      backendStudent.set('addressNumber', int.parse(student.addressNumber));
       backendStudent.set('addressDistrict', student.addressDistrict);
       backendStudent.set('addressCity', student.addressCity);
       backendStudent.set('birthday', student.birthday);
@@ -55,11 +79,19 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('useImage', student.useImage);
       backendStudent.set('active', student.active);
       backendStudent.set('dateRegistry', student.dateregistry);
-      backendStudent.set('cpf', student.cpf);
+      backendStudent.set('cpf', int.parse(student.cpf));
       backendStudent.set('nameResponsible', student.responsible);
       backendStudent.set('relationship', student.relationship);
       backendStudent.set('nationality', student.nationality);
       var response = await backendStudent.save();
+
+      for (String crew in crews) {
+        ParseObject backendStudentCrews = ParseObject('StudentCrews')
+          ..set('studentId',
+              backendStudent.objectId) // Referência ao objectId do aluno
+          ..set('crewId', crew); // Referência ao objectId da turma
+        await backendStudentCrews.save();
+      }
 
       return true;
     } on Exception catch (e) {
@@ -68,31 +100,78 @@ class StudentRpository implements IStudentRepository {
   }
 
   @override
-  Future<bool> updateStudent({required Student studentEdit}) async {
+  Future<bool> updateStudent(
+      {required Student studentEdit, required List<String> crews}) async {
     try {
-      var json = ' studentEdit.toJson()';
-      await httpService.put(studentPuttUrl, data: json);
+      var backendStudent = ParseObject('Student');
+      backendStudent.set('objectId', studentEdit.id);
+      backendStudent.set('name', studentEdit.name);
+      backendStudent.set('schoolName', studentEdit.schoolName);
+      backendStudent.set('schoolGrade', studentEdit.schoolGrade);
+      backendStudent.set('telephone', studentEdit.telephone);
+      backendStudent.set('address', studentEdit.address);
+      backendStudent.set('addressNumber', int.parse(studentEdit.addressNumber));
+      backendStudent.set('addressDistrict', studentEdit.addressDistrict);
+      backendStudent.set('addressCity', studentEdit.addressCity);
+      backendStudent.set('birthday', studentEdit.birthday);
+      backendStudent.set('allergy', studentEdit.allergy);
+      backendStudent.set('useImage', studentEdit.useImage);
+      backendStudent.set('active', studentEdit.active);
+      backendStudent.set('dateRegistry', studentEdit.dateregistry);
+      backendStudent.set('cpf', int.parse(studentEdit.cpf));
+      backendStudent.set('nameResponsible', studentEdit.responsible);
+      backendStudent.set('relationship', studentEdit.relationship);
+      backendStudent.set('nationality', studentEdit.nationality);
+      await backendStudent.save();
+
+      await _deleteStudentCrews(studentEdit.id!);
+
+      await _addStudentCrews(studentEdit.id!, crews);
 
       return true;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw CrewError(message: message);
-    } catch (e) {
-      throw Exception();
+    } on Exception catch (e) {
+      throw CrewError(message: e.toString());
     }
   }
 
   @override
   Future<List<Student>> getStudentsByCrew({required String idCrew}) async {
     try {
-      var url = studentsByCrewGetUrl + idCrew.toString();
-      var result = await httpService.get(url);
-      var obj = (result.data as List).map((e) => Student.fromJson(e)).toList();
-      return obj;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw StudentError(message: message);
+      // Consulta para buscar os alunos associados à turma especificada
+      final QueryBuilder<ParseObject> studentCrewsQuery =
+          QueryBuilder<ParseObject>(ParseObject('StudentCrews'))
+            ..whereEqualTo('crewId', idCrew);
+
+      final ParseResponse crewResponse = await studentCrewsQuery.query();
+
+      if (crewResponse.success) {
+        // Lista para armazenar os IDs dos alunos associados à turma
+        List<String> studentIds = crewResponse.results!
+            .map<String>((crew) => crew['studentId'] as String)
+            .toList();
+
+        // Consulta para buscar os alunos ativos pelo ID
+        final QueryBuilder<ParseObject> activeStudentsQuery =
+            QueryBuilder<ParseObject>(ParseObject('Student'))
+              ..whereContainedIn('objectId',
+                  studentIds) // Filtra pelos IDs dos alunos associados à turma
+              ..whereEqualTo('active', true); // Filtra apenas os alunos ativos
+
+        final ParseResponse studentsResponse =
+            await activeStudentsQuery.query();
+
+        if (studentsResponse.success) {
+          // Mapeia os resultados para objetos Student
+          List<Student> activeStudents = studentsResponse.results!
+              .map((e) => Student.fromJson(e))
+              .toList();
+
+          return activeStudents;
+        }
+      }
+      return [];
     } catch (e) {
+      print(e.toString());
       throw Exception();
     }
   }
@@ -116,14 +195,48 @@ class StudentRpository implements IStudentRepository {
   @override
   Future<int> getTotalStudent() async {
     try {
-      var result = await httpService.get(studentTotalGetUrl);
-      var total = result.data;
-      return total;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw CrewError(message: message);
+      final QueryBuilder<ParseObject> activeStudentsQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..whereEqualTo('active', true); // Filtra apenas os alunos ativos
+
+      final ParseResponse response = await activeStudentsQuery.query();
+
+      if (response.success) {
+        // Retorna o número de resultados (total de alunos ativos)
+        return response.count;
+      } else {
+        return 0; // Retorna 0 se não houver alunos ativos
+      }
     } catch (e) {
+      print(e.toString());
       throw Exception();
+    }
+  }
+
+  Future<void> _deleteStudentCrews(String studentId) async {
+    final QueryBuilder<ParseObject> queryBuilder =
+        QueryBuilder<ParseObject>(ParseObject('StudentCrews'))
+          ..whereEqualTo('studentId', studentId);
+
+    try {
+      final ParseResponse response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        for (final ParseObject parseObject in response.results!) {
+          await parseObject.delete();
+        }
+      }
+    } catch (e) {
+      throw Exception('Erro ao excluir associações de turma: $e');
+    }
+  }
+
+  Future<void> _addStudentCrews(String studentId, List<String> crews) async {
+    for (String crew in crews) {
+      ParseObject backendStudentCrews = ParseObject('StudentCrews')
+        ..set('studentId', studentId)
+        ..set('crewId', crew);
+      await backendStudentCrews.save();
     }
   }
 }

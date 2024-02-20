@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kas_app/app/models/register_crew.dart';
+import 'package:kas_app/app/models/register.dart';
 
 class RegisterCrewItemWidget extends StatelessWidget {
-  final RegisterCrew register;
+  final Register register;
   final Function ontapEdit;
   const RegisterCrewItemWidget({
     Key? key,
@@ -26,7 +26,7 @@ class RegisterCrewItemWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
             ),
             title: Text(
-              "${register.date.day}/${register.date.month}/${register.date.year}",
+              "${register.dateRegister.day}/${register.dateRegister.month}/${register.dateRegister.year}",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             trailing: Text(checkPresence()),
@@ -37,7 +37,7 @@ class RegisterCrewItemWidget extends StatelessWidget {
   }
 
   String checkPresence() {
-    var presence = register.registers
+    var presence = register.studentRegisters
         .where((element) => element.participation == true)
         .length;
 

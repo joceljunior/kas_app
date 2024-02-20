@@ -34,9 +34,10 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<bool> postStudent({required Student student}) async {
+  Future<bool> postStudent(
+      {required Student student, required List<String> crews}) async {
     try {
-      var result = await repository.postStudent(student: student);
+      var result = await repository.postStudent(student: student, crews: crews);
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);
@@ -46,9 +47,11 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<bool> updateStudent({required Student studentEdit}) async {
+  Future<bool> updateStudent(
+      {required Student studentEdit, required List<String> crews}) async {
     try {
-      var result = await repository.updateStudent(studentEdit: studentEdit);
+      var result = await repository.updateStudent(
+          studentEdit: studentEdit, crews: crews);
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);

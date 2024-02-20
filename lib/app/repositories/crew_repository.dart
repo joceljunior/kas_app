@@ -23,9 +23,6 @@ class CrewRepository implements ICrewRepository {
         return obj;
       }
       return [];
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw CrewError(message: message);
     } catch (e) {
       throw Exception();
     }
@@ -69,13 +66,18 @@ class CrewRepository implements ICrewRepository {
   @override
   Future<int> getTotalCrew() async {
     try {
-      var result = await httpService.get(crewTotalGetUrl);
-      var total = result.data;
-      return total;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw CrewError(message: message);
+      final QueryBuilder<ParseObject> totalCrew =
+          QueryBuilder<ParseObject>(ParseObject('Crew'));
+
+      final ParseResponse response = await totalCrew.query();
+
+      if (response.success) {
+        return response.count;
+      } else {
+        return 0;
+      }
     } catch (e) {
+      print(e.toString());
       throw Exception();
     }
   }

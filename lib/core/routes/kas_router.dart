@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/models/crew.dart';
-import 'package:kas_app/app/models/register_crew.dart';
+import 'package:kas_app/app/models/register.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/app/view/crew/crew_create_page.dart';
 import 'package:kas_app/app/view/crew/crew_list_page.dart';
@@ -63,10 +63,10 @@ class KasRouter {
         );
 
       case registerCreatePage:
-        var register = args as RegisterCrew;
+        var crewId = args as String;
         return MaterialPageRoute(
           builder: (_) => RegisterCreatePage(
-            registerCrew: register,
+            crewId: crewId,
           ),
         );
 
@@ -97,15 +97,20 @@ class KasRouter {
             crew: crew,
           ),
         );
-      default:
-        String completedUrl = settings.name!;
-        var crewId = int.parse(completedUrl.substring(
-            completedUrl.indexOf('#') + 2, completedUrl.length));
+      case '/create':
         return MaterialPageRoute(
           builder: (_) => StudentCreatePage(
-            crewId: crewId,
+            isCreate: true,
           ),
         );
+      default:
+        // String completedUrl = settings.name!;
+        // var crewId = int.parse(completedUrl.substring(
+        //     completedUrl.indexOf('#') + 2, completedUrl.length));
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(child: Text('Rota desconhecida')),
+                ));
     }
   }
 }

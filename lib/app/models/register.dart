@@ -1,49 +1,39 @@
-import 'dart:convert';
+import 'package:kas_app/app/models/student_register.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class Register {
   final String? id;
   final String crewId;
-  final String studentId;
-  final bool participation;
-  final String? justification;
-  final DateTime dateCreate;
+  final List<StudentRegister> studentRegisters;
+  final DateTime dateRegister;
+
   Register({
     this.id,
     required this.crewId,
-    required this.studentId,
-    required this.participation,
-    required this.justification,
-    required this.dateCreate,
+    required this.studentRegisters,
+    required this.dateRegister,
   });
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    if (id != null) {
-      result.addAll({'id': id});
-    }
-    result.addAll({'crewId': crewId});
-    result.addAll({'studentId': studentId});
-    result.addAll({'participation': participation});
-    result.addAll({'justification': justification});
-    result.addAll({'dateCreate': dateCreate.toString()});
-
-    return result;
+    return {
+      'crewId': crewId,
+      'studentRegisters': studentRegisters
+          .map((studentRegister) => studentRegister.toMap())
+          .toList(),
+      'dateRegister': dateRegister,
+    };
   }
 
-  factory Register.fromMap(Map<String, dynamic> map) {
+  factory Register.fromMap(ParseObject map) {
     return Register(
-      id: map['id']?.toInt(),
-      crewId: map['crewId']?.toInt() ?? 0,
-      studentId: map['studentId']?.toInt() ?? 0,
-      participation: map['participation'] ?? false,
-      justification: map['justification'] ?? '',
-      dateCreate: DateTime.parse(map['dateCreate']),
+      id: map['objectId'],
+      crewId: map['crewId'],
+      studentRegisters: (map['studentRegisters'] as List)
+          .map((studentMap) => StudentRegister.fromMap(studentMap))
+          .toList(),
+      dateRegister: map['dateregister'],
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Register.fromJson(Map<String, dynamic> source) =>
-      Register.fromMap(source);
+  factory Register.fromJson(ParseObject source) => Register.fromMap(source);
 }

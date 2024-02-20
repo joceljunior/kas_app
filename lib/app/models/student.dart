@@ -28,7 +28,7 @@ class Student {
   Student({
     this.id,
     required this.name,
-    this.crews,
+    required this.crews,
     required this.responsible,
     required this.relationship,
     required this.schoolName,
@@ -49,24 +49,25 @@ class Student {
 
   factory Student.fromMap(ParseObject map) {
     return Student(
-      id: map['id'],
+      id: map['objectId'],
       name: map['name'] ?? '',
       relationship: map['relationship'],
-      responsible: map['responsible'],
+      responsible: map['nameResponsible'],
       schoolName: map['schoolName'],
       schoolGrade: map['schoolGrade'],
       telephone: map['telephone'],
       address: map['address'],
       addressDistrict: map['addressDistrict'],
-      addressNumber: map['addressNumber'],
+      addressNumber: map['addressNumber'].toString(),
       addressCity: map['addressCity'],
-      birthday: DateTime.parse(map['birthday']),
+      birthday: map['birthday'],
       allergy: map['allergy'],
       useImage: map['useImage'],
       active: map['active'],
-      dateregistry: DateTime.parse(map['dateRegistry']),
-      cpf: map['cpf'],
+      dateregistry: map['dateRegistry'],
+      cpf: map['cpf'].toString(),
       nationality: map['nationality'],
+      crews: [],
     );
   }
 

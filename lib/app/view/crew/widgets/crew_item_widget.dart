@@ -34,24 +34,8 @@ class CrewItemWidget extends StatelessWidget {
             ),
             subtitle: Text(crew.key),
             trailing: showTrailing
-                ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.18,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            onTap: () => onTapEditItem(),
-                            child: Icon(Icons.edit)),
-                        GestureDetector(
-                            onTap: () {
-                              var message =
-                                  "https://kasballet.codemagic.app/${crew.id}";
-                              abrirWhatsApp(message);
-                            },
-                            child: Icon(Icons.share))
-                      ],
-                    ),
-                  )
+                ? GestureDetector(
+                    onTap: () => onTapEditItem(), child: Icon(Icons.edit))
                 : null,
           ),
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/app/view/home/states/home_states.dart';
 import 'package:kas_app/app/view/home/store/home_store.dart';
 import 'package:kas_app/app/view/home/widget/total_widget.dart';
 import 'package:kas_app/core/constants/routes.dart';
@@ -35,70 +35,75 @@ class _HomePageState extends State<HomePage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 248, 228, 241),
-      body: Observer(
-        builder: (_) {
+      body: ValueListenableBuilder(
+        valueListenable: store,
+        builder: (_, state, child) {
           if (store.loading) {
             return Center(child: CircularProgressIndicator());
           }
-          return SingleChildScrollView(
-            child: BackgoundBaseWidget(
-              size: size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppBarWidget(
-                    userName: widget.session.nameUSer!,
-                  ),
-                  Wrap(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.center,
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      ButtonMenuWidget(
-                          image: 'assets/call.png',
-                          title: 'Chamadas',
-                          ontap: () {
-                            Navigator.of(context).pushNamed(
-                              crewListPage,
-                              arguments: ParamsEnum.register,
-                            );
-                          }),
-                      ButtonMenuWidget(
-                          image: 'assets/crew.png',
-                          title: 'Turmas',
-                          ontap: () {
-                            Navigator.of(context).pushNamed(
-                              crewListPage,
-                              arguments: ParamsEnum.crew,
-                            );
-                          }),
-                      ButtonMenuWidget(
-                          image: 'assets/bailarina.png',
-                          title: 'Alunos',
-                          ontap: () {
-                            Navigator.of(context).pushNamed(studentListPage,
-                                arguments: ParamsEnum.student);
-                          }),
-                      ButtonMenuWidget(
-                          image: 'assets/report.png',
-                          title: 'Relatórios',
-                          ontap: () {}),
-                    ],
-                  ),
-                  TotalWidget(
-                    size: size,
-                    crewTotal: store.crewTotal! < 0
-                        ? "--"
-                        : store.crewTotal.toString(),
-                    studentTotal: store.studentTotal! < 0
-                        ? "--"
-                        : store.studentTotal.toString(),
-                  )
-                ],
+          if (state is HomeStateSuccess) {
+            return SingleChildScrollView(
+              child: BackgoundBaseWidget(
+                size: size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppBarWidget(
+                      userName: widget.session.nameUSer!,
+                    ),
+                    Wrap(
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        ButtonMenuWidget(
+                            image: 'assets/call.png',
+                            title: 'Chamadas',
+                            ontap: () {
+                              Navigator.of(context).pushNamed(
+                                crewListPage,
+                                arguments: ParamsEnum.register,
+                              );
+                            }),
+                        ButtonMenuWidget(
+                            image: 'assets/crew.png',
+                            title: 'Turmas',
+                            ontap: () {
+                              Navigator.of(context).pushNamed(
+                                crewListPage,
+                                arguments: ParamsEnum.crew,
+                              );
+                            }),
+                        ButtonMenuWidget(
+                            image: 'assets/bailarina.png',
+                            title: 'Alunos',
+                            ontap: () {
+                              Navigator.of(context).pushNamed(studentListPage,
+                                  arguments: ParamsEnum.student);
+                            }),
+                        ButtonMenuWidget(
+                            image: 'assets/report.png',
+                            title: 'Relatórios',
+                            ontap: () {}),
+                      ],
+                    ),
+                    TotalWidget(
+                      size: size,
+                      crewTotal: state.totalcrew < 0
+                          ? "--"
+                          : state.totalcrew.toString(),
+                      studentTotal: state.totalStudents < 0
+                          ? "--"
+                          : state.totalStudents.toString(),
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+          print(state);
+          return Container();
         },
       ),
     );

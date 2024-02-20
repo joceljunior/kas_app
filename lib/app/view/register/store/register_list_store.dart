@@ -1,42 +1,27 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kas_app/app/models/register.dart';
+import 'package:kas_app/app/view/register/states/register_states.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/errors/kas_error.dart';
 import '../../../controllers/interfaces/i_register_controller.dart';
-import '../../../models/register_crew.dart';
 
-part 'register_list_store.g.dart';
-
-// This is the class used by rest of your codebase
-class RegisterListStore = _RegisterListStore with _$RegisterListStore;
-
-// The store-class
-abstract class _RegisterListStore with Store {
+class RegisterListStore extends ValueNotifier<RegisterState> {
+  RegisterListStore() : super(RegisterLoadingState());
   final IRegisterController controller = GetIt.I<IRegisterController>();
 
-  @observable
   bool loading = false;
 
-  @observable
-  List<RegisterCrew> registers = [];
-
-  @observable
-  String? messageError;
-
-  @action
   Future<void> getRegister({required String idCrew}) async {
     try {
-      loading = true;
-      await Future.delayed(Duration(seconds: 1));
+      value = RegisterLoadingState();
       var result = await controller.getRegisterByCrew(idCrew: idCrew);
-      registers = result;
-      loading = false;
+      value = RegisterListSuccessState(registers: result);
     } on RegisterError catch (e) {
-      loading = false;
-      messageError = e.message;
+      value = RegisterErrorState();
     } catch (e) {
-      loading = false;
-      messageError = "Ocorreu um erro desconhecido";
+      value = RegisterErrorState();
     }
   }
 }

@@ -5,18 +5,14 @@ import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_crew_controller.dart';
 import 'package:kas_app/app/controllers/interfaces/i_student_controller.dart';
 import 'package:kas_app/app/models/student.dart';
+import 'package:kas_app/app/view/student/store/student_states.dart';
 import 'package:kas_app/core/errors/kas_error.dart';
-import 'package:mobx/mobx.dart';
 
 import '../../../models/crew.dart';
 
-part 'student_create_store.g.dart';
+class StudentCreateStore extends ValueNotifier<StudentState> {
+  StudentCreateStore() : super(StudentCreateLoadingState());
 
-// This is the class used by rest of your codebase
-class StudentCreateStore = _StudentCreateStore with _$StudentCreateStore;
-
-// The store-class
-abstract class _StudentCreateStore with Store {
   final IStudentController controller = GetIt.I<IStudentController>();
   final ICrewController controllerCrew = GetIt.I<ICrewController>();
 
@@ -27,7 +23,6 @@ abstract class _StudentCreateStore with Store {
   final TextEditingController schoolGradeController = TextEditingController();
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController addressStreetController = TextEditingController();
   final TextEditingController addressNumberController = TextEditingController();
   final TextEditingController addressCityController = TextEditingController();
   final TextEditingController nationalityController = TextEditingController();
@@ -35,108 +30,48 @@ abstract class _StudentCreateStore with Store {
   final TextEditingController addressDistrictController =
       TextEditingController();
   final TextEditingController allergyController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController dateCreateController = TextEditingController();
+  final TextEditingController dateBirthdayController = TextEditingController();
   bool useOfImageController = true;
   bool activeController = true;
-  DateTime dateCreateController = DateTime.now(); // 28/03/2020
-  DateTime bithdayController = DateTime.now(); // 28/03/2020
+  DateTime dateCreate = DateTime.now(); // 28/03/2020
+  DateTime dateBirthday = DateTime.now(); // 28/03/2020
   Crew? crewInitial;
-  String? typeSponsor;
-
+  String typeSponsorSelected = '';
   bool isEdit = false;
 
-  @observable
-  bool loading = false;
-
-  @observable
-  bool success = false;
-
-  @observable
   List<Crew> crews = [];
+  List<String> selectedCrews = [];
 
-  @observable
-  List<Widget> itensCrews = [];
-
-  @observable
-  List<Widget> itensSponsor = [];
-
-  @observable
-  String? messageError;
-
-  @action
   Future<void> createStudent(
       {required bool isEdit, required Student student}) async {
     try {
-      loading = true;
-      var result = isEdit
-          ? await controller.updateStudent(studentEdit: student)
-          : await controller.postStudent(student: student);
-      success = result;
-      loading = false;
+      value = StudentCreateLoadingState();
+      isEdit
+          ? await controller.updateStudent(
+              studentEdit: student, crews: selectedCrews)
+          : await controller.postStudent(
+              student: student, crews: selectedCrews);
+      value = StudentCreateSuccessState();
     } on StudentError catch (e) {
-      loading = false;
-      messageError = e.message;
+      value = StudentCreateErrorState(message: e.message);
     } catch (e) {
-      loading = false;
-      messageError = "Ocorreu um erro desconhecido";
+      value = StudentCreateErrorState(message: 'Ocorreu um erro');
     }
   }
 
-  @action
-  Future<void> getCrews({Student? studentEdit, int? crewId}) async {
+  Future<void> getCrews({Student? studentEdit}) async {
     try {
-      loading = true;
+      value = StudentCreateLoadingState();
       await Future.delayed(Duration(seconds: 1));
       var result = await controllerCrew.getCrews();
       crews = result;
-      crews.forEach((element) {
-        itensCrews.add(CheckboxListTile(
-          title: Text("${element.name}    -    ${element.key}"),
-          value: false,
-          onChanged: (value) {},
-        ));
-      });
-      itensSponsor = [
-        RadioListTile(
-            groupValue: '',
-            onChanged: (value) {},
-            title: Text('Pai'),
-            value: false),
-        RadioListTile(
-            groupValue: '',
-            onChanged: (value) {},
-            title: Text('Mãe'),
-            value: false),
-        RadioListTile(
-            groupValue: '',
-            onChanged: (value) {},
-            title: Text('Avo(ó)'),
-            value: false),
-        RadioListTile(
-            groupValue: '',
-            onChanged: (value) {},
-            title: Text('Irmão(a)'),
-            value: false),
-        RadioListTile(
-            groupValue: '',
-            onChanged: (value) {},
-            title: Text('Outro'),
-            value: false),
-      ];
-      if (studentEdit != null) {
-        // crewInitial =
-        //     crews.firstWhere((element) => element.id == studentEdit.crew.id);
-      }
-      if (crewId != null) {
-        crewInitial = crews.firstWhere((element) => element.id == crewId);
-      }
-      loading = false;
+      selectedCrews = studentEdit != null ? studentEdit.crews! : [];
+      value = StudentCreateSuccessState();
     } on CrewError catch (e) {
-      loading = false;
-      messageError = e.message;
+      value = StudentCreateErrorState(message: e.message);
     } catch (e) {
-      loading = false;
-      messageError = "Ocorreu um erro desconhecido";
+      value = StudentCreateErrorState(message: 'Ocorreu um erro');
     }
   }
 }
