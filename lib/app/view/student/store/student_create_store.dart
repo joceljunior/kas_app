@@ -24,6 +24,7 @@ class StudentCreateStore extends ValueNotifier<StudentState> {
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController addressNumberController = TextEditingController();
+  final TextEditingController complementController = TextEditingController();
   final TextEditingController addressCityController = TextEditingController();
   final TextEditingController nationalityController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();

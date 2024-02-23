@@ -28,6 +28,8 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
   @override
   void initState() {
     store.getCrews(studentEdit: widget.studentEdit);
+    store.dateCreateController.text =
+        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
 
     if (widget.studentEdit != null) {
       store.isEdit = true;
@@ -133,7 +135,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 color: Colors.blue),
                                             SizedBox(width: 8),
                                             Text(
-                                              'Informações da Aluna(o)',
+                                              'Informações do(a) Aluna(o)',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold),
@@ -152,7 +154,8 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                         SizedBox(height: 5),
                                         TextFormFieldWidget(
-                                          hintText: "Nome",
+                                          hintText:
+                                              "Nome Completo do(a) Aluno(a)",
                                           controller:
                                               store.nameStudentController,
                                           validator: (String? value) {
@@ -165,7 +168,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         TextFormFieldWidget(
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
-                                              return "Nome do aluno é obrigatório";
+                                              return "Data de Nascimento é obrigatório";
                                             }
                                             return null;
                                           },
@@ -173,6 +176,24 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               store.dateBirthdayController,
                                           keyboardType: TextInputType.datetime,
                                           hintText: 'Data de Nascimento',
+                                          onChanged: (text) {
+                                            if (text.length <= 10) {
+                                              // Limita o comprimento máximo do texto
+                                              if (text.length == 2 ||
+                                                  text.length == 5) {
+                                                if (!text.endsWith('/')) {
+                                                  // Verifica se a barra final já está presente
+                                                  store.dateBirthdayController
+                                                      .text = text + '/';
+                                                  store.dateBirthdayController
+                                                          .selection =
+                                                      TextSelection.collapsed(
+                                                          offset:
+                                                              text.length + 1);
+                                                }
+                                              }
+                                            }
+                                          },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Escola",
@@ -289,7 +310,8 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           ],
                                         ),
                                         TextFormFieldWidget(
-                                          hintText: "Nome do Responsável",
+                                          hintText:
+                                              "Nome do Completo do Responsável",
                                           controller:
                                               store.responsibleController,
                                           validator: (String? value) {
@@ -372,6 +394,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           },
                                         ),
                                         TextFormFieldWidget(
+                                          hintText: "Complemento",
+                                          keyboardType: TextInputType.number,
+                                          controller:
+                                              store.complementController,
+                                          validator: (String? value) {
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormFieldWidget(
                                           hintText: "Bairro",
                                           controller:
                                               store.addressDistrictController,
@@ -423,7 +454,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         SizedBox(height: 5),
                                         TextFormFieldWidget(
                                           hintText:
-                                              "Possui alguma Alergia ou Restrição Alimentar?",
+                                              "Alergia ou Restrição Alimentar?",
                                           controller: store.allergyController,
                                           validator: (String? value) {
                                             return null;
@@ -439,8 +470,40 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           controller:
                                               store.dateCreateController,
                                           keyboardType: TextInputType.datetime,
-                                          hintText: 'Data do Registro',
+                                          hintText: 'Data da Matrícula',
                                         ),
+                                        ExpansionTile(
+                                          title: Text('Turmas'),
+                                          children: getCrews(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                Card(
+                                  elevation: 5,
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(18.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.task_alt_sharp,
+                                                color: Colors.blue),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Uso de Imagem',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 5),
                                         Row(
                                           children: [
                                             Checkbox(
@@ -452,18 +515,16 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                         value!;
                                                   });
                                                 }),
-                                            Text(
-                                              "AUTORIZO O USO DE IMAGEM",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15,
+                                            Expanded(
+                                              child: Text(
+                                                "Você autoriza o uso de imagem do(a) aluno(a) em publicações realizadas exclusivamente nos perfis oficiais da escola (WhatsApp, Facebook, Instagram)?",
+                                                // style: TextStyle(
+                                                //   fontWeight: FontWeight.bold,
+                                                //   fontSize: 15,
+                                                // ),
                                               ),
                                             )
                                           ],
-                                        ),
-                                        ExpansionTile(
-                                          title: Text('Turmas'),
-                                          children: getCrews(),
                                         ),
                                       ],
                                     ),
@@ -570,39 +631,23 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
       final text = store.dateBirthdayController.text;
 
       if (text.length == 2 || text.length == 5) {
-        store.dateBirthdayController.text = text + '/';
-        store.dateBirthdayController.selection =
-            TextSelection.collapsed(offset: text.length + 1);
-      }
-      if (text.length == 10) {
-        final DateFormat format = DateFormat('dd/MM/yyyy');
-        try {
-          final DateTime dateTime = format.parse(text);
-          // Faça algo com a dateTime, como atribuir ao store.dateBirthday
-          store.dateBirthday = dateTime;
-          debugPrint(store.dateBirthday.toString());
-        } catch (e) {
-          print('Erro ao analisar a data: $e');
+        if (!text.endsWith('/')) {
+          store.dateBirthdayController.text = text + '/';
+          store.dateBirthdayController.selection =
+              TextSelection.collapsed(offset: text.length + 1);
         }
       }
     });
-    store.dateCreateController.addListener(() {
-      final text = store.dateCreateController.text;
 
-      if (text.length == 2 || text.length == 5) {
-        store.dateCreateController.text = text + '/';
-        store.dateCreateController.selection =
-            TextSelection.collapsed(offset: text.length + 1);
-      }
-      if (text.length == 10) {
-        final DateFormat format = DateFormat('dd/MM/yyyy');
-        try {
-          final DateTime dateTime = format.parse(text);
-          // Faça algo com a dateTime, como atribuir ao store.dateBirthday
-          store.dateCreate = dateTime;
-          debugPrint(store.dateCreate.toString());
-        } catch (e) {
-          print('Erro ao analisar a data: $e');
+    store.dateBirthdayController.addListener(() {
+      final text = store.dateBirthdayController.text;
+
+      if (text.length == 4 || text.length == 7) {
+        if (text.endsWith('/')) {
+          store.dateBirthdayController.text =
+              text.substring(0, text.length - 1);
+          store.dateBirthdayController.selection =
+              TextSelection.collapsed(offset: text.length - 1);
         }
       }
     });

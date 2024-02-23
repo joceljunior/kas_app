@@ -72,6 +72,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('telephone', student.telephone);
       backendStudent.set('address', student.address);
       backendStudent.set('addressNumber', int.parse(student.addressNumber));
+      backendStudent.set('complement', student.complement);
       backendStudent.set('addressDistrict', student.addressDistrict);
       backendStudent.set('addressCity', student.addressCity);
       backendStudent.set('birthday', student.birthday);

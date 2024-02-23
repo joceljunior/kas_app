@@ -16,6 +16,7 @@ class Student {
   final String telephone;
   final String address;
   final String addressNumber;
+  final String? complement;
   final String addressDistrict;
   final String addressCity;
   final DateTime birthday;
@@ -36,6 +37,7 @@ class Student {
     required this.telephone,
     required this.address,
     required this.addressNumber,
+    this.complement,
     required this.addressDistrict,
     required this.addressCity,
     required this.birthday,
@@ -59,6 +61,7 @@ class Student {
       address: map['address'],
       addressDistrict: map['addressDistrict'],
       addressNumber: map['addressNumber'].toString(),
+      complement: map['complement'].toString(),
       addressCity: map['addressCity'],
       birthday: map['birthday'],
       allergy: map['allergy'],

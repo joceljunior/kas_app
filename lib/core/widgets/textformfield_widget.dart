@@ -7,6 +7,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool? obscureText;
   final String? Function(String value)? validator;
+  final Function(String value)? onChanged;
   const TextFormFieldWidget({
     Key? key,
     this.maxLines,
@@ -15,6 +16,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.keyboardType,
     this.obscureText,
     required this.validator,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -28,15 +30,19 @@ class TextFormFieldWidget extends StatelessWidget {
         obscureText: obscureText != null ? obscureText! : false,
         keyboardType: keyboardType,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black54),
+          labelText: hintText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
           filled: true,
           hintStyle: TextStyle(color: Color.fromARGB(255, 161, 165, 169)),
-          hintText: hintText,
+          // hintText: hintText,
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
           fillColor: Colors.white70,
         ),
         validator: validator as String? Function(String?),
+        onChanged: onChanged,
       ),
     );
   }
