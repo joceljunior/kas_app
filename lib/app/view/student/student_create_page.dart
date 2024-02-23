@@ -30,7 +30,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
   void initState() {
     store.getCrews(studentEdit: widget.studentEdit);
     store.dateCreateController.text =
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+        '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
 
     if (widget.studentEdit != null) {
       store.isEdit = true;
@@ -51,9 +51,9 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
           ? ""
           : widget.studentEdit!.schoolGrade!;
       store.dateBirthdayController.text =
-          '${widget.studentEdit!.birthday.day}/${widget.studentEdit!.birthday.month}/${widget.studentEdit!.birthday.year}';
+          '${widget.studentEdit!.birthday.day.toString().padLeft(2, '0')}/${widget.studentEdit!.birthday.month.toString().padLeft(2, '0')}/${widget.studentEdit!.birthday.year}';
       store.dateCreateController.text =
-          '${widget.studentEdit!.dateregistry.day}/${widget.studentEdit!.dateregistry.month}/${widget.studentEdit!.dateregistry.year}';
+          '${widget.studentEdit!.dateregistry.day.toString().padLeft(2, '0')}/${widget.studentEdit!.dateregistry.month.toString().padLeft(2, '0')}/${widget.studentEdit!.dateregistry.year}';
       store.responsibleController.text = widget.studentEdit!.responsible;
       store.activeController = widget.studentEdit!.active;
       store.useOfImageController = widget.studentEdit!.useImage ? 'Sim' : 'Não';
