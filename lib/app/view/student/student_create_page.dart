@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:kas_app/app/view/student/store/student_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
@@ -74,7 +75,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    listenerDates();
+    // listenerDates();
     var size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -170,30 +171,21 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             if (value!.isEmpty) {
                                               return "Data de Nascimento é obrigatório";
                                             }
+                                            // Define o padrão regex para o formato dd/mm/yyyy
+                                            final RegExp dateRegex =
+                                                RegExp(r'^\d{2}/\d{2}/\d{4}$');
+                                            // Verifica se o valor inserido corresponde ao padrão regex
+                                            if (!dateRegex.hasMatch(value)) {
+                                              return 'Formato inválido. Use dd/mm/yyyy';
+                                            }
                                             return null;
                                           },
                                           controller:
                                               store.dateBirthdayController,
                                           keyboardType: TextInputType.datetime,
-                                          hintText: 'Data de Nascimento',
-                                          onChanged: (text) {
-                                            if (text.length <= 10) {
-                                              // Limita o comprimento máximo do texto
-                                              if (text.length == 2 ||
-                                                  text.length == 5) {
-                                                if (!text.endsWith('/')) {
-                                                  // Verifica se a barra final já está presente
-                                                  store.dateBirthdayController
-                                                      .text = text + '/';
-                                                  store.dateBirthdayController
-                                                          .selection =
-                                                      TextSelection.collapsed(
-                                                          offset:
-                                                              text.length + 1);
-                                                }
-                                              }
-                                            }
-                                          },
+                                          hintText:
+                                              'Data de Nascimento (dd/mm/yyyy)',
+                                          onChanged: (text) {},
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Escola",
@@ -408,7 +400,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               store.addressDistrictController,
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
-                                              return "Telefone é obrigatório";
+                                              return "Bairro é obrigatório";
                                             }
                                             return null;
                                           },
@@ -419,7 +411,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               store.addressCityController,
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
-                                              return "Telefone é obrigatório";
+                                              return "Cidade é obrigatório";
                                             }
                                             return null;
                                           },
@@ -463,7 +455,14 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         TextFormFieldWidget(
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
-                                              return "Data de registro é obrigatório";
+                                              return "Data de Matrícula é obrigatório";
+                                            }
+                                            // Define o padrão regex para o formato dd/mm/yyyy
+                                            final RegExp dateRegex =
+                                                RegExp(r'^\d{2}/\d{2}/\d{4}$');
+                                            // Verifica se o valor inserido corresponde ao padrão regex
+                                            if (!dateRegex.hasMatch(value)) {
+                                              return 'Formato inválido. Use dd/mm/yyyy';
                                             }
                                             return null;
                                           },
@@ -624,33 +623,6 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
             }),
       ),
     );
-  }
-
-  listenerDates() {
-    store.dateBirthdayController.addListener(() {
-      final text = store.dateBirthdayController.text;
-
-      if (text.length == 2 || text.length == 5) {
-        if (!text.endsWith('/')) {
-          store.dateBirthdayController.text = text + '/';
-          store.dateBirthdayController.selection =
-              TextSelection.collapsed(offset: text.length + 1);
-        }
-      }
-    });
-
-    store.dateBirthdayController.addListener(() {
-      final text = store.dateBirthdayController.text;
-
-      if (text.length == 4 || text.length == 7) {
-        if (text.endsWith('/')) {
-          store.dateBirthdayController.text =
-              text.substring(0, text.length - 1);
-          store.dateBirthdayController.selection =
-              TextSelection.collapsed(offset: text.length - 1);
-        }
-      }
-    });
   }
 
   List<Widget> getCrews() {

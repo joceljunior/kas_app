@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   final int? maxLines;
@@ -8,6 +9,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool? obscureText;
   final String? Function(String value)? validator;
   final Function(String value)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
   const TextFormFieldWidget({
     Key? key,
     this.maxLines,
@@ -17,6 +19,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.obscureText,
     required this.validator,
     this.onChanged,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -29,6 +32,7 @@ class TextFormFieldWidget extends StatelessWidget {
         maxLines: maxLines,
         obscureText: obscureText != null ? obscureText! : false,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           labelStyle: TextStyle(color: Colors.black54),
           labelText: hintText,

@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       body: ValueListenableBuilder(
         valueListenable: store,
         builder: (_, state, child) {
-          if (store.loading) {
+          if (state is HomeStateLoading) {
             return Center(child: CircularProgressIndicator());
           }
           if (state is HomeStateSuccess) {
@@ -60,27 +60,33 @@ class _HomePageState extends State<HomePage> {
                         ButtonMenuWidget(
                             image: 'assets/call.png',
                             title: 'Chamadas',
-                            ontap: () {
-                              Navigator.of(context).pushNamed(
-                                crewListPage,
-                                arguments: ParamsEnum.register,
-                              );
+                            ontap: () async {
+                              await Navigator.of(context)
+                                  .pushNamed(
+                                    crewListPage,
+                                    arguments: ParamsEnum.register,
+                                  )
+                                  .then((value) => store.getTotals());
                             }),
                         ButtonMenuWidget(
                             image: 'assets/crew.png',
                             title: 'Turmas',
-                            ontap: () {
-                              Navigator.of(context).pushNamed(
-                                crewListPage,
-                                arguments: ParamsEnum.crew,
-                              );
+                            ontap: () async {
+                              await Navigator.of(context)
+                                  .pushNamed(
+                                    crewListPage,
+                                    arguments: ParamsEnum.crew,
+                                  )
+                                  .then((value) => store.getTotals());
                             }),
                         ButtonMenuWidget(
                             image: 'assets/bailarina.png',
                             title: 'Alunos',
-                            ontap: () {
-                              Navigator.of(context).pushNamed(studentListPage,
-                                  arguments: ParamsEnum.student);
+                            ontap: () async {
+                              await Navigator.of(context)
+                                  .pushNamed(studentListPage,
+                                      arguments: ParamsEnum.student)
+                                  .then((value) => store.getTotals());
                             }),
                         ButtonMenuWidget(
                             image: 'assets/report.png',
@@ -102,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          print(state);
+
           return Container();
         },
       ),
