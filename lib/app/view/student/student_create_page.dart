@@ -56,7 +56,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
           '${widget.studentEdit!.dateregistry.day}/${widget.studentEdit!.dateregistry.month}/${widget.studentEdit!.dateregistry.year}';
       store.responsibleController.text = widget.studentEdit!.responsible;
       store.activeController = widget.studentEdit!.active;
-      store.useOfImageController = widget.studentEdit!.useImage;
+      store.useOfImageController = widget.studentEdit!.useImage ? 'Sim' : 'Não';
       store.telephoneController.text = widget.studentEdit!.telephone;
     }
 
@@ -495,7 +495,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 color: Colors.blue),
                                             SizedBox(width: 8),
                                             Text(
-                                              'Uso de Imagem',
+                                              'Autorização para uso de imagem',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold),
@@ -503,27 +503,32 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           ],
                                         ),
                                         SizedBox(height: 5),
-                                        Row(
-                                          children: [
-                                            Checkbox(
-                                                value:
-                                                    store.useOfImageController,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    store.useOfImageController =
-                                                        value!;
-                                                  });
-                                                }),
-                                            Expanded(
-                                              child: Text(
-                                                "Você autoriza o uso de imagem do(a) aluno(a) em publicações realizadas exclusivamente nos perfis oficiais da escola (WhatsApp, Facebook, Instagram)?",
-                                                // style: TextStyle(
-                                                //   fontWeight: FontWeight.bold,
-                                                //   fontSize: 15,
-                                                // ),
-                                              ),
-                                            )
-                                          ],
+                                        Text(
+                                          "Você autoriza o uso de imagem do(a) aluno(a) em publicações realizadas exclusivamente nos perfis oficiais da escola (WhatsApp, Facebook, Instagram)?",
+                                        ),
+                                        RadioListTile(
+                                          groupValue:
+                                              store.useOfImageController,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              store.useOfImageController =
+                                                  value!;
+                                            });
+                                          },
+                                          title: Text('Sim'),
+                                          value: 'Sim',
+                                        ),
+                                        RadioListTile(
+                                          groupValue:
+                                              store.useOfImageController,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              store.useOfImageController =
+                                                  value!;
+                                            });
+                                          },
+                                          title: Text('Não'),
+                                          value: 'Não',
                                         ),
                                       ],
                                     ),
@@ -587,7 +592,10 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             : store.schoolNameController.text,
                                         telephone:
                                             store.telephoneController.text,
-                                        useImage: store.useOfImageController,
+                                        useImage:
+                                            store.useOfImageController == 'Sim'
+                                                ? true
+                                                : false,
                                         cpf: store.cpfController.text,
                                         nationality:
                                             store.nationalityController.text,

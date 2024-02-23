@@ -33,7 +33,7 @@ class StudentCreateStore extends ValueNotifier<StudentState> {
   final TextEditingController allergyController = TextEditingController();
   final TextEditingController dateCreateController = TextEditingController();
   final TextEditingController dateBirthdayController = TextEditingController();
-  bool useOfImageController = true;
+  String useOfImageController = 'Sim';
   bool activeController = true;
   DateTime dateCreate = DateTime.now(); // 28/03/2020
   DateTime dateBirthday = DateTime.now(); // 28/03/2020
