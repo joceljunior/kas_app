@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/models/register.dart';
+import 'package:kas_app/app/view/register/states/register_states.dart';
 import 'package:kas_app/app/view/register/store/register_create_store.dart';
 import 'package:kas_app/app/view/register/widgets/student_register_item_widget.dart';
 import 'package:kas_app/core/widgets/button_widget.dart';
@@ -8,10 +9,10 @@ import 'package:kas_app/core/widgets/button_widget.dart';
 import '../../../core/widgets/textformfield_widget.dart';
 
 class RegisterCreatePage extends StatefulWidget {
-  final String crewId;
+  final Register register;
   const RegisterCreatePage({
     super.key,
-    required this.crewId,
+    required this.register,
   });
 
   @override
@@ -23,10 +24,9 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
 
   @override
   void initState() {
-    // widget.register != null
-    //     ? store.getStudentsToEdit(register: widget.register)
-    //     :
-    store.getStudents(idCrew: widget.crewId);
+    widget.register.studentRegisters.isNotEmpty
+        ? store.getStudentsToEdit(register: widget.register)
+        : store.getStudents(idCrew: widget.register.crewId);
 
     super.initState();
   }
@@ -51,17 +51,18 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
       body: ValueListenableBuilder(
           valueListenable: store,
           builder: (_, state, child) {
-            if (store.messageError != null) {
+            if (state is RegisterErrorState) {
               return Center(
-                child: Text(store.messageError!),
+                child: Text('Ocorreu um erro!'),
               );
             }
 
-            if (store.loading) {
+            if (state is RegisterLoadingState) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else {
+            }
+            if (state is RegisterSuccessState) {
               return SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,9 +72,9 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: ListView.builder(
-                          itemCount: store.students.length,
+                          itemCount: state.students.length,
                           itemBuilder: (context, index) {
-                            var student = store.students[index];
+                            var student = state.students[index];
                             return StudentRegisterItemWidget(
                               student: student,
                               ontapParticipation: (bool value) {
@@ -148,17 +149,19 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                         width: size.width,
                         height: size.height * 0.08,
                         click: () async {
-                          store.dateReference = await showDatePicker(
+                          store.dateRegister = await showDatePicker(
                             helpText: "SELECIONE A DATA DA CHAMADA",
                             context: context,
                             initialDate: store.isEdit
-                                ? store.dateReference!
+                                ? store.dateRegister!
                                 : DateTime.now(),
                             firstDate: DateTime(2000, 01, 01),
                             lastDate: DateTime(3000, 31, 12),
                           );
-                          if (store.dateReference != null) {
-                            await store.postRegister(crewId: widget.crewId);
+                          if (store.dateRegister != null) {
+                            await store.postRegister(
+                              crewId: widget.register.crewId,
+                            );
                             Navigator.of(context).pop();
                           }
                         },
@@ -168,6 +171,7 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                 ),
               );
             }
+            return Container();
           }),
     );
   }

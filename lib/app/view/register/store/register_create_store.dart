@@ -15,52 +15,42 @@ class RegisterCreateStore extends ValueNotifier<RegisterState> {
   final IRegisterController controllerRegister = GetIt.I<IRegisterController>();
 
   final TextEditingController justificationController = TextEditingController();
+  DateTime? dateRegister;
   bool isEdit = false;
-  bool register = false;
-  DateTime? dateReference;
-  bool loading = false;
   List<StudentRegister> studentsRegisters = [];
   List<Student> students = [];
-  String? messageError;
 
   Future<void> getStudents({required String idCrew}) async {
     try {
       value = RegisterLoadingState();
+      isEdit = false;
       await Future.delayed(Duration(seconds: 1));
       var result = await controllerStudent.getStudentsByCrew(idCrew: idCrew);
-
       students = result;
-      value = RegisterSuccessState();
+
+      value = RegisterSuccessState(students: result);
     } catch (e) {
       value = RegisterErrorState();
-      messageError = "Ocorreu um erro desconhecido";
     }
   }
 
-  // Future<void> getStudentsToEdit({required Register register}) async {
-  //   try {
-  //     loading = true;
-  //     isEdit = true;
-  //     dateReference = register.dateRegister;
-  //     await Future.delayed(Duration(seconds: 1));
-  //     var result = await controllerStudent.getStudentsByRegister(
-  //         idCrew: register.registers.first.crewId, dateRegister: register.date);
-  //     for (var students in result) {
-  //       var item =
-  //           register.registers.where((y) => y.studentId == students.id).first;
-  //       students.isRegister = item.participation;
-  //       students.justification = item.justification;
-  //     }
-  //     students = result;
-  //     loading = false;
-  //   } on StudentError catch (e) {
-  //     loading = false;
-  //     messageError = e.message;
-  //   } catch (e) {
-  //     loading = false;
-  //     messageError = "Ocorreu um erro desconhecido";
-  //   }
-  // }
+  Future<void> getStudentsToEdit({required Register register}) async {
+    try {
+      value = RegisterLoadingState();
+      isEdit = true;
+      students = [];
+      for (var element in register.studentRegisters) {
+        var result = await controllerStudent.getStudentsById(
+            idStudent: element.studentId);
+        result.isRegister = element.participation;
+        result.justification = element.justification;
+        students.add(result);
+      }
+      value = RegisterSuccessState(students: students);
+    } catch (e) {
+      value = RegisterErrorState();
+    }
+  }
 
   Future<void> postRegister({required String crewId}) async {
     try {
@@ -75,18 +65,12 @@ class RegisterCreateStore extends ValueNotifier<RegisterState> {
 
       await controllerRegister.postRegister(
         studentsRegister: studentsRegisters,
-        dateRegister: dateReference!,
-        isEdit: isEdit,
+        dateRegister: dateRegister!,
+        isEdit: false,
         crewId: crewId,
       );
-
-      loading = false;
-    } on StudentError catch (e) {
-      loading = false;
-      messageError = e.message;
     } catch (e) {
-      loading = false;
-      messageError = "Ocorreu um erro desconhecido";
+      value = RegisterErrorState();
     }
   }
 }

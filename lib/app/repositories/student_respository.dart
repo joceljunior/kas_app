@@ -178,18 +178,22 @@ class StudentRpository implements IStudentRepository {
   }
 
   @override
-  Future<List<Student>> getStudentsByRegister(
-      {required String dateRegister, required String idCrew}) async {
+  Future<Student> getStudentsById({required String idStudent}) async {
     try {
-      var url = "$studentsByRegisterGetUrl$dateRegister/$idCrew";
-      var result = await httpService.get(url);
-      var obj = (result.data as List).map((e) => Student.fromJson(e)).toList();
-      return obj;
-    } on DioError catch (e) {
-      var message = e.response!.data['message'];
-      throw StudentError(message: message);
+      final QueryBuilder<ParseObject> studentsQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..whereEqualTo('objectId', idStudent);
+      final ParseResponse response = await studentsQuery.query();
+
+      if (response.success &&
+          response.results != null &&
+          response.results!.isNotEmpty) {
+        return Student.fromJson(response.results!.first);
+      } else {
+        throw Exception('Nenhum aluno encontrado com o ID especificado');
+      }
     } catch (e) {
-      throw Exception();
+      throw Exception('Erro ao buscar aluno por ID: $e');
     }
   }
 

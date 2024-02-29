@@ -19,7 +19,8 @@ class _RegisterListPageState extends State<RegisterListPage> {
   final RegisterListStore store = RegisterListStore();
   @override
   void initState() {
-    store.getRegister(idCrew: widget.crew.id!);
+    store.register.crewId = widget.crew.id!;
+    store.getRegister(idCrew: store.register.crewId);
 
     super.initState();
   }
@@ -60,7 +61,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
               backgroundColor: Colors.blue[200],
               onPressed: () async {
                 await Navigator.of(context)
-                    .pushNamed(registerCreatePage, arguments: widget.crew.id)
+                    .pushNamed(registerCreatePage, arguments: store.register)
                     .then((value) {
                   store.getRegister(idCrew: widget.crew.id!);
                 });
@@ -81,7 +82,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
                 child: Text('Ocorreu uma erro'),
               );
             }
-            if (store.loading) {
+            if (state is RegisterLoadingState) {
               return Center(
                 child: CircularProgressIndicator(),
               );

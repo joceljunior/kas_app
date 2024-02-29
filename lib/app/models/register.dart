@@ -2,10 +2,10 @@ import 'package:kas_app/app/models/student_register.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class Register {
-  final String? id;
-  final String crewId;
-  final List<StudentRegister> studentRegisters;
-  final DateTime dateRegister;
+  String? id;
+  String crewId;
+  List<StudentRegister> studentRegisters;
+  DateTime dateRegister;
 
   Register({
     this.id,

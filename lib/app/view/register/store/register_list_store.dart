@@ -12,6 +12,8 @@ class RegisterListStore extends ValueNotifier<RegisterState> {
   final IRegisterController controller = GetIt.I<IRegisterController>();
 
   bool loading = false;
+  Register register =
+      Register(crewId: '', studentRegisters: [], dateRegister: DateTime.now());
 
   Future<void> getRegister({required String idCrew}) async {
     try {

@@ -76,16 +76,10 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<List<Student>> getStudentsByRegister(
-      {required DateTime dateRegister, required String idCrew}) async {
+  Future<Student> getStudentsById({required String idStudent}) async {
     try {
-      String date =
-          "${dateRegister.year}-${dateRegister.month}-${dateRegister.day}";
-      var result = await repository.getStudentsByRegister(
-          dateRegister: date, idCrew: idCrew);
-      if (result.isEmpty) {
-        throw StudentError(message: "Esta turma não tem alunos cadastrados");
-      }
+      var result = await repository.getStudentsById(idStudent: idStudent);
+
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);

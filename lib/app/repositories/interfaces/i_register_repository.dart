@@ -5,5 +5,6 @@ abstract class IRegisterRepository {
     required Register register,
     required bool isEdit,
   });
+
   Future<List<Register>> getRegisterByCrew({required String idCrew});
 }

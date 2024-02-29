@@ -63,10 +63,10 @@ class KasRouter {
         );
 
       case registerCreatePage:
-        var crewId = args as String;
+        var regioster = args as Register;
         return MaterialPageRoute(
           builder: (_) => RegisterCreatePage(
-            crewId: crewId,
+            register: regioster,
           ),
         );
 
