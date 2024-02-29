@@ -63,6 +63,12 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
     super.initState();
   }
 
+  String toTitleCase(String text) {
+    return text.replaceAllMapped(RegExp(r'\b\w'), (match) {
+      return match.group(0)!.toUpperCase();
+    });
+  }
+
   String formatDate(String input) {
     try {
       final dateTime = DateFormat('dd/MM/yyyy').parse(input);
@@ -165,6 +171,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
+                                          onChanged: (text) {
+                                            store.nameStudentController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
+                                          },
                                         ),
                                         TextFormFieldWidget(
                                           validator: (String? value) {
@@ -194,9 +209,20 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
+                                          onChanged: (text) {
+                                            store.schoolNameController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(
+                                                  text), // Converte o texto para o formato desejado
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
+                                          },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Ano Escolar",
+                                          keyboardType: TextInputType.text,
                                           controller:
                                               store.schoolGradeController,
                                           validator: (String? value) {
@@ -209,6 +235,16 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               store.nationalityController,
                                           validator: (String? value) {
                                             return null;
+                                          },
+                                          onChanged: (text) {
+                                            store.nationalityController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(
+                                                  text), // Converte o texto para o formato desejado
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
                                           },
                                         ),
                                       ],
@@ -303,7 +339,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                         TextFormFieldWidget(
                                           hintText:
-                                              "Nome do Completo do Responsável",
+                                              "Nome Completo do Responsável",
                                           controller:
                                               store.responsibleController,
                                           validator: (String? value) {
@@ -312,14 +348,31 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
+                                          onChanged: (text) {
+                                            store.responsibleController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(
+                                                  text), // Converte o texto para o formato desejado
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
+                                          },
                                         ),
                                         TextFormFieldWidget(
-                                          hintText: "CPF",
+                                          hintText: "CPF (Apenas números)",
                                           controller: store.cpfController,
                                           keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9]')),
+                                          ],
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
                                               return "CPF é obrigatório";
+                                            }
+                                            if (value.length != 11) {
+                                              return "CPF deve conter 11 dígitos";
                                             }
                                             return null;
                                           },
@@ -328,6 +381,10 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           hintText: "Telefone (DDD)",
                                           controller: store.telephoneController,
                                           keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9]')),
+                                          ],
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
                                               return "Telefone é obrigatório";
@@ -372,6 +429,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
+                                          onChanged: (text) {
+                                            store.addressController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
+                                          },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Número",
@@ -387,11 +453,20 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Complemento",
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           controller:
                                               store.complementController,
                                           validator: (String? value) {
                                             return null;
+                                          },
+                                          onChanged: (text) {
+                                            store.complementController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
                                           },
                                         ),
                                         TextFormFieldWidget(
@@ -404,6 +479,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
+                                          onChanged: (text) {
+                                            store.addressDistrictController
+                                                .value = TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
+                                          },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Cidade",
@@ -414,6 +498,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               return "Cidade é obrigatório";
                                             }
                                             return null;
+                                          },
+                                          onChanged: (text) {
+                                            store.addressCityController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
                                           },
                                         ),
                                       ],
@@ -443,13 +536,22 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 8),
                                         TextFormFieldWidget(
                                           hintText:
                                               "Alergia ou Restrição Alimentar?",
                                           controller: store.allergyController,
                                           validator: (String? value) {
                                             return null;
+                                          },
+                                          onChanged: (text) {
+                                            store.allergyController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .responsibleController
+                                                  .selection,
+                                            );
                                           },
                                         ),
                                         TextFormFieldWidget(

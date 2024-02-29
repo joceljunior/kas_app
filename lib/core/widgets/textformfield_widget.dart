@@ -26,7 +26,7 @@ class TextFormFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.only(bottom: size.height * 0.006),
+      padding: EdgeInsets.only(bottom: size.height * 0.02),
       child: TextFormField(
         controller: controller,
         maxLines: maxLines,
