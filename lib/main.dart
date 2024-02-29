@@ -15,7 +15,7 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  usePathUrlStrategy();
+  // usePathUrlStrategy();
   ServiceLocator.setup();
   Hive.registerAdapter<Session>(SessionAdapter());
   await Hive.initFlutter();

@@ -9,6 +9,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool? obscureText;
   final String? Function(String value)? validator;
   final Function(String value)? onChanged;
+  final Function()? onEditingComplete;
   final List<TextInputFormatter>? inputFormatters;
   const TextFormFieldWidget({
     Key? key,
@@ -19,6 +20,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.obscureText,
     required this.validator,
     this.onChanged,
+    this.onEditingComplete,
     this.inputFormatters,
   }) : super(key: key);
 
@@ -47,6 +49,7 @@ class TextFormFieldWidget extends StatelessWidget {
         ),
         validator: validator as String? Function(String?),
         onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
       ),
     );
   }

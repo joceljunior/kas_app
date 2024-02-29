@@ -544,14 +544,11 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.allergyController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .responsibleController
-                                                  .selection,
-                                            );
+                                          onEditingComplete: () {
+                                            final text =
+                                                store.allergyController.text;
+                                            store.allergyController.text =
+                                                toTitleCase(text);
                                           },
                                         ),
                                         TextFormFieldWidget(
