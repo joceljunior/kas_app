@@ -176,7 +176,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 TextEditingValue(
                                               text: toTitleCase(text),
                                               selection: store
-                                                  .responsibleController
+                                                  .nameStudentController
                                                   .selection,
                                             );
                                           },
@@ -215,7 +215,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               text: toTitleCase(
                                                   text), // Converte o texto para o formato desejado
                                               selection: store
-                                                  .responsibleController
+                                                  .schoolNameController
                                                   .selection,
                                             );
                                           },
@@ -242,7 +242,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                               text: toTitleCase(
                                                   text), // Converte o texto para o formato desejado
                                               selection: store
-                                                  .responsibleController
+                                                  .nationalityController
                                                   .selection,
                                             );
                                           },
@@ -434,8 +434,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 TextEditingValue(
                                               text: toTitleCase(text),
                                               selection: store
-                                                  .responsibleController
-                                                  .selection,
+                                                  .addressController.selection,
                                             );
                                           },
                                         ),
@@ -464,7 +463,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 TextEditingValue(
                                               text: toTitleCase(text),
                                               selection: store
-                                                  .responsibleController
+                                                  .complementController
                                                   .selection,
                                             );
                                           },
@@ -484,7 +483,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 .value = TextEditingValue(
                                               text: toTitleCase(text),
                                               selection: store
-                                                  .responsibleController
+                                                  .addressDistrictController
                                                   .selection,
                                             );
                                           },
@@ -504,7 +503,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 TextEditingValue(
                                               text: toTitleCase(text),
                                               selection: store
-                                                  .responsibleController
+                                                  .addressCityController
                                                   .selection,
                                             );
                                           },
@@ -544,11 +543,13 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onEditingComplete: () {
-                                            final text =
-                                                store.allergyController.text;
-                                            store.allergyController.text =
-                                                toTitleCase(text);
+                                          onChanged: (text) {
+                                            store.allergyController.value =
+                                                TextEditingValue(
+                                              text: toTitleCase(text),
+                                              selection: store
+                                                  .allergyController.selection,
+                                            );
                                           },
                                         ),
                                         TextFormFieldWidget(
