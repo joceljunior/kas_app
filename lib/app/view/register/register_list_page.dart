@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/view/register/states/register_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
 

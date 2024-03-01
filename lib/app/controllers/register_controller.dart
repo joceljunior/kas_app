@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls, depend_on_referenced_packages
 
-import "package:collection/collection.dart";
 import 'package:get_it/get_it.dart';
 
 import 'package:kas_app/app/controllers/interfaces/i_register_controller.dart';
@@ -14,7 +13,6 @@ class RegisterController implements IRegisterController {
   @override
   Future<List<Register>> getRegisterByCrew({required String idCrew}) async {
     try {
-      List<Register> registers = [];
       var result = await repository.getRegisterByCrew(idCrew: idCrew);
 
       if (result.isEmpty) {

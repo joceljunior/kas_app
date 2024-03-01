@@ -6,7 +6,6 @@ import 'package:kas_app/app/models/register.dart';
 import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/app/models/student_register.dart';
 import 'package:kas_app/app/view/register/states/register_states.dart';
-import '../../../../core/errors/kas_error.dart';
 
 class RegisterCreateStore extends ValueNotifier<RegisterState> {
   RegisterCreateStore() : super(RegisterLoadingState());
@@ -55,13 +54,13 @@ class RegisterCreateStore extends ValueNotifier<RegisterState> {
   Future<void> postRegister({required String crewId}) async {
     try {
       value = RegisterLoadingState();
-      students.forEach((element) {
+      for (var element in students) {
         var studentRegister = StudentRegister(
             participation: element.isRegister,
             studentId: element.id!,
             justification: element.justification);
         studentsRegisters.add(studentRegister);
-      });
+      }
 
       await controllerRegister.postRegister(
         studentsRegister: studentsRegisters,

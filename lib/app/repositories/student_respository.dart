@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/repositories/interfaces/i_student_repository.dart';
 import 'package:kas_app/app/models/student.dart';
-import 'package:kas_app/core/constants/urls.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../core/errors/kas_error.dart';
@@ -56,7 +55,7 @@ class StudentRpository implements IStudentRepository {
       }
       return [];
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       throw Exception();
     }
   }
@@ -65,8 +64,19 @@ class StudentRpository implements IStudentRepository {
   Future<bool> postStudent(
       {required Student student, required List<String> crews}) async {
     try {
+      // Enviar a foto para o Back4App e obter o URL da foto
+      final ParseFile parseFile = ParseFile(student.photo);
+      final ParseResponse fileResponse = await parseFile.save();
+
+      if (!fileResponse.success) {
+        throw Exception('Erro ao enviar a foto');
+      }
+
+      final String photoUrl = fileResponse.result['url'];
+
       var backendStudent = ParseObject('Student');
       backendStudent.set('name', student.name);
+      backendStudent.set('photo', photoUrl);
       backendStudent.set('schoolName', student.schoolName);
       backendStudent.set('schoolGrade', student.schoolGrade);
       backendStudent.set('telephone', student.telephone);
@@ -84,7 +94,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('nameResponsible', student.responsible);
       backendStudent.set('relationship', student.relationship);
       backendStudent.set('nationality', student.nationality);
-      var response = await backendStudent.save();
+      await backendStudent.save();
 
       for (String crew in crews) {
         ParseObject backendStudentCrews = ParseObject('StudentCrews')
@@ -172,7 +182,7 @@ class StudentRpository implements IStudentRepository {
       }
       return [];
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       throw Exception();
     }
   }
@@ -213,7 +223,7 @@ class StudentRpository implements IStudentRepository {
         return 0; // Retorna 0 se não houver alunos ativos
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       throw Exception();
     }
   }

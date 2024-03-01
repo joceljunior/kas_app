@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kas_app/app/view/student/store/student_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
@@ -7,6 +10,7 @@ import '../../models/student.dart';
 import 'store/student_create_store.dart';
 import '../../../core/widgets/button_widget.dart';
 import '../../../core/widgets/textformfield_widget.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class StudentCreatePage extends StatefulWidget {
   final Student? studentEdit;
@@ -83,6 +87,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
   Widget build(BuildContext context) {
     // listenerDates();
     var size = MediaQuery.of(context).size;
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         if (widget.isCreate != null) {
@@ -149,17 +154,47 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color.fromARGB(
-                                                255, 207, 203, 203),
-                                          ),
-                                          child: Icon(Icons.person_2_outlined,
-                                              size: size.height * 0.08),
+                                        SizedBox(height: 15),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // _showImagePicker(context);
+                                          },
+                                          child: Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Color.fromARGB(
+                                                    255, 207, 203, 203),
+                                              ),
+                                              child: ClipOval(
+                                                child: UniversalPlatform
+                                                            .isWeb &&
+                                                        store.imageFile != null
+                                                    ? Image.file(
+                                                        store.imageFile!,
+                                                        fit: BoxFit.cover,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                      )
+                                                    : Icon(
+                                                        Icons.person_2_outlined,
+                                                        size: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.08,
+                                                      ),
+                                              )),
                                         ),
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 15),
                                         TextFormFieldWidget(
                                           hintText:
                                               "Nome Completo do(a) Aluno(a)",
@@ -733,9 +768,51 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
     );
   }
 
+  void _showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Selecionar da Galeria'),
+                onTap: () {
+                  _getImage(context, ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Tirar Foto'),
+                onTap: () {
+                  _getImage(context, ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _getImage(BuildContext context, ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        store.imageFile = File(pickedFile.path);
+      });
+    }
+
+    Navigator.of(context).pop(); // Fechar o modal
+  }
+
   List<Widget> getCrews() {
     List<Widget> itensCrews = [];
-    store.crews.forEach((element) {
+    for (var element in store.crews) {
       itensCrews.add(CheckboxListTile(
         title: Text("${element.name}  -  ${element.key}"),
         value: store.selectedCrews.contains(element.id),
@@ -749,7 +826,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
           });
         },
       ));
-    });
+    }
 
     return itensCrews;
   }

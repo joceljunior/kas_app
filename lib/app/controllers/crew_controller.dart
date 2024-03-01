@@ -15,6 +15,7 @@ class CrewController implements ICrewController {
       if (result.isEmpty) {
         throw CrewError(message: "Nenhuma turma cadastrada!");
       }
+      result.sort((a, b) => a.name.compareTo(b.name));
       return result;
     } on CrewError catch (e) {
       throw CrewError(message: e.message);

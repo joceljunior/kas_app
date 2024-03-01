@@ -1,5 +1,4 @@
 import 'package:kas_app/app/models/register.dart';
-import 'package:kas_app/app/models/student.dart';
 import 'package:kas_app/app/models/student_register.dart';
 
 abstract class IRegisterController {

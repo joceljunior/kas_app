@@ -25,6 +25,7 @@ class StudentController implements IStudentController {
       if (result.isEmpty) {
         throw StudentError(message: "Nenhum aluno cadastrado!");
       }
+      result.sort((a, b) => a.name.compareTo(b.name));
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);
@@ -67,6 +68,7 @@ class StudentController implements IStudentController {
       if (result.isEmpty) {
         throw StudentError(message: "Esta turma não tem alunos cadastrados");
       }
+      result.sort((a, b) => a.name.compareTo(b.name));
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);

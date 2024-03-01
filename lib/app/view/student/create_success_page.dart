@@ -8,6 +8,7 @@ class CreateSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      // ignore: deprecated_member_use
       body: WillPopScope(
         onWillPop: () async {
           return false;

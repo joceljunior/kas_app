@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kas_app/app/controllers/interfaces/i_crew_controller.dart';
@@ -40,6 +42,7 @@ class StudentCreateStore extends ValueNotifier<StudentState> {
   Crew? crewInitial;
   String typeSponsorSelected = '';
   bool isEdit = false;
+  File? imageFile;
 
   List<Crew> crews = [];
   List<String> selectedCrews = [];

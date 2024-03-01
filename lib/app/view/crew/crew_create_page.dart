@@ -72,6 +72,7 @@ class _CrewCreatePageState extends State<CrewCreatePage> {
                   height: size.height * 0.08,
                   click: () async {
                     var crew = Crew(
+                        // ignore: prefer_null_aware_operators
                         id: widget.crewEdit != null
                             ? widget.crewEdit!.id
                             : null,

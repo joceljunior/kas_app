@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/core/constants/routes.dart';
 
 import '../../models/crew.dart';
 import 'store/crew_students_list_store.dart';
@@ -101,8 +102,15 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
                       itemCount: store.students.length,
                       itemBuilder: (context, index) {
                         var student = store.students[index];
-                        return StudentCrewItemWidget(
-                          student: student,
+                        return GestureDetector(
+                          onTap: () async {
+                            await Navigator.of(context).pushNamed(
+                                studentCreatePage,
+                                arguments: student);
+                          },
+                          child: StudentCrewItemWidget(
+                            student: student,
+                          ),
                         );
                       },
                     ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kas_app/app/view/app_widget.dart';
 import 'package:kas_app/core/database/boxes/session.dart';
 import 'package:kas_app/core/services/service_locator.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 void main() async {
@@ -15,7 +15,7 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
-  // usePathUrlStrategy();
+  usePathUrlStrategy();
   ServiceLocator.setup();
   Hive.registerAdapter<Session>(SessionAdapter());
   await Hive.initFlutter();

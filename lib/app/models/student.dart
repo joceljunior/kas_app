@@ -1,10 +1,10 @@
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:kas_app/app/models/crew.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class Student {
   final String? id;
+  final File? photo;
   final String name;
   List<String>? crews;
   final String responsible;
@@ -29,6 +29,7 @@ class Student {
   Student({
     this.id,
     required this.name,
+    this.photo,
     required this.crews,
     required this.responsible,
     required this.relationship,
@@ -53,6 +54,7 @@ class Student {
     return Student(
       id: map['objectId'],
       name: map['name'] ?? '',
+      photo: map['photo'],
       relationship: map['relationship'],
       responsible: map['nameResponsible'],
       schoolName: map['schoolName'],

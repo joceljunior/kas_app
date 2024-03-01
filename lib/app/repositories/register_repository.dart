@@ -37,7 +37,7 @@ class RegisterRepository implements IRegisterRepository {
           .toList();
       backendRegister.set('studentRegisters', studentRegistersData);
       backendRegister.set('dateregister', register.dateRegister);
-      var response = await backendRegister.save();
+      await backendRegister.save();
 
       return true;
     } catch (e) {

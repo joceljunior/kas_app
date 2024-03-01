@@ -33,11 +33,23 @@ class StudentRegisterItemWidget extends StatelessWidget {
             student.name,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          trailing: Checkbox(
-            onChanged: (bool? value) {
-              ontapParticipation(value!);
-            },
-            value: student.isRegister,
+          trailing: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                student.justification != null
+                    ? Icon(Icons.notification_important_sharp)
+                    : Container(),
+                Checkbox(
+                  onChanged: (bool? value) {
+                    ontapParticipation(value!);
+                  },
+                  value: student.isRegister,
+                ),
+              ],
+            ),
           ),
         ),
       ),

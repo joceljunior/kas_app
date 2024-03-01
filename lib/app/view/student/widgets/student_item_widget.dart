@@ -31,7 +31,32 @@ class StudentItemWidget extends StatelessWidget {
               student.name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            // subtitle: Text("Turma: "),
+            subtitle: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: MediaQuery.of(context).size.height * 0.007,
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  student.useImage == false
+                      ? Icon(
+                          Icons.no_photography_outlined,
+                          size: 18,
+                          color: Colors.redAccent,
+                        )
+                      : Container(),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  student.allergy.isNotEmpty && student.allergy != 'Não'
+                      ? Icon(
+                          Icons.warning_amber_outlined,
+                          size: 18,
+                          color: Colors.redAccent[100],
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
             trailing: GestureDetector(
               onTap: () {
                 onTapDelete();

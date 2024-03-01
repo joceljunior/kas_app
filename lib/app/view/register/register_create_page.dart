@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/models/register.dart';
 import 'package:kas_app/app/view/register/states/register_states.dart';
 import 'package:kas_app/app/view/register/store/register_create_store.dart';
@@ -106,6 +105,16 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.red)),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text("Cancelar"),
+                                              ),
+                                              ElevatedButton(
                                                 onPressed: () {
                                                   if (store
                                                           .justificationController
@@ -120,16 +129,6 @@ class _RegisterCreatePageState extends State<RegisterCreatePage> {
                                                   }
                                                 },
                                                 child: Text("Confirma"),
-                                              ),
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors.red)),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text("Cancelar"),
                                               ),
                                             ],
                                           )
