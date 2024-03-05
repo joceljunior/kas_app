@@ -90,7 +90,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('useImage', student.useImage);
       backendStudent.set('active', student.active);
       backendStudent.set('dateRegistry', student.dateregistry);
-      backendStudent.set('cpf', int.parse(student.cpf));
+      backendStudent.set('cpf', student.cpf);
       backendStudent.set('nameResponsible', student.responsible);
       backendStudent.set('relationship', student.relationship);
       backendStudent.set('nationality', student.nationality);
