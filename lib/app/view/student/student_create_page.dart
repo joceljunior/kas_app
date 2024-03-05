@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +10,6 @@ import '../../models/student.dart';
 import 'store/student_create_store.dart';
 import '../../../core/widgets/button_widget.dart';
 import '../../../core/widgets/textformfield_widget.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 class StudentCreatePage extends StatefulWidget {
   final Student? studentEdit;
@@ -737,10 +735,14 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                                 ? true
                                                 : false,
                                         cpf: store.cpfController.text,
-                                        nationality:
-                                            store.nationalityController.text,
-                                        schoolGrade:
-                                            store.schoolGradeController.text);
+                                        nationality: store.nationalityController
+                                                .text.isEmpty
+                                            ? ''
+                                            : store.nationalityController.text,
+                                        schoolGrade: store.schoolGradeController
+                                                .text.isEmpty
+                                            ? ''
+                                            : store.schoolGradeController.text);
 
                                     await store.createStudent(
                                       isEdit: store.isEdit,
