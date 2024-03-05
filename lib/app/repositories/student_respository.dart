@@ -64,19 +64,19 @@ class StudentRpository implements IStudentRepository {
   Future<bool> postStudent(
       {required Student student, required List<String> crews}) async {
     try {
-      // Enviar a foto para o Back4App e obter o URL da foto
-      final ParseFile parseFile = ParseFile(student.photo);
-      final ParseResponse fileResponse = await parseFile.save();
+      // // Enviar a foto para o Back4App e obter o URL da foto
+      // final ParseFile parseFile = ParseFile(student.photo);
+      // final ParseResponse fileResponse = await parseFile.save();
 
-      if (!fileResponse.success) {
-        throw Exception('Erro ao enviar a foto');
-      }
+      // if (!fileResponse.success) {
+      //   throw Exception('Erro ao enviar a foto');
+      // }
 
-      final String photoUrl = fileResponse.result['url'];
+      // final String photoUrl = fileResponse.result['url'];
 
       var backendStudent = ParseObject('Student');
       backendStudent.set('name', student.name);
-      backendStudent.set('photo', photoUrl);
+      // backendStudent.set('photo', null);
       backendStudent.set('schoolName', student.schoolName);
       backendStudent.set('schoolGrade', student.schoolGrade);
       backendStudent.set('telephone', student.telephone);

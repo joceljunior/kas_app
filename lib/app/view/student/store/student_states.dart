@@ -4,6 +4,8 @@ class StudentCreateLoadingState extends StudentState {}
 
 class StudentCreateSuccessState extends StudentState {}
 
+class StudentCreateSelectImageState extends StudentState {}
+
 class StudentCreateErrorState extends StudentState {
   final String message;
 

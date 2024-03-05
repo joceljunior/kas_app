@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
 
   @override
   void initState() {
+    listener();
     store.getCrews(studentEdit: widget.studentEdit);
     store.dateCreateController.text =
         '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
@@ -65,6 +67,10 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
     }
 
     super.initState();
+  }
+
+  void listener() {
+    store.addListener(() async {});
   }
 
   String toTitleCase(String text) {
@@ -157,42 +163,41 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         SizedBox(height: 15),
                                         GestureDetector(
                                           onTap: () {
-                                            // _showImagePicker(context);
+                                            _showImagePicker(context);
                                           },
                                           child: Container(
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Color.fromARGB(
-                                                    255, 207, 203, 203),
-                                              ),
-                                              child: ClipOval(
-                                                child: UniversalPlatform
-                                                            .isWeb &&
-                                                        store.imageFile != null
-                                                    ? Image.file(
-                                                        store.imageFile!,
-                                                        fit: BoxFit.cover,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.08,
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.08,
-                                                      )
-                                                    : Icon(
-                                                        Icons.person_2_outlined,
-                                                        size: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.08,
-                                                      ),
-                                              )),
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color.fromARGB(
+                                                  255, 207, 203, 203),
+                                            ),
+                                            child: CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              radius: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04, // metade do tamanho do container
+                                              backgroundImage:
+                                                  store.imagePath != null
+                                                      ? MemoryImage(
+                                                          base64Decode(
+                                                              store.imagePath!),
+                                                        )
+                                                      : null,
+                                              child: store.imagePath == null
+                                                  ? Icon(
+                                                      Icons.person_2_outlined,
+                                                      size:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.08,
+                                                    )
+                                                  : null,
+                                            ),
+                                          ),
                                         ),
                                         SizedBox(height: 15),
                                         TextFormFieldWidget(
@@ -779,15 +784,29 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
               ListTile(
                 leading: Icon(Icons.photo_library),
                 title: Text('Selecionar da Galeria'),
-                onTap: () {
-                  _getImage(context, ImageSource.gallery);
+                onTap: () async {
+                  var picker = ImagePicker();
+                  var image =
+                      await picker.pickImage(source: ImageSource.gallery);
+
+                  if (image != null) {
+                    var bytes = await image.readAsBytes();
+
+                    setState(() {
+                      store.imagePath = base64Encode(bytes);
+                    });
+                  } else {
+                    image = null;
+                  }
+
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.photo_camera),
                 title: Text('Tirar Foto'),
                 onTap: () {
-                  _getImage(context, ImageSource.camera);
+                  // _getImage(context, ImageSource.camera);
                 },
               ),
             ],
@@ -795,19 +814,6 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
         );
       },
     );
-  }
-
-  void _getImage(BuildContext context, ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        store.imageFile = File(pickedFile.path);
-      });
-    }
-
-    Navigator.of(context).pop(); // Fechar o modal
   }
 
   List<Widget> getCrews() {

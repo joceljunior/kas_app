@@ -43,6 +43,7 @@ class StudentCreateStore extends ValueNotifier<StudentState> {
   String typeSponsorSelected = '';
   bool isEdit = false;
   File? imageFile;
+  String? imagePath;
 
   List<Crew> crews = [];
   List<String> selectedCrews = [];
@@ -62,6 +63,10 @@ class StudentCreateStore extends ValueNotifier<StudentState> {
     } catch (e) {
       value = StudentCreateErrorState(message: 'Ocorreu um erro');
     }
+  }
+
+  changeLogo() {
+    value = StudentCreateSelectImageState();
   }
 
   Future<void> getCrews({Student? studentEdit}) async {
