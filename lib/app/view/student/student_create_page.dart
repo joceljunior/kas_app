@@ -209,15 +209,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.nameStudentController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .nameStudentController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.nameStudentController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .nameStudentController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           validator: (String? value) {
@@ -247,16 +247,16 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.schoolNameController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(
-                                                  text), // Converte o texto para o formato desejado
-                                              selection: store
-                                                  .schoolNameController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.schoolNameController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(
+                                          //         text), // Converte o texto para o formato desejado
+                                          //     selection: store
+                                          //         .schoolNameController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Ano Escolar",
@@ -274,16 +274,16 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.nationalityController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(
-                                                  text), // Converte o texto para o formato desejado
-                                              selection: store
-                                                  .nationalityController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.nationalityController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(
+                                          //         text), // Converte o texto para o formato desejado
+                                          //     selection: store
+                                          //         .nationalityController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                       ],
                                     ),
@@ -386,16 +386,16 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.responsibleController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(
-                                                  text), // Converte o texto para o formato desejado
-                                              selection: store
-                                                  .responsibleController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.responsibleController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(
+                                          //         text), // Converte o texto para o formato desejado
+                                          //     selection: store
+                                          //         .responsibleController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "CPF (Apenas números)",
@@ -467,14 +467,14 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.addressController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .addressController.selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.addressController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .addressController.selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Número",
@@ -496,15 +496,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.complementController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .complementController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.complementController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .complementController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Bairro",
@@ -516,15 +516,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.addressDistrictController
-                                                .value = TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .addressDistrictController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.addressDistrictController
+                                          //       .value = TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .addressDistrictController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Cidade",
@@ -536,15 +536,15 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                             }
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.addressCityController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .addressCityController
-                                                  .selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.addressCityController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .addressCityController
+                                          //         .selection,
+                                          //   );
+                                          // },
                                         ),
                                       ],
                                     ),
@@ -581,14 +581,14 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           validator: (String? value) {
                                             return null;
                                           },
-                                          onChanged: (text) {
-                                            store.allergyController.value =
-                                                TextEditingValue(
-                                              text: toTitleCase(text),
-                                              selection: store
-                                                  .allergyController.selection,
-                                            );
-                                          },
+                                          // onChanged: (text) {
+                                          //   store.allergyController.value =
+                                          //       TextEditingValue(
+                                          //     text: toTitleCase(text),
+                                          //     selection: store
+                                          //         .allergyController.selection,
+                                          //   );
+                                          // },
                                         ),
                                         TextFormFieldWidget(
                                           validator: (String? value) {
