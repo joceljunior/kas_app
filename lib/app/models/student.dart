@@ -53,7 +53,7 @@ class Student {
   factory Student.fromMap(ParseObject map) {
     return Student(
       id: map['objectId'],
-      name: map['name'] ?? '',
+      name: map['name'],
       photo: map['photo'],
       relationship: map['relationship'],
       responsible: map['nameResponsible'],

@@ -94,7 +94,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('nameResponsible', student.responsible);
       backendStudent.set('relationship', student.relationship);
       backendStudent.set('nationality', student.nationality);
-      await backendStudent.save();
+      var result = await backendStudent.save();
 
       for (String crew in crews) {
         ParseObject backendStudentCrews = ParseObject('StudentCrews')
@@ -129,7 +129,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('useImage', studentEdit.useImage);
       backendStudent.set('active', studentEdit.active);
       backendStudent.set('dateRegistry', studentEdit.dateregistry);
-      backendStudent.set('cpf', int.parse(studentEdit.cpf));
+      backendStudent.set('cpf', studentEdit.cpf);
       backendStudent.set('nameResponsible', studentEdit.responsible);
       backendStudent.set('relationship', studentEdit.relationship);
       backendStudent.set('nationality', studentEdit.nationality);
