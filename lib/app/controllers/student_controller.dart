@@ -19,9 +19,9 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<List<Student>> getStudents() async {
+  Future<List<Student>> getStudents({int page = 1, int pageSize = 10}) async {
     try {
-      var result = await repository.getStudents();
+      var result = await repository.getStudents(page: page, pageSize: pageSize);
       if (result.isEmpty) {
         throw StudentError(message: "Nenhum aluno cadastrado!");
       }

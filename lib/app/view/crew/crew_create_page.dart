@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kas_app/app/models/crew.dart';
 import 'package:kas_app/app/view/crew/store/crew_create_store.dart';
+import 'package:kas_app/app/view/crew/store/crew_states.dart';
 import 'package:kas_app/core/widgets/button_widget.dart';
 import 'package:kas_app/core/widgets/textformfield_widget.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -42,52 +43,55 @@ class _CrewCreatePageState extends State<CrewCreatePage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: ModalProgressHUD(
-        inAsyncCall: store.loading,
-        child: Container(
-          color: Colors.white10,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  TextFormFieldWidget(
-                    hintText: "Nome da Turma",
-                    controller: store.nameCrewController,
-                    validator: (String? value) => value,
-                  ),
-                  TextFormFieldWidget(
-                    hintText: "Identificador",
-                    controller: store.idCrewController,
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (String? value) => value,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(size.height * 0.01),
-                child: ButtonWidget(
-                  textButton: "Salvar",
-                  width: size.width,
-                  height: size.height * 0.08,
-                  click: () async {
-                    var crew = Crew(
-                        // ignore: prefer_null_aware_operators
-                        id: widget.crewEdit != null
-                            ? widget.crewEdit!.id
-                            : null,
-                        name: store.nameCrewController.text,
-                        key: store.idCrewController.text);
-
-                    await store.createCrew(isEdit: store.isEdit, crew: crew);
-
-                    if (store.success) {
-                      Navigator.of(context).pop();
-                    }
-                  },
+      body: ValueListenableBuilder(
+        valueListenable: store,
+        builder: (_, state, child) => ModalProgressHUD(
+          inAsyncCall: state is CrewLoadingState,
+          child: Container(
+            color: Colors.white10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    TextFormFieldWidget(
+                      hintText: "Nome da Turma",
+                      controller: store.nameCrewController,
+                      validator: (String? value) => value,
+                    ),
+                    TextFormFieldWidget(
+                      hintText: "Identificador",
+                      controller: store.idCrewController,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String? value) => value,
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.all(size.height * 0.01),
+                  child: ButtonWidget(
+                    textButton: "Salvar",
+                    width: size.width,
+                    height: size.height * 0.08,
+                    click: () async {
+                      var crew = Crew(
+                          // ignore: prefer_null_aware_operators
+                          id: widget.crewEdit != null
+                              ? widget.crewEdit!.id
+                              : null,
+                          name: store.nameCrewController.text,
+                          key: store.idCrewController.text);
+
+                      await store.createCrew(isEdit: store.isEdit, crew: crew);
+
+                      if (state is CrewSuccessState) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

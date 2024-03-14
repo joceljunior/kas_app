@@ -478,9 +478,13 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         ),
                                         TextFormFieldWidget(
                                           hintText: "Número",
-                                          keyboardType: TextInputType.number,
                                           controller:
                                               store.addressNumberController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9]')),
+                                          ],
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
                                               return "Numero é obrigatório";

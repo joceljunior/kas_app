@@ -22,11 +22,13 @@ class StudentRpository implements IStudentRepository {
   }
 
   @override
-  Future<List<Student>> getStudents() async {
+  Future<List<Student>> getStudents({int page = 1, int pageSize = 10}) async {
     try {
       final QueryBuilder<ParseObject> parseQuery =
           QueryBuilder<ParseObject>(ParseObject('Student'))
             ..whereEqualTo('active', true);
+      // ..setAmountToSkip((page - 1) * pageSize)
+      // ..setLimit(pageSize);
 
       final ParseResponse response = await parseQuery.query();
 

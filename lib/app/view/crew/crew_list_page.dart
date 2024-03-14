@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/view/crew/store/crew_list_store.dart';
+import 'package:kas_app/app/view/crew/store/crew_states.dart';
 import 'package:kas_app/app/view/crew/widgets/crew_item_widget.dart';
 import 'package:kas_app/core/constants/routes.dart';
 import 'package:kas_app/core/utils/params_enum.dart';
@@ -60,57 +60,62 @@ class _CrewListPageState extends State<CrewListPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Observer(builder: (_) {
-        if (store.messageError != null) {
-          return Center(
-            child: Text(store.messageError!),
-          );
-        }
-        if (store.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: store.crews.length,
-              itemBuilder: (context, index) {
-                var crew = store.crews[index];
-                return CrewItemWidget(
-                  crew: crew,
-                  onTapItem: () async {
-                    if (widget.typePage == ParamsEnum.crew) {
-                      Navigator.of(context)
-                          .pushNamed(crewStudentsListPage, arguments: crew);
-                    }
-                    if (widget.typePage == ParamsEnum.register) {
-                      await Navigator.of(context)
-                          .pushNamed(
-                        registerListPage,
-                        arguments: crew,
-                      )
-                          .then((value) {
-                        store.getCrews();
-                      });
-                    }
+      body: ValueListenableBuilder(
+          valueListenable: store,
+          builder: (_, state, child) {
+            if (state is CrewErrorState) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+            if (state is CrewLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (state is CrewListSuccessState) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: state.crews.length,
+                  itemBuilder: (context, index) {
+                    var crew = state.crews[index];
+                    return CrewItemWidget(
+                      crew: crew,
+                      onTapItem: () async {
+                        if (widget.typePage == ParamsEnum.crew) {
+                          Navigator.of(context)
+                              .pushNamed(crewStudentsListPage, arguments: crew);
+                        }
+                        if (widget.typePage == ParamsEnum.register) {
+                          await Navigator.of(context)
+                              .pushNamed(
+                            registerListPage,
+                            arguments: crew,
+                          )
+                              .then((value) {
+                            store.getCrews();
+                          });
+                        }
+                      },
+                      showTrailing: widget.typePage == ParamsEnum.crew,
+                      onTapEditItem: () async {
+                        if (widget.typePage == ParamsEnum.crew) {
+                          await Navigator.of(context)
+                              .pushNamed(crewCreatePage, arguments: crew)
+                              .then((value) {
+                            store.getCrews();
+                          });
+                        }
+                      },
+                    );
                   },
-                  showTrailing: widget.typePage == ParamsEnum.crew,
-                  onTapEditItem: () async {
-                    if (widget.typePage == ParamsEnum.crew) {
-                      await Navigator.of(context)
-                          .pushNamed(crewCreatePage, arguments: crew)
-                          .then((value) {
-                        store.getCrews();
-                      });
-                    }
-                  },
-                );
-              },
-            ),
-          );
-        }
-      }),
+                ),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }

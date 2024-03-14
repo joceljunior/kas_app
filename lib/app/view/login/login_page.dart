@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kas_app/app/models/user.dart';
+import 'package:kas_app/app/view/login/store/login_states.dart';
 import 'package:kas_app/app/view/login/store/login_store.dart';
 import 'package:kas_app/core/constants/routes.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -20,10 +20,11 @@ class LoginPage extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       key: store.scaffoldKey,
-      body: Observer(
-        builder: (_) {
+      body: ValueListenableBuilder(
+        valueListenable: store,
+        builder: (_, state, child) {
           return ModalProgressHUD(
-            inAsyncCall: store.loading,
+            inAsyncCall: state is LoginLoadingState,
             child: SingleChildScrollView(
               child: BackgoundBaseWidget(
                 child: Column(
@@ -54,7 +55,7 @@ class LoginPage extends StatelessWidget {
                               );
 
                               await store.login(user: user);
-                              if (store.session != null) {
+                              if (state is LoginSuccessState) {
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     homePage, ((route) => false));
                               } else {
@@ -63,7 +64,7 @@ class LoginPage extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     duration: Duration(seconds: 1),
-                                    content: Text(store.messageError),
+                                    content: Text('Ocorreu um erro'),
                                     backgroundColor: Colors.red,
                                   ),
                                 );

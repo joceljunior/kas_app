@@ -78,7 +78,7 @@ class _RegisterListPageState extends State<RegisterListPage> {
           builder: (_, state, child) {
             if (state is RegisterErrorState) {
               return Center(
-                child: Text('Ocorreu uma erro'),
+                child: Text('Nenhuma chamada cadastrada!'),
               );
             }
             if (state is RegisterLoadingState) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/app/view/student/store/student_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
 
 import 'store/student_list_store.dart';
@@ -57,73 +57,77 @@ class _StudentListPageState extends State<StudentListPage> {
           )
         ],
       ),
-      body: Observer(builder: (_) {
-        if (store.messageError != null) {
-          return Center(
-            child: Text(store.messageError!),
-          );
-        }
-        if (store.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: store.students.length,
-              itemBuilder: (context, index) {
-                var student = store.students[index];
-                return StudentItemWidget(
-                  student: student,
-                  onTapDelete: () async {
-                    await showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            content: Text(
-                                "Voce esta inativando este aluno! Deseja continuar ?"),
-                            actions: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      store.deleteStudent(id: student.id!);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Confirma"),
-                                  ),
-                                  ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.red)),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Cancelar"),
-                                  ),
+      body: ValueListenableBuilder(
+          valueListenable: store,
+          builder: (context, state, child) {
+            if (state is StudentCreateErrorState) {
+              return Center(
+                child: Text(store.messageError!),
+              );
+            }
+            if (state is StudentListLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is StudentListSuccessState) {
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: state.students.length,
+                  itemBuilder: (context, index) {
+                    var student = state.students[index];
+                    return StudentItemWidget(
+                      student: student,
+                      onTapDelete: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                content: Text(
+                                    "Voce esta inativando este aluno! Deseja continuar ?"),
+                                actions: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          store.deleteStudent(id: student.id!);
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Confirma"),
+                                      ),
+                                      ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.red)),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Cancelar"),
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          );
+                              );
+                            });
+                      },
+                      onTapEdit: () async {
+                        await Navigator.of(context)
+                            .pushNamed(studentCreatePage, arguments: student)
+                            .then((value) {
+                          store.getStudents();
                         });
+                      },
+                    );
                   },
-                  onTapEdit: () async {
-                    await Navigator.of(context)
-                        .pushNamed(studentCreatePage, arguments: student)
-                        .then((value) {
-                      store.getStudents();
-                    });
-                  },
-                );
-              },
-            ),
-          );
-        }
-      }),
+                ),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }

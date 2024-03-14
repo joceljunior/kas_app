@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:kas_app/app/view/crew/store/crew_states.dart';
 import 'package:kas_app/core/constants/routes.dart';
 
 import '../../models/crew.dart';
@@ -39,11 +39,15 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
               widget.crew.name,
               style: TextStyle(color: Colors.black),
             ),
-            Observer(
-              builder: (_) {
-                if (store.loading) {
-                  return Container();
-                } else {
+            ValueListenableBuilder(
+              valueListenable: store,
+              builder: (_, state, child) {
+                if (state is CrewLoadingState) {
+                  return Center(
+                    child: Container(),
+                  );
+                }
+                if (state is CrewListStudentSuccessState) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -51,7 +55,7 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
-                            store.students.length.toString(),
+                            state.students.length.toString(),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -66,6 +70,7 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
                     ),
                   );
                 }
+                return Container();
               },
             )
           ],
@@ -78,49 +83,54 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
           child: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
         ),
       ),
-      body: Observer(builder: (_) {
-        if (store.messageError != null) {
-          return Center(
-            child: Text(store.messageError!),
-          );
-        }
+      body: ValueListenableBuilder(
+        valueListenable: store,
+        builder: (_, state, child) {
+          if (state is CrewErrorState) {
+            return Center(
+              child: Text(state.message),
+            );
+          }
 
-        if (store.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: size.height * 0.67,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                      itemCount: store.students.length,
-                      itemBuilder: (context, index) {
-                        var student = store.students[index];
-                        return GestureDetector(
-                          onTap: () async {
-                            await Navigator.of(context).pushNamed(
-                                studentCreatePage,
-                                arguments: student);
-                          },
-                          child: StudentCrewItemWidget(
-                            student: student,
-                          ),
-                        );
-                      },
+          if (state is CrewLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is CrewListStudentSuccessState) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.67,
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        itemCount: state.students.length,
+                        itemBuilder: (context, index) {
+                          var student = state.students[index];
+                          return GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context).pushNamed(
+                                  studentCreatePage,
+                                  arguments: student);
+                            },
+                            child: StudentCrewItemWidget(
+                              student: student,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        }
-      }),
+                ],
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
