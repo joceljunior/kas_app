@@ -272,6 +272,9 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                           controller:
                                               store.nationalityController,
                                           validator: (String? value) {
+                                            if (value!.isEmpty) {
+                                              return "Nacionalidade é obrigatório";
+                                            }
                                             return null;
                                           },
                                           // onChanged: (text) {
@@ -717,7 +720,8 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         active: store.activeController,
                                         address: store.addressController.text,
                                         allergy: store.allergyController.text,
-                                        birthday: store.dateBirthday,
+                                        birthday: DateFormat('dd/MM/yyyy').parse(
+                                            store.dateBirthdayController.text),
                                         addressCity:
                                             store.addressCityController.text,
                                         addressDistrict: store
@@ -728,8 +732,7 @@ class _StudentCreatePageState extends State<StudentCreatePage> {
                                         responsible:
                                             store.responsibleController.text,
                                         name: store.nameStudentController.text,
-                                        schoolName: store.schoolNameController
-                                                .text.isEmpty
+                                        schoolName: store.schoolNameController.text.isEmpty
                                             ? ''
                                             : store.schoolNameController.text,
                                         telephone:
