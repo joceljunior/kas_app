@@ -14,11 +14,21 @@ class StudentListPage extends StatefulWidget {
 
 class _StudentListPageState extends State<StudentListPage> {
   final StudentListStore store = StudentListStore();
+  bool _isLoadingMore = false;
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     store.getStudents();
+    scrollController.addListener(_onScroll);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController
+        .dispose(); // Lembre-se de descartar o controlador quando não for mais necessário
+    super.dispose();
   }
 
   @override
@@ -58,76 +68,108 @@ class _StudentListPageState extends State<StudentListPage> {
         ],
       ),
       body: ValueListenableBuilder(
-          valueListenable: store,
-          builder: (context, state, child) {
-            if (state is StudentCreateErrorState) {
-              return Center(
-                child: Text(store.messageError!),
-              );
-            }
-            if (state is StudentListLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is StudentListSuccessState) {
-              return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: state.students.length,
-                  itemBuilder: (context, index) {
-                    var student = state.students[index];
-                    return StudentItemWidget(
-                      student: student,
-                      onTapDelete: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (_) {
-                              return AlertDialog(
-                                content: Text(
-                                    "Voce esta inativando este aluno! Deseja continuar ?"),
-                                actions: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          store.deleteStudent(id: student.id!);
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("Confirma"),
-                                      ),
-                                      ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.red)),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("Cancelar"),
-                                      ),
-                                    ],
-                                  )
+        valueListenable: store,
+        builder: (context, state, child) {
+          print(state);
+          if (state is StudentCreateErrorState) {
+            return Center(
+              child: Text('Houve um problema'),
+            );
+          }
+          if (state is StudentListLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Padding(
+            padding: EdgeInsets.all(8.0),
+            child: ListView.builder(
+              controller: scrollController,
+              itemCount: store.students.length +
+                  1, // Adicione 1 para o indicador de carregamento
+              itemBuilder: (context, index) {
+                if (index < store.students.length) {
+                  var student = store.students[index];
+                  return StudentItemWidget(
+                    student: student,
+                    onTapDelete: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            content: Text(
+                              "Voce esta inativando este aluno! Deseja continuar ?",
+                            ),
+                            actions: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      store.deleteStudent(id: student.id!);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Confirma"),
+                                  ),
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Cancelar"),
+                                  ),
                                 ],
-                              );
-                            });
-                      },
-                      onTapEdit: () async {
-                        await Navigator.of(context)
-                            .pushNamed(studentCreatePage, arguments: student)
-                            .then((value) {
-                          store.getStudents();
-                        });
-                      },
-                    );
-                  },
-                ),
-              );
-            }
-            return Container();
-          }),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    onTapEdit: () async {
+                      await Navigator.of(context)
+                          .pushNamed(studentCreatePage, arguments: student)
+                          .then((value) {
+                        store.getStudents();
+                      });
+                    },
+                  );
+                } else if (state is StudentListLoadingMoreState) {
+                  return Center(
+                    child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 30,
+                        width: 30,
+                        child: CircularProgressIndicator()),
+                  );
+                } else {
+                  return Container(); // Se não estiver carregando mais dados, retorne um contêiner vazio
+                }
+              },
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  void _onScroll() {
+    final double maxScroll = scrollController.position.maxScrollExtent;
+    final double currentScroll = scrollController.position.pixels;
+    if (currentScroll == maxScroll && !_isLoadingMore) {
+      setState(() {
+        _isLoadingMore = true;
+      });
+
+      store.getMoreStudents().then((_) {
+        setState(() {
+          _isLoadingMore = false;
+        });
+      });
+    }
   }
 }

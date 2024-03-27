@@ -26,13 +26,16 @@ class StudentRpository implements IStudentRepository {
     try {
       final QueryBuilder<ParseObject> parseQuery =
           QueryBuilder<ParseObject>(ParseObject('Student'))
-            ..whereEqualTo('active', true);
-      // ..setAmountToSkip((page - 1) * pageSize)
-      // ..setLimit(pageSize);
+            ..whereEqualTo('active', true)
+            ..setAmountToSkip((page - 1) * pageSize)
+            ..setLimit(pageSize);
 
       final ParseResponse response = await parseQuery.query();
 
       if (response.success) {
+        if (response.count == 0) {
+          return [];
+        }
         var students =
             response.results!.map((e) => Student.fromJson(e)).toList();
 

@@ -6,6 +6,10 @@ class StudentCreateLoadingState extends StudentState {}
 
 class StudentListLoadingState extends StudentState {}
 
+class StudentListLoadingMoreState extends StudentState {}
+
+class StudentListCompleteState extends StudentState {}
+
 class StudentCreateSuccessState extends StudentState {}
 
 class StudentDeleteSuccessState extends StudentState {}
