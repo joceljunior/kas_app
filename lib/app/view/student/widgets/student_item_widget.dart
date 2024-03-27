@@ -19,14 +19,13 @@ class StudentItemWidget extends StatelessWidget {
         onTapEdit();
       },
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 5.0),
+        padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2.0),
         child: Container(
-          color: Colors.blue[50]!,
+          decoration: BoxDecoration(
+            color: Colors.blue[50],
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: ListTile(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1),
-              borderRadius: BorderRadius.circular(4),
-            ),
             title: Text(
               student.name,
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -35,25 +34,20 @@ class StudentItemWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.4,
               height: MediaQuery.of(context).size.height * 0.007,
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  student.useImage == false
-                      ? Icon(
-                          Icons.no_photography_outlined,
-                          size: 18,
-                          color: Colors.redAccent,
-                        )
-                      : Container(),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  student.allergy.isNotEmpty && student.allergy != 'Não'
-                      ? Icon(
-                          Icons.warning_amber_outlined,
-                          size: 18,
-                          color: Colors.redAccent[100],
-                        )
-                      : Container(),
+                  if (!student.useImage)
+                    Icon(
+                      Icons.no_photography_outlined,
+                      size: 18,
+                      color: Colors.redAccent,
+                    ),
+                  SizedBox(width: 10),
+                  if (student.allergy.isNotEmpty && student.allergy != 'Não')
+                    Icon(
+                      Icons.warning_amber_outlined,
+                      size: 18,
+                      color: Colors.redAccent[100],
+                    ),
                 ],
               ),
             ),

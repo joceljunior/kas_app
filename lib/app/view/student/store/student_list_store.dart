@@ -14,6 +14,10 @@ class StudentListStore extends ValueNotifier<StudentState> {
   int currentPage = 1;
   int pageSize = 15;
   List<Student> students = [];
+  bool isLoadingMore = false;
+  final ScrollController scrollController = ScrollController();
+  TextEditingController searchController =
+      TextEditingController(); // Controlador para o campo de pesquisa
 
   Future<void> getStudents() async {
     try {
@@ -21,7 +25,6 @@ class StudentListStore extends ValueNotifier<StudentState> {
       var result =
           await controller.getStudents(page: currentPage, pageSize: pageSize);
       students = result;
-      result.sort((a, b) => a.name.compareTo(b.name));
       value = StudentListSuccessState(students: result);
     } catch (e) {}
   }
@@ -37,15 +40,24 @@ class StudentListStore extends ValueNotifier<StudentState> {
         value = StudentListCompleteState();
       }
 
-      var existingStudents = List.of(students); // Copia os alunos existentes
+      var existingStudents = List.of(students);
       existingStudents.addAll(result);
       students = existingStudents;
-      existingStudents.sort((a, b) => a.name.compareTo(b.name));
       value = StudentListSuccessState(students: existingStudents);
     } catch (e) {
       // Trate o erro de forma apropriada, por exemplo, definindo o estado para erro
       // value = StudentListErrorState();
     }
+  }
+
+  Future<void> searchStudents() async {
+    try {
+      value = StudentListLoadingState();
+      var result =
+          await controller.searchStudents(query: searchController.text);
+      students = result;
+      value = StudentListSuccessState(students: result);
+    } catch (e) {}
   }
 
   Future<void> deleteStudent({required String id}) async {

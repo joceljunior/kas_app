@@ -22,11 +22,12 @@ class StudentRpository implements IStudentRepository {
   }
 
   @override
-  Future<List<Student>> getStudents({int page = 1, int pageSize = 10}) async {
+  Future<List<Student>> getStudents({int page = 1, int pageSize = 15}) async {
     try {
       final QueryBuilder<ParseObject> parseQuery =
           QueryBuilder<ParseObject>(ParseObject('Student'))
             ..whereEqualTo('active', true)
+            ..orderByAscending('name')
             ..setAmountToSkip((page - 1) * pageSize)
             ..setLimit(pageSize);
 
@@ -257,6 +258,30 @@ class StudentRpository implements IStudentRepository {
         ..set('studentId', studentId)
         ..set('crewId', crew);
       await backendStudentCrews.save();
+    }
+  }
+
+  @override
+  Future<List<Student>> searchStudents({required String query}) async {
+    try {
+      final queryBuilder = QueryBuilder<ParseObject>(ParseObject('Student'))
+        ..whereContains('name', query);
+
+      final ParseResponse response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        final List<ParseObject> parseObjects =
+            response.results! as List<ParseObject>;
+        final List<Student> students = parseObjects
+            .map((parseObject) => Student.fromJson(parseObject))
+            .toList();
+
+        return students;
+      } else {
+        throw Exception('Failed to search students.');
+      }
+    } catch (e) {
+      throw Exception('Failed to search students: $e');
     }
   }
 }

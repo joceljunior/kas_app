@@ -19,7 +19,7 @@ class StudentController implements IStudentController {
   }
 
   @override
-  Future<List<Student>> getStudents({int page = 1, int pageSize = 10}) async {
+  Future<List<Student>> getStudents({int page = 1, int pageSize = 15}) async {
     try {
       var result = await repository.getStudents(page: page, pageSize: pageSize);
       return result;
@@ -90,6 +90,18 @@ class StudentController implements IStudentController {
   Future<int> getTotalStudent() async {
     try {
       var result = await repository.getTotalStudent();
+      return result;
+    } on StudentError catch (e) {
+      throw StudentError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<List<Student>> searchStudents({required String query}) async {
+    try {
+      var result = await repository.searchStudents(query: query);
       return result;
     } on StudentError catch (e) {
       throw StudentError(message: e.message);
