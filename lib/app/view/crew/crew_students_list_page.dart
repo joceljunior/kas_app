@@ -35,9 +35,20 @@ class _CrewStudentsListPageState extends State<CrewStudentsListPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.crew.name,
-              style: TextStyle(color: Colors.black),
+            Row(
+              children: [
+                Text(
+                  widget.crew.name,
+                  style: TextStyle(color: Colors.black),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  widget.crew.key.toLowerCase(),
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                ),
+              ],
             ),
             ValueListenableBuilder(
               valueListenable: store,
