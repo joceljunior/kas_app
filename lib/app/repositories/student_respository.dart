@@ -161,8 +161,8 @@ class StudentRpository implements IStudentRepository {
 
       final ParseResponse crewResponse = await studentCrewsQuery.query();
 
-      if (crewResponse.success) {
-        // Lista para armazenar os IDs dos alunos associados à turma
+      if (crewResponse.success && crewResponse.count > 0) {
+        // Lista para armazenar os IDs dos alunos assocados à turma
         List<String> studentIds = crewResponse.results!
             .map<String>((crew) => crew['studentId'] as String)
             .toList();
@@ -177,18 +177,20 @@ class StudentRpository implements IStudentRepository {
         final ParseResponse studentsResponse =
             await activeStudentsQuery.query();
 
-        if (studentsResponse.success) {
+        if (studentsResponse.success && studentsResponse.count > 0) {
           // Mapeia os resultados para objetos Student
           List<Student> activeStudents = studentsResponse.results!
               .map((e) => Student.fromJson(e))
               .toList();
 
           return activeStudents;
+        } else {
+          return [];
         }
       }
       return [];
     } catch (e) {
-      // print(e.toString());
+      print(e.toString());
       throw Exception();
     }
   }
