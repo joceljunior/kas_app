@@ -11,4 +11,5 @@ abstract class IStudentController {
   Future<bool> updateStudent(
       {required Student studentEdit, required List<String> crews});
   Future<bool> deleteStudent({required String id});
+  Future<void> testBack4AppConnection(); // Método temporário para debug
 }

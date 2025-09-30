@@ -109,4 +109,13 @@ class StudentController implements IStudentController {
       throw Exception();
     }
   }
+
+  // Método temporário para debug
+  Future<void> testBack4AppConnection() async {
+    try {
+      await repository.testBack4AppConnection();
+    } catch (e) {
+      print('DEBUG StudentController - Test connection error: $e');
+    }
+  }
 }

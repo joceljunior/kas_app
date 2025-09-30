@@ -15,6 +15,8 @@ import 'package:kas_app/app/view/register/register_list_page.dart';
 import 'package:kas_app/app/view/student/create_success_page.dart';
 import 'package:kas_app/app/view/student/student_create_page.dart';
 import 'package:kas_app/app/view/student/student_list_page.dart';
+import 'package:kas_app/app/view/user/user_create_page.dart';
+import 'package:kas_app/app/view/user/user_list_page.dart';
 import 'package:kas_app/core/database/interface/i_database.dart';
 import 'package:kas_app/core/utils/params_enum.dart';
 
@@ -96,6 +98,14 @@ class KasRouter {
           builder: (_) => CrewStudentsListPage(
             crew: crew,
           ),
+        );
+      case userListPage:
+        return MaterialPageRoute(
+          builder: (_) => const UserListPage(),
+        );
+      case userCreatePage:
+        return MaterialPageRoute(
+          builder: (_) => const UserCreatePage(),
         );
       case '/create':
         return MaterialPageRoute(

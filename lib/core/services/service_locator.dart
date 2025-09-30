@@ -10,13 +10,17 @@ import '../../app/controllers/crew_controller.dart';
 import '../../app/controllers/interfaces/i_crew_controller.dart';
 import '../../app/controllers/interfaces/i_login_controller.dart';
 import '../../app/controllers/interfaces/i_student_controller.dart';
+import '../../app/controllers/interfaces/i_user_controller.dart';
 import '../../app/controllers/login_controller.dart';
 import '../../app/controllers/register_controller.dart';
 import '../../app/controllers/student_controller.dart';
+import '../../app/controllers/user_controller.dart';
 import '../../app/repositories/interfaces/i_crew_repository.dart';
 import '../../app/repositories/interfaces/i_login_repository.dart';
+import '../../app/repositories/interfaces/i_user_repository.dart';
 import '../../app/repositories/crew_repository.dart';
 import '../../app/repositories/login_repository.dart';
+import '../../app/repositories/user_repository.dart';
 import '../database/interface/i_database.dart';
 
 import '../database/database.dart';
@@ -35,5 +39,7 @@ class ServiceLocator {
     getIt.registerSingleton<IStudentController>(StudentController());
     getIt.registerSingleton<IRegisterRepository>(RegisterRepository());
     getIt.registerSingleton<IRegisterController>(RegisterController());
+    getIt.registerSingleton<IUserRepository>(UserRepository());
+    getIt.registerSingleton<IUserController>(UserController());
   }
 }

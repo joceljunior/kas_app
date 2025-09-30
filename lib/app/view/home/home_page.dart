@@ -92,6 +92,9 @@ class _HomePageState extends State<HomePage> {
                             image: 'assets/report.png',
                             title: 'Relatórios',
                             ontap: () {}),
+                        // Botão de gerenciar usuários apenas para master
+                        if (widget.session.roleUser?.toLowerCase() == 'master')
+                          _buildUserButton(),
                       ],
                     ),
                     TotalWidget(
@@ -111,6 +114,49 @@ class _HomePageState extends State<HomePage> {
 
           return Container();
         },
+      ),
+    );
+  }
+
+  Widget _buildUserButton() {
+    var size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.of(context)
+            .pushNamed(userListPage)
+            .then((value) => store.getTotals());
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+        height: size.height * 0.25,
+        width: size.width * 0.4,
+        constraints: const BoxConstraints(maxHeight: 300, maxWidth: 300),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Opacity(
+                opacity: 0.6,
+                child: Icon(
+                  Icons.people,
+                  size: 60,
+                  color: const Color.fromARGB(255, 93, 124, 150),
+                ),
+              ),
+            ),
+            Text(
+              'USUÁRIOS',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 93, 124, 150),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

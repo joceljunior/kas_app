@@ -25,6 +25,24 @@ class CrewController implements ICrewController {
   }
 
   @override
+  Future<List<Crew>> getCrewsByTeacher({required String teacherId}) async {
+    try {
+      var result = await repository.getCrewsByTeacher(teacherId: teacherId);
+
+      if (result.isEmpty) {
+        throw CrewError(
+            message: "Nenhuma turma encontrada para esta professora!");
+      }
+      result.sort((a, b) => a.name.compareTo(b.name));
+      return result;
+    } on CrewError catch (e) {
+      throw CrewError(message: e.message);
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
   Future<bool> postOrPutCrew({required bool isEdit, required Crew crew}) async {
     try {
       var result = false;
@@ -51,6 +69,15 @@ class CrewController implements ICrewController {
       throw CrewError(message: e.message);
     } catch (e) {
       throw Exception();
+    }
+  }
+
+  @override
+  Future<void> ensureActiveFieldExists() async {
+    try {
+      await repository.ensureActiveFieldExists();
+    } catch (e) {
+      print('DEBUG CrewController - Error ensuring active field: $e');
     }
   }
 }

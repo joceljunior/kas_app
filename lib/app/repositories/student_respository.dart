@@ -100,7 +100,7 @@ class StudentRpository implements IStudentRepository {
       backendStudent.set('nameResponsible', student.responsible);
       backendStudent.set('relationship', student.relationship);
       backendStudent.set('nationality', student.nationality);
-      var result = await backendStudent.save();
+      await backendStudent.save();
 
       for (String crew in crews) {
         ParseObject backendStudentCrews = ParseObject('StudentCrews')
@@ -218,21 +218,57 @@ class StudentRpository implements IStudentRepository {
   @override
   Future<int> getTotalStudent() async {
     try {
-      final QueryBuilder<ParseObject> activeStudentsQuery =
-          QueryBuilder<ParseObject>(ParseObject('Student'))
-            ..whereEqualTo('active', true); // Filtra apenas os alunos ativos
+      print('DEBUG getTotalStudent - Starting query for active students...');
 
-      final ParseResponse response = await activeStudentsQuery.query();
+      int totalCount = 0;
+      int skip = 0;
+      const int limit = 1000;
+      bool hasMore = true;
 
-      if (response.success) {
-        // Retorna o número de resultados (total de alunos ativos)
-        return response.count;
-      } else {
-        return 0; // Retorna 0 se não houver alunos ativos
+      while (hasMore) {
+        final QueryBuilder<ParseObject> activeStudentsQuery =
+            QueryBuilder<ParseObject>(ParseObject('Student'))
+              ..whereEqualTo('active', true) // Filtra apenas os alunos ativos
+              ..setAmountToSkip(skip)
+              ..setLimit(limit);
+
+        final ParseResponse response = await activeStudentsQuery.query();
+
+        print('DEBUG getTotalStudent - Query skip: $skip, limit: $limit');
+        print('DEBUG getTotalStudent - Response success: ${response.success}');
+        print(
+            'DEBUG getTotalStudent - Response results length: ${response.results?.length ?? 0}');
+        print('DEBUG getTotalStudent - Response error: ${response.error}');
+
+        if (response.success && response.results != null) {
+          int currentBatchCount = response.results!.length;
+          totalCount += currentBatchCount;
+
+          print(
+              'DEBUG getTotalStudent - Current batch: $currentBatchCount students');
+          print('DEBUG getTotalStudent - Total so far: $totalCount students');
+
+          // Se retornou menos que o limite, não há mais resultados
+          if (currentBatchCount < limit) {
+            hasMore = false;
+            print(
+                'DEBUG getTotalStudent - No more results, final total: $totalCount');
+          } else {
+            skip += limit;
+            print(
+                'DEBUG getTotalStudent - More results available, continuing...');
+          }
+        } else {
+          print('DEBUG getTotalStudent - Query failed, stopping');
+          hasMore = false;
+        }
       }
+
+      print('DEBUG getTotalStudent - Final total active students: $totalCount');
+      return totalCount;
     } catch (e) {
-      // print(e.toString());
-      throw Exception();
+      print('DEBUG getTotalStudent - Exception: $e');
+      throw Exception('Erro ao buscar total de alunos: $e');
     }
   }
 
@@ -267,7 +303,8 @@ class StudentRpository implements IStudentRepository {
   Future<List<Student>> searchStudents({required String query}) async {
     try {
       final queryBuilder = QueryBuilder<ParseObject>(ParseObject('Student'))
-        ..whereContains('name', query);
+        ..whereContains('name', query)
+        ..whereEqualTo('active', true); // Adicionar filtro para alunos ativos
 
       final ParseResponse response = await queryBuilder.query();
 
@@ -284,6 +321,62 @@ class StudentRpository implements IStudentRepository {
       }
     } catch (e) {
       throw Exception('Failed to search students: $e');
+    }
+  }
+
+  // Método temporário para debug - testar conexão com Back4App
+  Future<void> testBack4AppConnection() async {
+    try {
+      print('DEBUG - Testing Back4App connection...');
+
+      // Teste 1: Buscar todos os alunos (sem filtro)
+      final QueryBuilder<ParseObject> allStudentsQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..setLimit(5); // Apenas 5 para teste
+
+      final ParseResponse allResponse = await allStudentsQuery.query();
+      print(
+          'DEBUG - All students query - Success: ${allResponse.success}, Count: ${allResponse.count}');
+
+      // Teste 2: Buscar alunos ativos
+      final QueryBuilder<ParseObject> activeStudentsQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..whereEqualTo('active', true)
+            ..setLimit(5);
+
+      final ParseResponse activeResponse = await activeStudentsQuery.query();
+      print(
+          'DEBUG - Active students query - Success: ${activeResponse.success}, Count: ${activeResponse.count}');
+
+      // Teste 3: Buscar alunos inativos
+      final QueryBuilder<ParseObject> inactiveStudentsQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))
+            ..whereEqualTo('active', false)
+            ..setLimit(5);
+
+      final ParseResponse inactiveResponse =
+          await inactiveStudentsQuery.query();
+      print(
+          'DEBUG - Inactive students query - Success: ${inactiveResponse.success}, Count: ${inactiveResponse.count}');
+
+      // Teste 4: Buscar sem filtro de active
+      final QueryBuilder<ParseObject> noFilterQuery =
+          QueryBuilder<ParseObject>(ParseObject('Student'))..setLimit(10);
+
+      final ParseResponse noFilterResponse = await noFilterQuery.query();
+      print(
+          'DEBUG - No filter query - Success: ${noFilterResponse.success}, Count: ${noFilterResponse.count}');
+
+      if (noFilterResponse.success && noFilterResponse.results != null) {
+        print('DEBUG - Sample student data:');
+        for (int i = 0; i < noFilterResponse.results!.length && i < 3; i++) {
+          final student = noFilterResponse.results![i];
+          print(
+              'DEBUG - Student $i: ID=${student.objectId}, Name=${student['name']}, Active=${student['active']}');
+        }
+      }
+    } catch (e) {
+      print('DEBUG - Connection test failed: $e');
     }
   }
 }

@@ -8,3 +8,5 @@ const String registerListPage = '/registerListPage';
 const String studentListPage = '/studentListPage';
 const String studentCreatePage = '/studentCreatePage';
 const String crewStudentsListPage = '/crewStudentListPage';
+const String userListPage = '/userListPage';
+const String userCreatePage = '/userCreatePage';

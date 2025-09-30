@@ -21,12 +21,30 @@ class HomeStore extends ValueNotifier<HomeState> {
   Future<void> getTotals() async {
     try {
       value = HomeStateLoading();
+
+      // Garantir que os campos 'active' existam nas turmas
+      print('DEBUG HomeStore - Ensuring active fields exist...');
+      await controllerCrew.ensureActiveFieldExists();
+
+      // Executar teste de conexão primeiro
+      print('DEBUG HomeStore - Running Back4App connection test...');
+      await controllerStudent.testBack4AppConnection();
+
       // await Future.delayed(Duration(seconds: 3));
+      print('DEBUG HomeStore - Getting student total...');
       studentTotal = await controllerStudent.getTotalStudent();
+      print('DEBUG HomeStore - Student total received: $studentTotal');
+
+      print('DEBUG HomeStore - Getting crew total...');
       crewTotal = await controllerCrew.getTotalCrew();
+      print('DEBUG HomeStore - Crew total received: $crewTotal');
+
       value = HomeStateSuccess(
           totalStudents: studentTotal ?? 0, totalcrew: crewTotal ?? 0);
+      print(
+          'DEBUG HomeStore - State updated with totals - Students: ${studentTotal ?? 0}, Crews: ${crewTotal ?? 0}');
     } catch (e) {
+      print('DEBUG HomeStore - Error getting totals: $e');
       value = HomeStateError();
     }
   }
